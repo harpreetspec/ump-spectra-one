@@ -140,6 +140,7 @@ export default function PaymentDetailsInvoice({ goBackToTransactions, getInvoice
 
       return result.data;
     } catch (error) {
+      return error
       throw new Error('Failed to retrieve area and location details.');
     }
   }
@@ -810,7 +811,7 @@ export default function PaymentDetailsInvoice({ goBackToTransactions, getInvoice
         if (!form.elements.accno.value || !form.elements.accname.value || !form.elements.orgid.value || !form.elements.username.value || !form.elements.emailid.value || !form.elements.mobileno.value) {
           setTimeout(() => {
             Swal.fire({
-              html: '<div style="font-size: 15px;">Failed to Load Payment Data. Please Retry.</div>',
+              html: '<div style="font-size: 15px;">Failed to Load Data. Please Retry.</div>',
               width: '29%',
               timer: 3000, // Display time in milliseconds
               showConfirmButton: false
