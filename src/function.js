@@ -258,7 +258,7 @@ export const getServiceListsTemp = async (groupID, companyID, locationID, fromDa
 }
 
 export const createSRAivis = async (payload) => {
-    // console.log("payload:",payload, payload.ComplaintDesc); 
+    // console.log("payload:",payload);
     const url = process.env.REACT_APP_API_URL + '/createSRAivis';
     const data = {
         "Type": payload.TypeId,
@@ -268,7 +268,7 @@ export const createSRAivis = async (payload) => {
         "CaseCategory": payload.CaseCategoryId,
         "ComplaintDesc": payload.ComplaintDesc,
         "AccountID": payload.canId,   // payload.canId   // "602988"
-        "Owner": "NW_BUS_MSNOC_TP"
+        "Owner": payload.Owner
     };
     // console.log("data", data); return;
     
@@ -439,6 +439,26 @@ export const getUserByCanId = async (payload) => {
         "userName": payload.userName,
         "ip": payload.ip,
         "user_device_os": payload.user_device_os
+    };
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    });
+    const result = await response.json();
+    // console.log("createSRAivis", result.meta.Message);
+    return result;
+}
+
+
+export const logger = async (log_data) => {
+    // console.log("log_data: ", log_data); 
+    const url = process.env.REACT_APP_API_URL + '/logger';
+    // const url = 'http://localhost:4001/logger';
+    const data = {
+        "log_data": log_data
     };
     const response = await fetch(url, {
         method: 'POST',

@@ -275,7 +275,7 @@ export default function ComOBBDataConsumption({networkParms}){
                 </div>
                 <div class="data-inner-box">
                   <div class="chartjs-container" id="chartContainer">
-                    {apistatus=="success" ? <canvas id="myChart"></canvas>  : "No graph available"}
+                    {apistatus=="success" ? <canvas id="myChart"></canvas>  : <span className='empty-networkusage'>No Graph Available</span>}
                   </div>
                 </div>
               </div>

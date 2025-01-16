@@ -750,8 +750,15 @@ export default function Dashboard() {
       //      console.log("invoiceCanId", invoiceCanId); // Debugging purposes
       const url = process.env.REACT_APP_API_URL + '/getInvoicesCount';
       let currentDate = new Date();
-      var mm = currentDate.getMonth() - 2;
+      let currentDate2 = new Date();
+      let date3Monthsbefore = new Date(currentDate2.setMonth(currentDate2.getMonth() - 2));
+      
+      // console.log(date3Monthsbefore);
+      
+      var mm = date3Monthsbefore.getMonth();
       var c_m = currentDate.getMonth() + 1;
+      // console.log(mm, c_m);
+      
       var i_m = ''; var j_m = '';
       if (mm < 10) {
         i_m = 0;
@@ -764,8 +771,12 @@ export default function Dashboard() {
       //var dd = currentDate.getDate();
       var dd =dayOfMonth < 10 ? `0${dayOfMonth}` : dayOfMonth
       var yy = currentDate.getFullYear();
-      var lastMonth = yy + '-' + i_m + mm + '-' + dd;
+      var yyl = date3Monthsbefore.getFullYear();
+      var lastMonth = yyl + '-' + i_m + mm + '-' + dd;
       var currentMonth = yy + '-' + j_m + c_m + '-' + dd;
+
+      // console.log("lastMonth: ", lastMonth, currentMonth);
+      
       const data = {
         "canIds": `${canIdsString}`,
         "fromDate": lastMonth + 'T00:00:00',
@@ -955,7 +966,10 @@ export default function Dashboard() {
       //console.log("invoiceCanId", invoiceCanId); // Debugging purposes
       let url = process.env.REACT_APP_API_URL + '/getInvoicesCount';
       let currentDate = new Date();
-      var mm = currentDate.getMonth() - 2;
+      let currentDate2 = new Date();
+      let date3Monthsbefore = new Date(currentDate2.setMonth(currentDate2.getMonth() - 2));
+
+      var mm = date3Monthsbefore.getMonth();
       var c_m = currentDate.getMonth() + 1;
       var i_m = ''; var j_m = '';
       if (mm < 10) {
@@ -969,7 +983,8 @@ export default function Dashboard() {
       //var dd = currentDate.getDate();
       var dd =dayOfMonth < 10 ? `0${dayOfMonth}` : dayOfMonth
       var yy = currentDate.getFullYear();
-      var lastMonth = yy + '-' + i_m + mm + '-' + dd;
+      var yyl = date3Monthsbefore.getFullYear();
+      var lastMonth = yyl + '-' + i_m + mm + '-' + dd;
       var currentMonth = yy + '-' + j_m + c_m + '-' + dd;
       // console.log('LastMonth=',lastMonth);
       // console.log('InvCurrentDate',currentMonth);
@@ -1017,7 +1032,10 @@ export default function Dashboard() {
       //console.log("invoiceCanId", invoiceCanId); // Debugging purposes
       let url = process.env.REACT_APP_API_URL + '/getInvoicesCount';
       let currentDate = new Date();
-      var mm = currentDate.getMonth() - 2;
+      let currentDate2 = new Date();
+      let date3Monthsbefore = new Date(currentDate2.setMonth(currentDate2.getMonth() - 2));
+
+      var mm = date3Monthsbefore.getMonth();
       var c_m = currentDate.getMonth() + 1;
       var i_m = ''; var j_m = '';
       if (mm < 10) {
@@ -1031,7 +1049,8 @@ export default function Dashboard() {
       //var dd = currentDate.getDate();
       var dd =dayOfMonth < 10 ? `0${dayOfMonth}` : dayOfMonth
       var yy = currentDate.getFullYear();
-      var lastMonth = yy + '-' + i_m + mm + '-' + dd;
+      var yyl = date3Monthsbefore.getFullYear();
+      var lastMonth = yyl + '-' + i_m + mm + '-' + dd;
       var currentMonth = yy + '-' + j_m + c_m + '-' + dd;
       // console.log('LastMonth=',lastMonth);
       // console.log('InvCurrentDate',currentMonth);

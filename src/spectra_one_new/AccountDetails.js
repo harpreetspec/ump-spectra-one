@@ -336,9 +336,23 @@ export default function AccountDetails() {
     return `${day} ${month}'${year}`;
   };
 
+  // const formatDate = (dateString) => {
+  //   // console.log("dateString:", dateString);
+  //   const date = new Date(dateString);
+  //   // console.log("date:", date.toISOString());  // Always logs in UTC format
+    
+  //   // Extract UTC values to prevent local timezone issues
+  //   const day = ('0' + date.getUTCDate()).slice(-2);
+  //   const month = date.toLocaleString('en', { month: 'short', timeZone: 'UTC' });  // Ensure month is in English
+  //   const year = date.getUTCFullYear().toString().slice(-2);
+    
+  //   return `${day} ${month}'${year}`;
+  // };
+  
+
   function pre7DaysDate(dateString) {
     const date = new Date(dateString);
-    date.setDate(date.getDate() - 7);
+    date.setDate(date.getDate() - 0);
 
     const day = String(date.getUTCDate()).padStart(2, '0');
     const month = date.toLocaleString('en', { month: 'short' });
@@ -349,7 +363,7 @@ export default function AccountDetails() {
 
   function pre2DaysDate(dateString) {
     const date = new Date(dateString);
-    date.setDate(date.getDate() - 2);
+    date.setDate(date.getDate() - 0);
 
     const day = String(date.getUTCDate()).padStart(2, '0');
     const month = date.toLocaleString('en', { month: 'short' });

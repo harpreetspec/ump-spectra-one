@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import logo from "../../assets/images/Spectra-Logo_192x192.png"
 import { deviceDetect, mobileModel } from "react-device-detect"
+import * as FunctionModule from "../../function";
 
 
 
@@ -17,63 +18,64 @@ export default function PaymentDetailsInvoice({ goBackToTransactions, getInvoice
   // console.log(getInvoicePayNowRow);
   const serviceId = getInvoicePayNowRow.CanId
 
-// ishan 
-const [email ,setEmail] = useState();
-const[accountName,setAccountName] = useState();
-const [mobileNo,setMobileNo] = useState();
-const [id,setID] = useState();
-const [userName,setUserName] = useState();
-const [accMgrName ,setAccMgrName] = useState();
-const [newInput,setNewInput] = useState();
+  // ishan 
+  const [email, setEmail] = useState();
+  const [accountName, setAccountName] = useState();
+  const [mobileNo, setMobileNo] = useState();
+  const [id, setID] = useState();
+  const [userName, setUserName] = useState();
+  const [accMgrName, setAccMgrName] = useState();
+  const [newInput, setNewInput] = useState();
+  const [ip, setIp] = useState('');
 
-//end 
+  //end 
 
   const [getBillingAddress, setBillingAddress] = useState();
   const [getPostalCode, setPostalCode] = useState();
   const [getTdsSlab, setTdsSlab] = useState();
-  const [newTds,setNewTds] = useState();
+  const [newTds, setNewTds] = useState();
   const [getTotalAmount, setTotalAmount] = useState();
-  const [newTotalAmount ,setNewTotalAmount] = useState();
+  const [newTotalAmount, setNewTotalAmount] = useState();
   const [getStatutoryData, setStatutoryData] = useState();
-  const [afterErrorTa,setafterErrorTa] = useState();
-  const [inputValid ,setInputValid] = useState();
-  const [flag,setFlag]= useState(false);
-  
+  const [afterErrorTa, setafterErrorTa] = useState();
+  const [inputValid, setInputValid] = useState();
+  const [flag, setFlag] = useState(false);
+
   const unpaidAmount = getInvoicePayNowRow.item ? getInvoicePayNowRow.item.unPaidBalance : getInvoicePayNowRow.top3Invoice[0].unPaidBalance;
 
-  const [device,setDevice] = useState('')
+  const [device, setDevice] = useState('')
 
-// ishan
-const formatDate = (dateString) => {
-  // console.log("dateString:",dateString);
-  const date = new Date(dateString);
-  const day = ('0' + date.getDate()).slice(-2);
-  const month = date.toLocaleString('en', { month: 'short' });
-  const year = date.getFullYear().toString().slice(-2);
-  return `${day} ${month}'${year}`;
-};
+  // ishan
+  const formatDate = (dateString) => {
+    // console.log("dateString:",dateString);
+    const date = new Date(dateString);
+    const day = ('0' + date.getDate()).slice(-2);
+    const month = date.toLocaleString('en', { month: 'short' });
+    const year = date.getFullYear().toString().slice(-2);
+    return `${day} ${month}'${year}`;
+  };
 
-function pre7DaysDate(dateString) {
-  const date = new Date(dateString);
-  date.setDate(date.getDate() - 7);
+  function pre7DaysDate(dateString) {
+    const date = new Date(dateString);
+    date.setDate(date.getDate() - 7);
 
-  const day = String(date.getUTCDate()).padStart(2, '0');
-  const month = date.toLocaleString('en', { month: 'short' });
-  const year = String(date.getUTCFullYear()).slice(-2);
+    const day = String(date.getUTCDate()).padStart(2, '0');
+    const month = date.toLocaleString('en', { month: 'short' });
+    const year = String(date.getUTCFullYear()).slice(-2);
 
-  return `${day} ${month}'${year}`;
-}
+    return `${day} ${month}'${year}`;
+  }
 
-function pre2DaysDate(dateString) {
-  const date = new Date(dateString);
-  date.setDate(date.getDate() - 2);
+  function pre2DaysDate(dateString) {
+    const date = new Date(dateString);
+    date.setDate(date.getDate() - 2);
 
-  const day = String(date.getUTCDate()).padStart(2, '0');
-  const month = date.toLocaleString('en', { month: 'short' });
-  const year = String(date.getUTCFullYear()).slice(-2);
+    const day = String(date.getUTCDate()).padStart(2, '0');
+    const month = date.toLocaleString('en', { month: 'short' });
+    const year = String(date.getUTCFullYear()).slice(-2);
 
-  return `${day} ${month}'${year}`;
-}
+    return `${day} ${month}'${year}`;
+  }
 
   //megha
   const handleUnpaidEditIconClick = (event) => {
@@ -87,7 +89,7 @@ function pre2DaysDate(dateString) {
       const selection = window.getSelection();
       // Find the last text node in the editableValue
       let lastChild = editableValue.lastChild;
-  
+
       // Traverse backwards until a text node is found
       while (lastChild && lastChild.nodeType !== Node.TEXT_NODE) {
         lastChild = lastChild.previousSibling;
@@ -102,7 +104,7 @@ function pre2DaysDate(dateString) {
         range.selectNodeContents(editableValue);
         range.collapse(false);
       }
-  
+
       // Set the selection to the computed range
       selection.removeAllRanges();
       selection.addRange(range);
@@ -111,45 +113,86 @@ function pre2DaysDate(dateString) {
     }
   };
 
+  async function CustomerAccountDetail() {
+    try {
+      const url = process.env.REACT_APP_API_URL + '/getCustomerAccountDetail';
+      const data = {
+        serviceGroupId: serviceId
+      };
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+      const result = await response.json();
+      // ishan
+      // console.log("pay",result.data);
+      setEmail(result.data.email ?? result.data.shipToEmail);
+      setAccountName(result.data.accountName ?? result.data.orgName);
+      setMobileNo(result.data.shipToMobileno ?? result.data.shipToPhone);
+      setID(result.data.orgId);
+      setUserName(result.data.accountNo)
+      // end
+      setBillingAddress(result.data.shipToAddress + ", " + result.data.shipToCity + ", " + result.data.shipToState + ", " + result.data.shipToCountry);
+      setPostalCode(result.data.shipToPostalCode);
+
+      return result.data;
+    } catch (error) {
+      throw new Error('Failed to retrieve area and location details.');
+    }
+  }
+
+
+  useEffect(() => {
+    // Usage  
+    CustomerAccountDetail();
+  }, []);
+
+
+
+
   const handleEditUnpaidValueBlur = async (event) => {
     // Get the numeric value from the edited content
     const enteredValue = event.currentTarget.textContent.replace("₹", "").trim();
     const numericValue = Number(enteredValue);
     // console.log("getTdsSlab...",getTdsSlab);
     // console.log("EditUnpaid after blur", numericValue, newTds, numericValue, getTdsSlab)
-    let unPaidBlc = newTds ? (numericValue-newTds) :(numericValue-getTdsSlab);
+    let unPaidBlc = newTds ? (numericValue - newTds) : (numericValue - getTdsSlab);
     // console.log("numericValue",numericValue);
     setNewInput(numericValue);
     // let unPaidBlc = numericValue
     // console.log("unPaidBlc",unPaidBlc);
     // setNewCalcAmount(unPaidBlc);
     // setNewTotalAmount(unPaidBlc.toFixed(2))
-    if(getTdsSlab==undefined){
+    if (getTdsSlab == undefined) {
       setNewTotalAmount(numericValue.toFixed(2))
-    }else{
-    setNewTotalAmount(unPaidBlc.toFixed(2))
+    } else {
+      setNewTotalAmount(unPaidBlc.toFixed(2))
     }
     // console.log("newTotalAmount.....",newTotalAmount)
     setInputValid(true);
-    if (!isNaN(numericValue)){
-     if(numericValue == 0){
-      Swal.fire({
-        html: '<div style="font-size: 15px;"> value cannot be 0</div>', // Adjust text size as needed
-        icon: 'error',
-        iconHtml: '<div style="font-size: 28px; color: red; box-sizing: border-box ;">&#10006;</div>', // Adjust icon size and style as needed
-        width: '29%',
-        confirmButtonText: 'OK',
-        imageHeight: '100%',
-        imageWidth: '20%',
-        iconColor: 'red',
-        iconHeight: '100%',
-        customClass: {
-          icon: 'custom-icon'
-        }
-      });
-      event.currentTarget.textContent = `₹${unpaidAmount}`;
-      setInputValid(false);
-     }}else{
+    if (!isNaN(numericValue)) {
+      if (numericValue == 0) {
+        Swal.fire({
+          html: '<div style="font-size: 15px;"> value cannot be 0</div>', // Adjust text size as needed
+          icon: 'error',
+          iconHtml: '<div style="font-size: 28px; color: red; box-sizing: border-box ;">&#10006;</div>', // Adjust icon size and style as needed
+          width: '29%',
+          confirmButtonText: 'OK',
+          imageHeight: '100%',
+          imageWidth: '20%',
+          iconColor: 'red',
+          iconHeight: '100%',
+          customClass: {
+            icon: 'custom-icon'
+          }
+        });
+        event.currentTarget.textContent = `₹${unpaidAmount}`;
+        setInputValid(false);
+      }
+    } else {
       Swal.fire({
         html: '<div style="font-size: 15px;">Please enter a valid numeric value for unpaid amount</div>', // Adjust text size as needed
         icon: 'error',
@@ -158,11 +201,11 @@ function pre2DaysDate(dateString) {
       });
       event.currentTarget.textContent = `₹${unpaidAmount}`;
       setInputValid(false);
-     }
-   
+    }
+
   };
-  
-  const handleEditUnpaidValueInput =(e)=>{
+
+  const handleEditUnpaidValueInput = (e) => {
     const entredValue = e.currentTarget.textContent.replace("₹", "").trim();
     const numValue = entredValue.replace(/[^0-9.]/g, '');
     e.currentTarget.textContent = `₹${numValue}`;
@@ -172,242 +215,206 @@ function pre2DaysDate(dateString) {
   }
 
 
-// ishan
-const handleEditIconClick = (event) => {
-  const editableValue = event.currentTarget.closest('.editable-block').querySelector('.editable-value');
-if (editableValue) {
-  editableValue.textContent = '₹';
-  editableValue.contentEditable = true;
-  editableValue.focus();
-} else {
-  console.error("Editable value not found!");
-}
-};
-
-
-// // Naveen ==> Fix of edit tds amount getting empty and cursor at end every time 
-// const handleEditIconClick = (event) => {
-//   const editableValue = event.currentTarget.closest('.editable-block').querySelector('.editable-value');
-//   if (editableValue) {
-//     if (!editableValue.textContent.includes('₹')) {
-//       editableValue.textContent = '₹' + editableValue.textContent.trim(); // Prepend '₹' only if it's not already there
-//     }
-//     editableValue.contentEditable = true;
-//     editableValue.focus();
-    
-//     // Move the cursor to the end of the content
-//     moveCursorToEnd(editableValue);
-//   } else {
-//     console.error("Editable value not found!");
-//   }
-// };
-
-const moveCursorToEnd = (element) => {
-  const range = document.createRange();
-  const selection = window.getSelection();
-  range.selectNodeContents(element);
-  range.collapse(false);  // Move cursor to the end
-  selection.removeAllRanges();
-  selection.addRange(range);
-};
-
-
-
-const handleEditableValueInput = (event) => {  
-// Get the entered value without the rupee sign and any leading/trailing whitespace
-const enteredValue = event.currentTarget.textContent.replace("₹", "").trim();
-
-// Remove any non-numeric characters from the entered value
-const numericValue = enteredValue.replace(/[^0-9.]/g, '');
-
-
-// Update the content of the editable element with the numeric value (with the rupee sign)
-event.currentTarget.textContent = `₹${numericValue}`;
-
-  const editableValue = event.currentTarget;
-  moveCursorToEnd(editableValue);
-
-};
-
-const handleEditableValueBlur = async (event) => {
-
-  // Get the numeric value from the edited content
-  const enteredValue = event.currentTarget.textContent.replace("₹", "").trim();
-  const numericValue = Number(enteredValue);
-
-  // console.log("after blur", numericValue)
-
-  // Check if the numericValue is a valid number
-  if (!isNaN(numericValue)) {
-
-    // console.log("after blurin", numericValue)
-    // console.log("getTdsSlab",getTdsSlab)
-
-    if (numericValue <= getTdsSlab) {
-      // console.log("after blurin 2", numericValue)
-      let userTdsSlab = numericValue;
-      event.currentTarget.textContent = `₹${userTdsSlab}`;
-      setNewTds(userTdsSlab);
-      // console.log("hloo", newTotalAmount, newInput, userTdsSlab, unpaidAmount);
-      // setNewTotalAmount((newCalcAmount ? (newCalcAmount - userTdsSlab) : (unpaidAmount-userTdsSlab)).toFixed(2));
-      // setNewTotalAmount(newInput-userTdsSlab);
-      setNewTotalAmount(newTotalAmount ? (newInput ? (newInput-userTdsSlab) : (unpaidAmount-userTdsSlab)).toFixed(2) : (unpaidAmount-userTdsSlab).toFixed(2))
-      // console.log("newTotalAmount",newTotalAmount)
-      setInputValid(true)
+  // ishan
+  const handleEditIconClick = (event) => {
+    const editableValue = event.currentTarget.closest('.editable-block').querySelector('.editable-value');
+    if (editableValue) {
+      editableValue.textContent = '₹';
+      editableValue.contentEditable = true;
+      editableValue.focus();
     } else {
+      console.error("Editable value not found!");
+    }
+  };
 
+
+  // // Naveen ==> Fix of edit tds amount getting empty and cursor at end every time 
+  // const handleEditIconClick = (event) => {
+  //   const editableValue = event.currentTarget.closest('.editable-block').querySelector('.editable-value');
+  //   if (editableValue) {
+  //     if (!editableValue.textContent.includes('₹')) {
+  //       editableValue.textContent = '₹' + editableValue.textContent.trim(); // Prepend '₹' only if it's not already there
+  //     }
+  //     editableValue.contentEditable = true;
+  //     editableValue.focus();
+
+  //     // Move the cursor to the end of the content
+  //     moveCursorToEnd(editableValue);
+  //   } else {
+  //     console.error("Editable value not found!");
+  //   }
+  // };
+
+  const moveCursorToEnd = (element) => {
+    const range = document.createRange();
+    const selection = window.getSelection();
+    range.selectNodeContents(element);
+    range.collapse(false);  // Move cursor to the end
+    selection.removeAllRanges();
+    selection.addRange(range);
+  };
+
+
+
+  const handleEditableValueInput = (event) => {
+    // Get the entered value without the rupee sign and any leading/trailing whitespace
+    const enteredValue = event.currentTarget.textContent.replace("₹", "").trim();
+
+    // Remove any non-numeric characters from the entered value
+    const numericValue = enteredValue.replace(/[^0-9.]/g, '');
+
+
+    // Update the content of the editable element with the numeric value (with the rupee sign)
+    event.currentTarget.textContent = `₹${numericValue}`;
+
+    const editableValue = event.currentTarget;
+    moveCursorToEnd(editableValue);
+
+  };
+
+  const handleEditableValueBlur = async (event) => {
+
+    // Get the numeric value from the edited content
+    const enteredValue = event.currentTarget.textContent.replace("₹", "").trim();
+    const numericValue = Number(enteredValue);
+
+    // console.log("after blur", numericValue)
+
+    // Check if the numericValue is a valid number
+    if (!isNaN(numericValue)) {
+
+      // console.log("after blurin", numericValue)
+      // console.log("getTdsSlab",getTdsSlab)
+
+      if (numericValue <= getTdsSlab) {
+        // console.log("after blurin 2", numericValue)
+        let userTdsSlab = numericValue;
+        event.currentTarget.textContent = `₹${userTdsSlab}`;
+        setNewTds(userTdsSlab);
+        // console.log("hloo", newTotalAmount, newInput, userTdsSlab, unpaidAmount);
+        // setNewTotalAmount((newCalcAmount ? (newCalcAmount - userTdsSlab) : (unpaidAmount-userTdsSlab)).toFixed(2));
+        // setNewTotalAmount(newInput-userTdsSlab);
+        setNewTotalAmount(newTotalAmount ? (newInput ? (newInput - userTdsSlab) : (unpaidAmount - userTdsSlab)).toFixed(2) : (unpaidAmount - userTdsSlab).toFixed(2))
+        // console.log("newTotalAmount",newTotalAmount)
+        setInputValid(true)
+      } else {
+
+        //  Swal.fire({
+        //    text: "TDS slab value cannot be more than (2%)!",
+        //    icon: 'error',
+        //    confirmButtonText: 'OK',
+        //  });
+        Swal.fire({
+          //  text: "TDS slab value cannot be more than 2%",
+          html: '<div style="font-size: 15px;">TDS slab value cannot be more than 2%</div>', // Adjust text size as needed
+          icon: 'error',
+          iconHtml: '<div style="font-size: 28px; color: red; box-sizing: border-box ;">&#10006;</div>', // Adjust icon size and style as needed
+          width: '29%',
+          confirmButtonText: 'OK',
+          imageHeight: '100%',
+          imageWidth: '20%',
+          iconColor: 'red',
+          iconHeight: '100%',
+          customClass: {
+            icon: 'custom-icon'
+          }
+        });
+        event.currentTarget.textContent = `₹${getTdsSlab}`;
+        setInputValid(false)
+      }
+    } else {
+      // Revert the content back to its original state (without the user's changes)
+      // event.currentTarget.textContent = `₹${getTdsSlab}`;
+      // If the input is not a valid number, show an error message
       //  Swal.fire({
-      //    text: "TDS slab value cannot be more than (2%)!",
+      //    text: "Please enter a valid numeric value for TDS slab!",
       //    icon: 'error',
       //    confirmButtonText: 'OK',
       //  });
       Swal.fire({
-        //  text: "TDS slab value cannot be more than 2%",
-        html: '<div style="font-size: 15px;">TDS slab value cannot be more than 2%</div>', // Adjust text size as needed
+        //  text: "Please enter a valid numeric value for TDS slab!",
+        html: '<div style="font-size: 15px;">Please enter a valid numeric value for TDS slab</div>', // Adjust text size as needed
         icon: 'error',
-        iconHtml: '<div style="font-size: 28px; color: red; box-sizing: border-box ;">&#10006;</div>', // Adjust icon size and style as needed
-        width: '29%',
+        iconHtml: '<div style="font-size: 35px; color: red; box-sizing: border-box ;">&#10006;</div>', // Adjust icon size and style as needed
         confirmButtonText: 'OK',
-        imageHeight: '100%',
-        imageWidth: '20%',
-        iconColor: 'red',
-        iconHeight: '100%',
-        customClass: {
-          icon: 'custom-icon'
-        }
       });
       event.currentTarget.textContent = `₹${getTdsSlab}`;
       setInputValid(false)
     }
-  } else {
-    // Revert the content back to its original state (without the user's changes)
-    // event.currentTarget.textContent = `₹${getTdsSlab}`;
-    // If the input is not a valid number, show an error message
-    //  Swal.fire({
-    //    text: "Please enter a valid numeric value for TDS slab!",
-    //    icon: 'error',
-    //    confirmButtonText: 'OK',
-    //  });
-    Swal.fire({
-      //  text: "Please enter a valid numeric value for TDS slab!",
-      html: '<div style="font-size: 15px;">Please enter a valid numeric value for TDS slab</div>', // Adjust text size as needed
-      icon: 'error',
-      iconHtml: '<div style="font-size: 35px; color: red; box-sizing: border-box ;">&#10006;</div>', // Adjust icon size and style as needed
-      confirmButtonText: 'OK',
-    });
-    event.currentTarget.textContent = `₹${getTdsSlab}`;
-    setInputValid(false)
-  }
-};
+  };
 
 
-// const handleEditableValueBlur = async (event) => {
-    
-//   // Get the numeric value from the edited content
-//   const enteredValue = event.currentTarget.textContent.replace("₹", "").trim();
-//   const numericValue = Number(enteredValue);
+  // const handleEditableValueBlur = async (event) => {
+
+  //   // Get the numeric value from the edited content
+  //   const enteredValue = event.currentTarget.textContent.replace("₹", "").trim();
+  //   const numericValue = Number(enteredValue);
 
 
-//   console.log("after blur",numericValue)
- 
-//    // Check if the numericValue is a valid number
-//    if (!isNaN(numericValue)) {
-     
-//      console.log("after blurin",numericValue)
-    
-//      if (numericValue <= getTdsSlab) {
-//        console.log("after blurin 2",numericValue)
-//        let userTdsSlab = numericValue;
-//        event.currentTarget.textContent = `₹${userTdsSlab}`;
-//        setNewTds(userTdsSlab);
-//        console.log("hloo", userTdsSlab);
-//        setNewTotalAmount((unpaidAmount - userTdsSlab).toFixed(2));
-//        setInputValid(true)
-//      } else {
-       
-//       //  Swal.fire({
-//       //    text: "TDS slab value cannot be more than (2%)!",
-//       //    icon: 'error',
-//       //    confirmButtonText: 'OK',
-//       //  });
-//       Swal.fire({
-//         //  text: "TDS slab value cannot be more than 2%",
-//          html: '<div style="font-size: 15px;">TDS slab value cannot be more than 2%</div>', // Adjust text size as needed
-//          icon: 'error',
-//          iconHtml: '<div style="font-size: 28px; color: red; box-sizing: border-box ;">&#10006;</div>', // Adjust icon size and style as needed
-//          width: '29%',
-//          confirmButtonText: 'OK',
-//          imageHeight : '100%',
-//          imageWidth : '20%',
-//          iconColor : 'red',
-//          iconHeight : '100%',
-//          customClass: {
-//           icon : 'custom-icon'
-//          }
-//        });
-//        event.currentTarget.textContent = `₹${getTdsSlab}`;
-//        setInputValid(false)
-//      }
-//    } else {
-//       // Revert the content back to its original state (without the user's changes)
-//    // event.currentTarget.textContent = `₹${getTdsSlab}`;
-//      // If the input is not a valid number, show an error message
-//     //  Swal.fire({
-//     //    text: "Please enter a valid numeric value for TDS slab!",
-//     //    icon: 'error',
-//     //    confirmButtonText: 'OK',
-//     //  });
-//     Swal.fire({
-//       //  text: "Please enter a valid numeric value for TDS slab!",
-//        html: '<div style="font-size: 15px;">Please enter a valid numeric value for TDS slab</div>', // Adjust text size as needed
-//        icon: 'error',
-//        iconHtml: '<div style="font-size: 35px; color: red; box-sizing: border-box ;">&#10006;</div>', // Adjust icon size and style as needed
-//        confirmButtonText: 'OK',
-//      });
-//      event.currentTarget.textContent = `₹${getTdsSlab}`;
-//      setInputValid(false)
-//    }
-//  };
+  //   console.log("after blur",numericValue)
+
+  //    // Check if the numericValue is a valid number
+  //    if (!isNaN(numericValue)) {
+
+  //      console.log("after blurin",numericValue)
+
+  //      if (numericValue <= getTdsSlab) {
+  //        console.log("after blurin 2",numericValue)
+  //        let userTdsSlab = numericValue;
+  //        event.currentTarget.textContent = `₹${userTdsSlab}`;
+  //        setNewTds(userTdsSlab);
+  //        console.log("hloo", userTdsSlab);
+  //        setNewTotalAmount((unpaidAmount - userTdsSlab).toFixed(2));
+  //        setInputValid(true)
+  //      } else {
+
+  //       //  Swal.fire({
+  //       //    text: "TDS slab value cannot be more than (2%)!",
+  //       //    icon: 'error',
+  //       //    confirmButtonText: 'OK',
+  //       //  });
+  //       Swal.fire({
+  //         //  text: "TDS slab value cannot be more than 2%",
+  //          html: '<div style="font-size: 15px;">TDS slab value cannot be more than 2%</div>', // Adjust text size as needed
+  //          icon: 'error',
+  //          iconHtml: '<div style="font-size: 28px; color: red; box-sizing: border-box ;">&#10006;</div>', // Adjust icon size and style as needed
+  //          width: '29%',
+  //          confirmButtonText: 'OK',
+  //          imageHeight : '100%',
+  //          imageWidth : '20%',
+  //          iconColor : 'red',
+  //          iconHeight : '100%',
+  //          customClass: {
+  //           icon : 'custom-icon'
+  //          }
+  //        });
+  //        event.currentTarget.textContent = `₹${getTdsSlab}`;
+  //        setInputValid(false)
+  //      }
+  //    } else {
+  //       // Revert the content back to its original state (without the user's changes)
+  //    // event.currentTarget.textContent = `₹${getTdsSlab}`;
+  //      // If the input is not a valid number, show an error message
+  //     //  Swal.fire({
+  //     //    text: "Please enter a valid numeric value for TDS slab!",
+  //     //    icon: 'error',
+  //     //    confirmButtonText: 'OK',
+  //     //  });
+  //     Swal.fire({
+  //       //  text: "Please enter a valid numeric value for TDS slab!",
+  //        html: '<div style="font-size: 15px;">Please enter a valid numeric value for TDS slab</div>', // Adjust text size as needed
+  //        icon: 'error',
+  //        iconHtml: '<div style="font-size: 35px; color: red; box-sizing: border-box ;">&#10006;</div>', // Adjust icon size and style as needed
+  //        confirmButtonText: 'OK',
+  //      });
+  //      event.currentTarget.textContent = `₹${getTdsSlab}`;
+  //      setInputValid(false)
+  //    }
+  //  };
 
 
-// end
   // end
- 
- 
-  useEffect(() => {
-    async function CustomerAccountDetail() {
-      try {
-        const url = process.env.REACT_APP_API_URL + '/getCustomerAccountDetail';
-        const data = {
-          serviceGroupId: serviceId
-        };
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data)
-        });
-        const result = await response.json();
-        // ishan
-        // console.log("hlouser",result.data);
-        setEmail(result.data.email);
-        setAccountName(result.data.accountName);
-        setMobileNo(result.data.shipToMobileno);
-        setID(result.data.orgId);
-        setUserName(result.data.accountNo)
-        // end
-       setBillingAddress(result.data.shipToAddress + ", " + result.data.shipToCity + ", " + result.data.shipToState + ", " + result.data.shipToCountry);
-        setPostalCode(result.data.shipToPostalCode);
-      } catch (error) {
-        throw new Error('Failed to retrieve area and location details.');
-      }
-    }
-
-    // Usage  
-    CustomerAccountDetail();
-
-  }, []);
+  // end
 
 
 
@@ -445,27 +452,27 @@ const handleEditableValueBlur = async (event) => {
         setStatutoryData(result2);
         // const serviceID = localStorage.getItem("credentialKey");    
         // Find details in result.data
-        if(result2.meta.Status = true){
-        const tdsSlab = result2.data.find((item) => item.statutoryTypeNo == "12");
-        const tdsSlabAmount = (tdsSlab.value / 100) * unpaidAmount;
-        // console.log("tdsSlab", tdsSlabAmount);
+        if (result2.meta.Status = true) {
+          const tdsSlab = result2.data.find((item) => item.statutoryTypeNo == "12");
+          const tdsSlabAmount = (tdsSlab.value / 100) * unpaidAmount;
+          // console.log("tdsSlab", tdsSlabAmount);
 
-        if (!tdsSlab){
-          setFlag(false)
-          setTdsSlab(tdsSlabAmount.toFixed(2));
-          setTotalAmount((unpaidAmount - tdsSlabAmount).toFixed(2));
-          setafterErrorTa((unpaidAmount - tdsSlabAmount).toFixed(2));
-        }else{
-          setFlag(true)
+          if (!tdsSlab) {
+            setFlag(false)
+            setTdsSlab(tdsSlabAmount.toFixed(2));
+            setTotalAmount((unpaidAmount - tdsSlabAmount).toFixed(2));
+            setafterErrorTa((unpaidAmount - tdsSlabAmount).toFixed(2));
+          } else {
+            setFlag(true)
 
-          setTdsSlab(tdsSlabAmount.toFixed(2));
-          setTotalAmount((unpaidAmount - tdsSlabAmount).toFixed(2));
-          setafterErrorTa((unpaidAmount - tdsSlabAmount).toFixed(2));
-        }
+            setTdsSlab(tdsSlabAmount.toFixed(2));
+            setTotalAmount((unpaidAmount - tdsSlabAmount).toFixed(2));
+            setafterErrorTa((unpaidAmount - tdsSlabAmount).toFixed(2));
+          }
 
-        // setTdsSlab(tdsSlabAmount.toFixed(2));
-        // setTotalAmount((unpaidAmount - tdsSlabAmount).toFixed(2));
-        // setafterErrorTa((unpaidAmount - tdsSlabAmount).toFixed(2));
+          // setTdsSlab(tdsSlabAmount.toFixed(2));
+          // setTotalAmount((unpaidAmount - tdsSlabAmount).toFixed(2));
+          // setafterErrorTa((unpaidAmount - tdsSlabAmount).toFixed(2));
         }
         // getServicePayNow.PlanName
       } catch (error) {
@@ -478,35 +485,35 @@ const handleEditableValueBlur = async (event) => {
 
   }, []);
 
-// ishan
-useEffect(() => {
-  const fetchAccountManagerDetail = async () => {
-    try {
-      const url = process.env.REACT_APP_API_URL + '/getAccManagerDetails';
-      const data = {
-        cANID: serviceId
-      };
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      });
-      const result = await response.json();
-      // ishan
-      // console.log("hloaccountManager", result.data);
-      setAccMgrName(result.data.AccountManagerName);
-      // end
-    } catch (error) {
-      throw new Error('Failed to retrieve data');
-    }
-  };
+  // ishan
+  useEffect(() => {
+    const fetchAccountManagerDetail = async () => {
+      try {
+        const url = process.env.REACT_APP_API_URL + '/getAccManagerDetails';
+        const data = {
+          cANID: serviceId
+        };
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        // ishan
+        // console.log("hloaccountManager", result.data);
+        setAccMgrName(result.data.AccountManagerName);
+        // end
+      } catch (error) {
+        throw new Error('Failed to retrieve data');
+      }
+    };
 
-  fetchAccountManagerDetail(); // Call the function here
+    fetchAccountManagerDetail(); // Call the function here
 
-}, []);
-// end
+  }, []);
+  // end
 
 
 
@@ -519,221 +526,326 @@ useEffect(() => {
     setDevice(user_device_os)
     // console.log('user_device_os', user_device_os);
   }, []);
-//ios app store payment function start for razorpat
+
+
+  useEffect(() => {
+    const fetchIp = async () => {
+      try {
+        const response = await fetch('https://api.ipify.org?format=json');
+        const data = await response.json();
+        // console.log("ip data",data.ip);
+        setIp(data.ip);
+      } catch (error) {
+        console.error('Error fetching the IP address:', error);
+      }
+    };
+
+    fetchIp();
+  }, []);
+
+
+  //ios app store payment function start for razorpat
   function loadScript(src) {
     return new Promise((resolve) => {
-        const script = document.createElement("script");
-        script.src = src;
-        script.onload = () => {
-            resolve(true);
-        };
-        script.onerror = () => {
-            resolve(false);
-        };
-        document.body.appendChild(script);
+      const script = document.createElement("script");
+      script.src = src;
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+      document.body.appendChild(script);
     });
   }
 
 
-// const handlePayNow = async() => {
-//   const url = "https://custappmw.spectra.co/index.php";
+  // const handlePayNow = async() => {
+  //   const url = "https://custappmw.spectra.co/index.php";
 
-//   const apirequest = {
-//     "Action": "createOrder",
-//     "Authkey": "AdgT68HnjC8U5S3TkehEqlkd4",
-//     "custName": accountName,
-//     "amount": newTotalAmount ? newTotalAmount : getTotalAmount ? getTotalAmount : unpaidAmount,
-//     //  "amount" : "50",
-//     "emailId": email,
-//     "mobileNo": mobileNo,
-//     "canId": serviceId,
-//     "requestType": "1"
+  //   const apirequest = {
+  //     "Action": "createOrder",
+  //     "Authkey": "AdgT68HnjC8U5S3TkehEqlkd4",
+  //     "custName": accountName,
+  //     "amount": newTotalAmount ? newTotalAmount : getTotalAmount ? getTotalAmount : unpaidAmount,
+  //     //  "amount" : "50",
+  //     "emailId": email,
+  //     "mobileNo": mobileNo,
+  //     "canId": serviceId,
+  //     "requestType": "1"
 
-//     // "paymentSource": 'spectra_one',
-//     // "unpaid_amount": getTotalAmount? getTotalAmount : unpaidAmount,
-//     // "tds_amount": getTdsSlab ? getTdsSlab : "",
-//     // "tds_checked": getTdsSlab ? "1" : "0",
-//     // "invoiceno": getInvoicePayNowRow.item ? getInvoicePayNowRow.item.invoiceNo : getInvoicePayNowRow.top3Invoice[0].invoiceNo,
-//     // "orgid": id,
-//     // "emailid": email,
-//     // "mobileno": mobileNo
-//   }
+  //     // "paymentSource": 'spectra_one',
+  //     // "unpaid_amount": getTotalAmount? getTotalAmount : unpaidAmount,
+  //     // "tds_amount": getTdsSlab ? getTdsSlab : "",
+  //     // "tds_checked": getTdsSlab ? "1" : "0",
+  //     // "invoiceno": getInvoicePayNowRow.item ? getInvoicePayNowRow.item.invoiceNo : getInvoicePayNowRow.top3Invoice[0].invoiceNo,
+  //     // "orgid": id,
+  //     // "emailid": email,
+  //     // "mobileno": mobileNo
+  //   }
 
-//       const response = await fetch(url, {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify(apirequest)
-//       });
+  //       const response = await fetch(url, {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json'
+  //         },
+  //         body: JSON.stringify(apirequest)
+  //       });
 
-//       const result = await response.json();
-//       console.log("create order result", result);
-// if(result.status == "success"){
- 
-//       const res = await loadScript(
-//         "https://checkout.razorpay.com/v1/checkout.js"
-//     );
-// let convertToPaisa = result.response.paidAmount;
-// let paisa = convertToPaisa * 100;
+  //       const result = await response.json();
+  //       console.log("create order result", result);
+  // if(result.status == "success"){
 
-//  // Define the hide object
-//  let hideOptions = [];
- 
-//  // Conditionally modify the hide object based on the device
-//  if (device === 'iOS') {
-//    // Hide the UPI option for iOS
-//    hideOptions.push({
-//      method: "upi"
-//    });
-//  }
-//     const options = {
-//       key: result.response.keyId, // Enter the Key ID generated from the Dashboard
-//        amount: paisa.toString(),
-//       // amount: "2".toString(),
-//       "currency": "INR",
-//       name: "Spectra",
-//       description: "Spectra Payment",
-//        image: "https://one.spectra.co/favicon.ico",
-//       order_id: result.response.orderId,
-//       handler: async function (response) {
-//           const data = {
-//               orderCreationId: result.response.orderId,
-//               razorpayPaymentId: response.razorpay_payment_id,
-//               razorpayOrderId: response.razorpay_order_id,
-//               razorpaySignature: response.razorpay_signature,
-//           };
-//           console.log("data....data",data);
-//            let paymentUpdateStatus = "https://custappmw.spectra.co/index.php";
-//            let requestData = {
-//             "Action" : "responsePaymentForAutopay",
-//             "Authkey" : "AdgT68HnjC8U5S3TkehEqlkd4",
-//             "orderId" : data.razorpayOrderId,
-//             "paymentId" : `${data.razorpayPaymentId}`
-//             // "paymentSource":'spectra_one'
-//            } 
-           
-//            const apiUpdateStatus =  await fetch(paymentUpdateStatus, {
-//             method: 'POST',
-//             headers: {
-//               'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify(requestData)
-//           });
+  //       const res = await loadScript(
+  //         "https://checkout.razorpay.com/v1/checkout.js"
+  //     );
+  // let convertToPaisa = result.response.paidAmount;
+  // let paisa = convertToPaisa * 100;
 
-//           console.log("apiUpdateStatus",apiUpdateStatus);
-//       },
-//       prefill: {
-//           name: accountName,
-//           email: email,
-//           contact: mobileNo
-//       },
-//       notes: {
-//           address: "spectra Office",
-//       },
-//       theme: {
-//           color: "#282A2A",
-//       },
-//       config: {
-//         display: {
-//           blocks: {
-         
-//           },
-//           hide:hideOptions,
-         
- 
-//           preferences: {
-//             show_default_blocks: true // Should Checkout show its default blocks?
-//           }
-//         }
-//       },
+  //  // Define the hide object
+  //  let hideOptions = [];
 
-      
-//     }
-   
-//     const paymentObject = new window.Razorpay(options);
-//     paymentObject.open();
+  //  // Conditionally modify the hide object based on the device
+  //  if (device === 'iOS') {
+  //    // Hide the UPI option for iOS
+  //    hideOptions.push({
+  //      method: "upi"
+  //    });
+  //  }
+  //     const options = {
+  //       key: result.response.keyId, // Enter the Key ID generated from the Dashboard
+  //        amount: paisa.toString(),
+  //       // amount: "2".toString(),
+  //       "currency": "INR",
+  //       name: "Spectra",
+  //       description: "Spectra Payment",
+  //        image: "https://one.spectra.co/favicon.ico",
+  //       order_id: result.response.orderId,
+  //       handler: async function (response) {
+  //           const data = {
+  //               orderCreationId: result.response.orderId,
+  //               razorpayPaymentId: response.razorpay_payment_id,
+  //               razorpayOrderId: response.razorpay_order_id,
+  //               razorpaySignature: response.razorpay_signature,
+  //           };
+  //           console.log("data....data",data);
+  //            let paymentUpdateStatus = "https://custappmw.spectra.co/index.php";
+  //            let requestData = {
+  //             "Action" : "responsePaymentForAutopay",
+  //             "Authkey" : "AdgT68HnjC8U5S3TkehEqlkd4",
+  //             "orderId" : data.razorpayOrderId,
+  //             "paymentId" : `${data.razorpayPaymentId}`
+  //             // "paymentSource":'spectra_one'
+  //            } 
 
-//   };
-  
+  //            const apiUpdateStatus =  await fetch(paymentUpdateStatus, {
+  //             method: 'POST',
+  //             headers: {
+  //               'Content-Type': 'application/json'
+  //             },
+  //             body: JSON.stringify(requestData)
+  //           });
 
-// }
+  //           console.log("apiUpdateStatus",apiUpdateStatus);
+  //       },
+  //       prefill: {
+  //           name: accountName,
+  //           email: email,
+  //           contact: mobileNo
+  //       },
+  //       notes: {
+  //           address: "spectra Office",
+  //       },
+  //       theme: {
+  //           color: "#282A2A",
+  //       },
+  //       config: {
+  //         display: {
+  //           blocks: {
 
-//end ios app store payment function  for razorpat
-  
+  //           },
+  //           hide:hideOptions,
 
-const handlePayNow = () => {
+
+  //           preferences: {
+  //             show_default_blocks: true // Should Checkout show its default blocks?
+  //           }
+  //         }
+  //       },
+
+
+  //     }
+
+  //     const paymentObject = new window.Razorpay(options);
+  //     paymentObject.open();
+
+  //   };
+
+
+  // }
+
+  //end ios app store payment function  for razorpat
+
+  // console.log(accountName, "  ", email, "  ", mobileNo);
+  const handlePayNow_previous = async () => {
+    const CustAcctDetail = await CustomerAccountDetail();
+    const getMail = CustAcctDetail.email ?? CustAcctDetail.shipToEmail;
+    const getName = CustAcctDetail.accountName ?? CustAcctDetail.orgName;
+    const getMobile = CustAcctDetail.shipToMobileno ?? CustAcctDetail.shipToPhone;
+    const getOrgNo = CustAcctDetail.orgId;
+    const getUserName = CustAcctDetail.accountNo;
+    // console.log(getName, "  ", getMail, "  ", getMobile,  "  ", getOrgNo,  "  ", getUserName);
+
     setIsPayNowClicked(true);
-  
-  // Wrap the code in a setTimeout function to delay its execution
-  setTimeout(() => {
-    //   // Get the form element
-    const form = document.getElementById('transactionForm');
-  
+
+    // Wrap the code in a setTimeout function to delay its execution
+    setTimeout(async () => {
+      //   // Get the form element
+      const form = document.getElementById('transactionForm');
+      // console.log(form);
+
+
       // Generate the $session value
       const session = "SCP-" + new Date().toISOString().replace(/[-:.]/g, "");
-   
-    // Set the values of the input fields
-    form.elements.uid.value = 'spectraone';
-    form.elements.session.value = session;
-    form.elements.passcode.value = 'S%fdM123S#$';
-    form.elements.amount.value = newTotalAmount ? newTotalAmount :getTotalAmount? getTotalAmount : unpaidAmount;
-    form.elements.csubtype.value = 'Web';
-    form.elements.ctype.value  = '1';
-    form.elements.source.value = '2';
-    form.elements.unpaid_amount.value = getTotalAmount? getTotalAmount : unpaidAmount ;
-     // dynamic changes for check ishan
-    form.elements.tds_amount.value = getTdsSlab ? getTdsSlab : "";
-     // dynamic changes for check ishan
-    form.elements.tds_checked.value = getTdsSlab ? "1" : "0";
-    // dynamic changes for check ishan
-    form.elements.invoice_amount.value = getTotalAmount? getTotalAmount : unpaidAmount ;  
-    form.elements.invoiceno.value = getInvoicePayNowRow.item ? getInvoicePayNowRow.item.invoiceNo : getInvoicePayNowRow.top3Invoice[0].invoiceNo;
-     // dynamic changes for check ishan
-    form.elements.accmgr.value  = accMgrName;
-    form.elements.accno.value   = getInvoicePayNowRow.CanId;
-     // dynamic changes for check ishan
-    form.elements.accname.value = accountName;
-    form.elements.emailid.value = email;
-    form.elements.mobileno.value = mobileNo;
-    form.elements.orgid.value = id;
-    form.elements.username.value = userName;
-    form.elements.returnurl.value = 'https://one.spectra.co/accountdetails';
-   
-    // Submit the form
-     form.submit();
+
+      // Set the values of the input fields
+      form.elements.uid.value = 'spectraone';
+      form.elements.session.value = session;
+      form.elements.passcode.value = 'S%fdM123S#$';
+      form.elements.amount.value = newTotalAmount ? newTotalAmount : getTotalAmount ? getTotalAmount : unpaidAmount;
+      form.elements.csubtype.value = 'Web';
+      form.elements.ctype.value = '1';
+      form.elements.source.value = '2';
+      form.elements.unpaid_amount.value = getTotalAmount ? getTotalAmount : unpaidAmount;
+      // dynamic changes for check ishan
+      form.elements.tds_amount.value = getTdsSlab ? getTdsSlab : "";
+      // dynamic changes for check ishan
+      form.elements.tds_checked.value = getTdsSlab ? "1" : "0";
+      // dynamic changes for check ishan
+      form.elements.invoice_amount.value = getTotalAmount ? getTotalAmount : unpaidAmount;
+      form.elements.invoiceno.value = getInvoicePayNowRow.item ? getInvoicePayNowRow.item.invoiceNo : getInvoicePayNowRow.top3Invoice[0].invoiceNo;
+      // dynamic changes for check ishan
+      form.elements.accmgr.value = accMgrName;
+      form.elements.accno.value = getInvoicePayNowRow.CanId;
+      // dynamic changes for check ishan
+      form.elements.accname.value = accountName ?? getName;
+      form.elements.emailid.value = email ?? getMail;
+      form.elements.mobileno.value = mobileNo ?? getMobile;
+      form.elements.orgid.value = id ?? getOrgNo;
+      form.elements.username.value = userName ?? getUserName;
+      form.elements.returnurl.value = 'https://one.spectra.co/accountdetails?pid=bill';
+
+      // Submit the form
+      form.submit();
 
 
-     
-    
-       // Log the hidden code values
-      //  console.log('Hidden Code Values:');
-         // Log the returnurl value
-    // console.log('returnurl:', 'https://one.spectra.co/accountdetails');
-    //    console.log('uid:','spectraone');
-    //    console.log('passcode:', 'S%fdM123');
-    //    console.log('amount:', newTotalAmount ? newTotalAmount :getTotalAmount? getTotalAmount : unpaidAmount);
-    //    console.log('returnurl:','https://one.spectra.co/accountdetails' );
-    //    console.log('unpaid_amount:',getTotalAmount? getTotalAmount : unpaidAmount );
-    //    console.log('getTdsSlab',getTdsSlab ? getTdsSlab : "");
-    //    console.log('tds_checked:',getTdsSlab ? "1" : "0" );
-    //    console.log('invoice_amount:',newTotalAmount ? newTotalAmount :getTotalAmount? getTotalAmount : unpaidAmount );
-    //    console.log('ctype:','1' );
-    //    console.log('source:','2' );
-    //    console.log('csubtype:','Web' );
-    //    console.log('invoiceno:',getInvoicePayNowRow.item ? getInvoicePayNowRow.item.invoiceNo : getInvoicePayNowRow.top3Invoice[0].invoiceNo );
-    //    console.log('accmgr:',accMgrName );
-    //    console.log('accno:', getInvoicePayNowRow.CanId);
-    //    console.log('accname:',accountName);
-    //     console.log('emailid:',email );
-    //     console.log('mobileno:',mobileNo );
-    //     console.log('orgid:',id);
-    //     console.log('username:',userName );
-    //     console.log("form",form)
-  
-       // Add other hidden code values here
+      try {
+        const formDataObject = {};
+        Array.from(form.elements).forEach(element => {
+          if (element.name) { // Check if the element has a name attribute
+            formDataObject[element.name] = element.value;
+          }
+        });
+        const updatedFormDataObject = { IP: ip, ...formDataObject };
+        // console.log('Form Data Object:', updatedFormDataObject);
+        let res = await FunctionModule.logger(JSON.stringify(updatedFormDataObject))
+
+      } catch (e) {
+        console.error(e);
+      }
+
     }, 0)
   };
+
+
+  const handlePayNow = async () => {
+    try {
+      const CustAcctDetail = await CustomerAccountDetail();
+      const getMail = CustAcctDetail.email ?? CustAcctDetail.shipToEmail;
+      const getName = CustAcctDetail.accountName ?? CustAcctDetail.orgName;
+      const getMobile = CustAcctDetail.shipToMobileno ?? CustAcctDetail.shipToPhone;
+      const getOrgNo = CustAcctDetail.orgId;
+      const getUserName = CustAcctDetail.accountNo;
+      // console.log(getName, "  ", getMail, "  ", getMobile,  "  ", getOrgNo,  "  ", getUserName);
+
+      setIsPayNowClicked(true);
+
+      // Wrap the code in a setTimeout function to delay its execution
+      setTimeout(async () => {
+        //   // Get the form element
+        const form = document.getElementById('transactionForm');
+        // console.log(form);
+
+        // Generate the $session value
+        const session = "SCP-" + new Date().toISOString().replace(/[-:.]/g, "");
+
+        // Set the values of the input fields
+        form.elements.uid.value = 'spectraone';
+        form.elements.session.value = session;
+        form.elements.passcode.value = 'S%fdM123S#$';
+        form.elements.amount.value = newTotalAmount ? newTotalAmount : getTotalAmount ? getTotalAmount : unpaidAmount;
+        form.elements.csubtype.value = 'Web';
+        form.elements.ctype.value = '1';
+        form.elements.source.value = '2';
+        form.elements.unpaid_amount.value = getTotalAmount ? getTotalAmount : unpaidAmount;
+        // dynamic changes for check ishan
+        form.elements.tds_amount.value = getTdsSlab ? getTdsSlab : "";
+        // dynamic changes for check ishan
+        form.elements.tds_checked.value = getTdsSlab ? "1" : "0";
+        // dynamic changes for check ishan
+        form.elements.invoice_amount.value = getTotalAmount ? getTotalAmount : unpaidAmount;
+        form.elements.invoiceno.value = getInvoicePayNowRow.item ? getInvoicePayNowRow.item.invoiceNo : getInvoicePayNowRow.top3Invoice[0].invoiceNo;
+        // dynamic changes for check ishan
+        form.elements.accmgr.value = accMgrName;
+        form.elements.accno.value = getInvoicePayNowRow.CanId || null;
+        // dynamic changes for check ishan
+        form.elements.accname.value = accountName || getName || null;
+        form.elements.emailid.value = email || getMail || null;
+        form.elements.mobileno.value = mobileNo || getMobile || null;
+        form.elements.orgid.value = id || getOrgNo || null;
+        form.elements.username.value = userName || getUserName || null;
+        form.elements.returnurl.value = 'https://one.spectra.co/accountdetails?pid=bill';
+
+        // Validation: Check required fields
+        if (!form.elements.accno.value || !form.elements.accname.value || !form.elements.orgid.value || !form.elements.username.value || !form.elements.emailid.value || !form.elements.mobileno.value) {
+          setTimeout(() => {
+            Swal.fire({
+              html: '<div style="font-size: 15px;">Failed to Load Payment Data. Please Retry.</div>',
+              width: '29%',
+              timer: 3000, // Display time in milliseconds
+              showConfirmButton: false
+            }).then(() => {
+              window.location.reload(); // Reloads the current page
+            });
+          }, 500);
+
+        } else {
+          // Submit the form
+          form.submit();
+
+
+          const formDataObject = {};
+          Array.from(form.elements).forEach(element => {
+            if (element.name) { // Check if the element has a name attribute
+              formDataObject[element.name] = element.value || "";
+            }
+          });
+          const updatedFormDataObject = { IP: ip || "", ...formDataObject };
+          // console.log('Form Data Object:', updatedFormDataObject);
+          let res = await FunctionModule.logger(JSON.stringify(updatedFormDataObject))
+        }
+      }, 0)
+
+    } catch (err) {
+      console.error(err);
+      try {
+        const errorLogMsg = { IP: ip || "", accno: getInvoicePayNowRow.CanId, error: err.message };
+        let res = await FunctionModule.logger(JSON.stringify(errorLogMsg))
+      } catch (e) { console.error(e); }
+    }
+  };
+
+
 
   return (
     <>
@@ -765,8 +877,8 @@ const handlePayNow = () => {
                 <div class="p-0 py-2 p-md-4">
                   <div class="admin-panel-dataType">Invoice Period</div>
                   <div class="admin-panel-dataValue">
-                  {getInvoicePayNowRow.item? formatDate(getInvoicePayNowRow.item.startdt) + " - " + formatDate(getInvoicePayNowRow.item.enddt) 
-                    : formatDate(getInvoicePayNowRow.top3Invoice[0].startdt) + " - " + formatDate(getInvoicePayNowRow.top3Invoice[0].enddt)}</div>
+                    {getInvoicePayNowRow.item ? formatDate(getInvoicePayNowRow.item.startdt) + " - " + formatDate(getInvoicePayNowRow.item.enddt)
+                      : formatDate(getInvoicePayNowRow.top3Invoice[0].startdt) + " - " + formatDate(getInvoicePayNowRow.top3Invoice[0].enddt)}</div>
                 </div>
               </div>
               <div class="col-lg-4 col-md-6 col-sm-12 px-0 px-md-auto">
@@ -779,7 +891,7 @@ const handlePayNow = () => {
                 <div class="p-0 py-2 p-md-4">
                   <div class="admin-panel-dataType">Due Date</div>
                   <div class="admin-panel-dataValue">
-                  {getInvoicePayNowRow.item ? getInvoicePayNowRow.SegmentName === "HBB"? pre2DaysDate(getInvoicePayNowRow.item.duedt) : pre7DaysDate(getInvoicePayNowRow.item.duedt) : getInvoicePayNowRow.SegmentName === "HBB"? pre2DaysDate(getInvoicePayNowRow.top3Invoice[0].duedt) : pre7DaysDate(getInvoicePayNowRow.top3Invoice[0].duedt)}
+                    {getInvoicePayNowRow.item ? getInvoicePayNowRow.SegmentName === "HBB" ? pre2DaysDate(getInvoicePayNowRow.item.duedt) : pre7DaysDate(getInvoicePayNowRow.item.duedt) : getInvoicePayNowRow.SegmentName === "HBB" ? pre2DaysDate(getInvoicePayNowRow.top3Invoice[0].duedt) : pre7DaysDate(getInvoicePayNowRow.top3Invoice[0].duedt)}
                     {/* {new Date(new Date(getInvoicePayNowRow.top3Invoice[0].duedt).setDate(new Date(getInvoicePayNowRow.top3Invoice[0].duedt).getDate() - 7)).toISOString().substring(0, 10)} */}
                   </div>
                 </div>
@@ -825,14 +937,14 @@ const handlePayNow = () => {
 
               </div>
               <img
-                      src={edit}
-                      alt=""
-                      className="editInputIcon_pay"
-                      onClick={handleUnpaidEditIconClick}
-                      // style={{ width: "12px" , verticalAlign: "initial",marginLeft:"5px",cursor:"pointer"}}
-                    />
+                src={edit}
+                alt=""
+                className="editInputIcon_pay"
+                onClick={handleUnpaidEditIconClick}
+              // style={{ width: "12px" , verticalAlign: "initial",marginLeft:"5px",cursor:"pointer"}}
+              />
             </div>
-                    
+
 
 
             {/* {getTdsSlab &&
@@ -844,22 +956,22 @@ const handlePayNow = () => {
             } */}
 
             {/* ishan code for tds editable */}
-            {getTdsSlab &&  <div class="pay-grand-amount d-flex align-items-center justify-content-between flex-wrap pb-3 px-5 editable-block">
-  <div class="amount-type">TDS to be deducted (2%) </div>
-  
- <div class="amount-value-2 info-content editable-value" id="tdsSlabValue"   onInput={handleEditableValueInput} onBlur={handleEditableValueBlur}>
-  ₹{getTdsSlab}  
+            {getTdsSlab && <div class="pay-grand-amount d-flex align-items-center justify-content-between flex-wrap pb-3 px-5 editable-block">
+              <div class="amount-type">TDS to be deducted (2%) </div>
 
-  </div>
-  
-  <img
-      src={edit}
-      alt=""
-      className="editInputIcon_pay"
-      onClick={handleEditIconClick}
-     
-    />
-</div>}
+              <div class="amount-value-2 info-content editable-value" id="tdsSlabValue" onInput={handleEditableValueInput} onBlur={handleEditableValueBlur}>
+                ₹{getTdsSlab}
+
+              </div>
+
+              <img
+                src={edit}
+                alt=""
+                className="editInputIcon_pay"
+                onClick={handleEditIconClick}
+
+              />
+            </div>}
 
 
 
@@ -867,43 +979,43 @@ const handlePayNow = () => {
 
             <div class="pay-grand-amount d-flex align-items-center justify-content-between flex-wrap pt-3 px-5">
               {/* <div class="amount-total">Total : ₹{newTotalAmount ? newTotalAmount :getTotalAmount? getTotalAmount : unpaidAmount}</div> */}
-              {inputValid ? (<div class="amount-total">Total : ₹{newTotalAmount ? newTotalAmount :getTotalAmount? getTotalAmount : unpaidAmount}</div>)
+              {inputValid ? (<div class="amount-total">Total : ₹{newTotalAmount ? newTotalAmount : getTotalAmount ? getTotalAmount : unpaidAmount}</div>)
                 : (
                   <div class="amount-total">
                     {/* <div>Test : ₹ {"newTotalAmount" + getTotalAmount}</div> */}
-                    Total : ₹ {newTotalAmount ? newTotalAmount :getTotalAmount? getTotalAmount : unpaidAmount ? unpaidAmount : afterErrorTa}
+                    Total : ₹ {newTotalAmount ? newTotalAmount : getTotalAmount ? getTotalAmount : unpaidAmount ? unpaidAmount : afterErrorTa}
                   </div>
 
-            //       <>
-            //         <div className="amount-total info-content editable-value">
-            //         <input
-            //             type="text"
-            //             value={"9879"}
-            //             onChange={"handleInputChange"}
-            //             onBlur={"handleBlur"}
-            //             autoFocus
-            //         />
+                  //       <>
+                  //         <div className="amount-total info-content editable-value">
+                  //         <input
+                  //             type="text"
+                  //             value={"9879"}
+                  //             onChange={"handleInputChange"}
+                  //             onBlur={"handleBlur"}
+                  //             autoFocus
+                  //         />
 
-            // </div>
-            // <img
-            //     src={edit}
-            //     alt="Edit"
-            //     className="editInputIcon_pay"
-            //     onClick={"handleEditIconClick"}
-            //     style={{ cursor: 'pointer', marginLeft: '10px' }} // Add space between the text and icon
-            // />
+                  // </div>
+                  // <img
+                  //     src={edit}
+                  //     alt="Edit"
+                  //     className="editInputIcon_pay"
+                  //     onClick={"handleEditIconClick"}
+                  //     style={{ cursor: 'pointer', marginLeft: '10px' }} // Add space between the text and icon
+                  // />
 
-            //       </>
+                  //       </>
                 )}
               <div class="d-flex">
                 <div class="admin-back-btn d-none d-sm-flex align-items-center justify-content-center gap-2"
                   onClick={goBackToTransactions}>
                   <img src={adminbackarrow} alt="" />Back
                 </div>
-               {/* <!-- Transparent spacer --> */}
+                {/* <!-- Transparent spacer --> */}
 
-               <div class="spacer"></div>
-               {/* {(newTotalAmount ? newTotalAmount :getTotalAmount? getTotalAmount : unpaidAmount ? unpaidAmount : afterErrorTa) <= 0 ?
+                <div class="spacer"></div>
+                {/* {(newTotalAmount ? newTotalAmount :getTotalAmount? getTotalAmount : unpaidAmount ? unpaidAmount : afterErrorTa) <= 0 ?
                 <div class="totalAmount-pay-btn" style={{backgroundColor: "gray"}}>PAY NOW</div>:
 
                 <div class="totalAmount-pay-btn" onClick={handlePayNow}>PAY NOW</div>
@@ -913,6 +1025,7 @@ const handlePayNow = () => {
                 {isPayNowClicked && (
                   <form
                     action="https://epay.spectra.co/onlinepayment/getpayment_spectraone.php"
+                    // action="http://localhost/test/paydataS1.php"
                     method="POST"
                     name="TransactionForm"
                     id="transactionForm"
@@ -921,11 +1034,11 @@ const handlePayNow = () => {
                     <input type="hidden" name="passcode" value="S%fdM123S#$" />
                     <input type="hidden" name="session" value="" />
                     <input type="hidden" name="returnurl" value="" />
-                    <input type="hidden" name="unpaid_amount" value={getTotalAmount? getTotalAmount : unpaidAmount} />
+                    <input type="hidden" name="unpaid_amount" value={getTotalAmount ? getTotalAmount : unpaidAmount} />
                     <input type="hidden" name="tds_amount" value={getTdsSlab ? getTdsSlab : ""} />
                     <input type="hidden" name="tds_checked" value={getTdsSlab ? "1" : "0"} />
-                    <input type="hidden" name="invoice_amount" value={newTotalAmount ? newTotalAmount :getTotalAmount? getTotalAmount : unpaidAmount} />
-                    <input type="hidden" name="amount" value={ getTotalAmount? getTotalAmount : unpaidAmount} />
+                    <input type="hidden" name="invoice_amount" value={newTotalAmount ? newTotalAmount : getTotalAmount ? getTotalAmount : unpaidAmount} />
+                    <input type="hidden" name="amount" value={getTotalAmount ? getTotalAmount : unpaidAmount} />
                     <input type="hidden" name="source" value="2" />
                     <input type="hidden" name="ctype" value="1" />
                     <input type="hidden" name="csubtype" value="Web" />
@@ -935,10 +1048,8 @@ const handlePayNow = () => {
                     <input type="hidden" name="accname" value={accountName} />
                     <input type="hidden" name="emailid" value={email} />
                     <input type="hidden" name="mobileno" value={mobileNo} />
-               
                     <input type="hidden" name="orgid" value={id} />
                     <input type="hidden" name="username" value={userName} />
-
                   </form>
                 )}
 

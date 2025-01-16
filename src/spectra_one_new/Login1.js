@@ -483,7 +483,7 @@ export default function Login({ setAivisCheck }) {
             "ip": ip,
             "user_device_os": deviceDetect().osName ? deviceDetect().osName : deviceDetect().os
         });
-        console.log("response1", response);
+        // console.log("response1", response);
         // If User not exist in Spectra DB
         if(response.meta.code == 404 || response.meta.code == 403) {
             // console.log("qwertyu");

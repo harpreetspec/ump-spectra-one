@@ -1166,7 +1166,7 @@ if (pageid == 'raiseNewSR') {
                     <button className={actTabAcc} id="pills-srStatus-tab" data-bs-toggle="pill" data-bs-target="#pills-srStatus" type="button" role="tab" aria-controls="pills-srStatus" aria-selected="true">SR Status</button>
                   </li>
                   <li className="nav-item" role="presentation">
-                    <button className={actTabBill} id="pills-raiseNewSR-tab" data-bs-toggle="pill" data-bs-target="#pills-raiseNewSR" type="button" role="tab" aria-controls="pills-raiseNewSR" aria-selected="false">Raise a SR</button>
+                    <button className={actTabBill} id="pills-raiseNewSR-tab" data-bs-toggle="pill" data-bs-target="#pills-raiseNewSR" type="button" role="tab" aria-controls="pills-raiseNewSR" aria-selected="false">Raise SR</button>
                   </li>
                 </ul>
                 <div className="tab-content" id="pills-tabContent">
@@ -2403,7 +2403,7 @@ if (pageid == 'raiseNewSR') {
                     <button className={actTabAcc} id="pills-srStatus-tab" data-bs-toggle="pill" data-bs-target="#pills-srStatus" type="button" role="tab" aria-controls="pills-srStatus" aria-selected="true">SR Status</button>
                   </li>
                   <li className="nav-item" role="presentation">
-                    <button className={actTabBill} id="pills-raiseNewSR-tab" data-bs-toggle="pill" data-bs-target="#pills-raiseNewSR" type="button" role="tab" aria-controls="pills-raiseNewSR" aria-selected="false">Raise a SR</button>
+                    <button className={actTabBill} id="pills-raiseNewSR-tab" data-bs-toggle="pill" data-bs-target="#pills-raiseNewSR" type="button" role="tab" aria-controls="pills-raiseNewSR" aria-selected="false">Raise SR</button>
                   </li>
                 </ul>
                 <div className="tab-content" id="pills-tabContent">

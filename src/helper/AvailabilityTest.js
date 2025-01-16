@@ -25,6 +25,8 @@ const YourComponent = ({networkParms}) => {
   const getCurrentMonth = () => {
     const now = new Date();
     const month = now.toLocaleString('default', { month: 'long' });
+    // console.log("month: ", month);
+    
     return month;
   };
 
@@ -40,7 +42,10 @@ const YourComponent = ({networkParms}) => {
     return lastThreeMonths;
   };
  
-  const months = [getCurrentMonth(),...getLastThreeMonths()];
+  const months = [...new Set([getCurrentMonth(),...getLastThreeMonths()])];
+  // const months = getLastThreeMonths();
+  // console.log("months", months);
+  
 
   const handleCalenderChange = (e) => {
     setChartData("");

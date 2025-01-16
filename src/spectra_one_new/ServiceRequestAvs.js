@@ -351,6 +351,7 @@ export default function AccountDetails() {
                 SubSubTypeId: "SST_15071",
                 CaseCategoryId: "2",
                 CaseCategory: "Complaint",
+                Owner:"Agrex Team",
                 value: "A1"          
               },
               { 
@@ -362,6 +363,7 @@ export default function AccountDetails() {
                 SubSubTypeId: "SST_15080",
                 CaseCategoryId: "2",
                 CaseCategory: "Complaint",
+                Owner:"Spectra AI.VIS Team",
                 value: "A3"
               },
               { 
@@ -373,6 +375,7 @@ export default function AccountDetails() {
                 SubSubTypeId: "SST_15083",
                 CaseCategoryId: "3",
                 CaseCategory: "Request",
+                Owner:"Spectra AI.VIS Team",
                 value: "A2" 
               }              
             ]
@@ -390,6 +393,7 @@ export default function AccountDetails() {
                 SubSubTypeId: "SST_15071",
                 CaseCategoryId: "2",
                 CaseCategory: "Complaint",
+                Owner:"Agrex Team",
                 value: "B1"          
               },
               { 
@@ -401,6 +405,7 @@ export default function AccountDetails() {
                 SubSubTypeId: "SST_15072",
                 CaseCategoryId: "2",
                 CaseCategory: "Complaint",
+                Owner:"Agrex Team",
                 value: "B2"
               }             
             ]
@@ -418,6 +423,7 @@ export default function AccountDetails() {
                 SubSubTypeId: "SST_15073",
                 CaseCategoryId: "2",
                 CaseCategory: "Complaint",
+                Owner:"Agrex Team",
                 value: "C1"          
               },
               { 
@@ -429,6 +435,7 @@ export default function AccountDetails() {
                 SubSubTypeId: "SST_15074",
                 CaseCategoryId: "2",
                 CaseCategory: "Complaint",
+                Owner:"Agrex Team",
                 value: "C2"
               },            
               { 
@@ -440,6 +447,7 @@ export default function AccountDetails() {
                 SubSubTypeId: "SST_15075",
                 CaseCategoryId: "2",
                 CaseCategory: "Complaint",
+                Owner:"Agrex Team",
                 value: "C3"
               },            
               { 
@@ -451,6 +459,7 @@ export default function AccountDetails() {
                 SubSubTypeId: "SST_15076",
                 CaseCategoryId: "2",
                 CaseCategory: "Complaint",
+                Owner:"Agrex Team",
                 value: "C4"
               }             
             ]
@@ -468,6 +477,7 @@ export default function AccountDetails() {
                 SubSubTypeId: "SST_15078",
                 CaseCategoryId: "2",
                 CaseCategory: "Complaint",
+                Owner:"Spectra AI.VIS Team",
                 value: "D1"          
               },
               { 
@@ -479,6 +489,7 @@ export default function AccountDetails() {
                 SubSubTypeId: "SST_15079",
                 CaseCategoryId: "2",
                 CaseCategory: "Complaint",
+                Owner:"Spectra AI.VIS Team",
                 value: "D2"
               }            
             ]
@@ -495,6 +506,7 @@ export default function AccountDetails() {
                 SubSubTypeId: "SST_15077",
                 CaseCategoryId: "2",
                 CaseCategory: "Complaint",
+                Owner:"Agrex Team",
                 value: "E1"          
               },           
             ]
@@ -511,6 +523,7 @@ export default function AccountDetails() {
                 SubSubTypeId: "SST_15081",
                 CaseCategoryId: "2",
                 CaseCategory: "Complaint",
+                Owner:"Spectra AI.VIS Team",
                 value: "F1"          
               },           
             ]
@@ -527,6 +540,7 @@ export default function AccountDetails() {
                 SubSubTypeId: "SST_15082",
                 CaseCategoryId: "3",
                 CaseCategory: "Request",
+                Owner:"Spectra AI.VIS Team",
                 value: "G1"          
               },           
             ]
@@ -544,6 +558,7 @@ export default function AccountDetails() {
                 SubSubTypeId: "SST_15086",
                 CaseCategoryId: "3",
                 CaseCategory: "Enhancement",
+                Owner:"Spectra AI.VIS Team",
                 value: "H1"          
               },
               { 
@@ -555,6 +570,7 @@ export default function AccountDetails() {
                 SubSubTypeId: "SST_15084",
                 CaseCategoryId: "3",
                 CaseCategory: "Enhancement",
+                Owner:"Spectra AI.VIS Team",
                 value: "H2"
               },           
               { 
@@ -566,6 +582,7 @@ export default function AccountDetails() {
                 SubSubTypeId: "SST_15085",
                 CaseCategoryId: "3",
                 CaseCategory: "Enhancement",
+                Owner:"Spectra AI.VIS Team",
                 value: "H3"
               }            
             ]
@@ -1005,7 +1022,7 @@ const handleIssueClick = (item) => {
              icon: "success",
              confirmButtonText: 'OK',
            });
-         }else if(createSR_result?.meta.code == "500"){
+         }else if(createSR_result?.meta.code == "500" && (createSR_result.data.Message).includes("Case is already Exists")){
           setIsLoading(false); 
           let srNo = (createSR_result.data.Message).split(": ")[1];
            Swal.fire({
@@ -1679,7 +1696,7 @@ if (pageid == 'raiseNewSR') {
               <button className={actTabAcc} id="pills-srStatus-tab" data-bs-toggle="pill" data-bs-target="#pills-srStatus" type="button" role="tab" aria-controls="pills-srStatus" aria-selected="true">SR Status</button>
             </li>
             <li className="nav-item" role="presentation">
-              <button className={actTabBill} id="pills-raiseNewSR-tab" data-bs-toggle="pill" data-bs-target="#pills-raiseNewSR" type="button" role="tab" aria-controls="pills-raiseNewSR" aria-selected="false">Raise a SR</button>
+              <button className={actTabBill} id="pills-raiseNewSR-tab" data-bs-toggle="pill" data-bs-target="#pills-raiseNewSR" type="button" role="tab" aria-controls="pills-raiseNewSR" aria-selected="false">Raise SR</button>
             </li>
           </ul>
           <div className="tab-content" id="pills-tabContent">
@@ -2771,7 +2788,7 @@ if (pageid == 'raiseNewSR') {
               <button className={actTabAcc} id="pills-srStatus-tab" data-bs-toggle="pill" data-bs-target="#pills-srStatus" type="button" role="tab" aria-controls="pills-srStatus" aria-selected="true">SR Status</button>
             </li>
             <li className="nav-item" role="presentation">
-              <button className={actTabBill} id="pills-raiseNewSR-tab" data-bs-toggle="pill" data-bs-target="#pills-raiseNewSR" type="button" role="tab" aria-controls="pills-raiseNewSR" aria-selected="false">Raise a SR</button>
+              <button className={actTabBill} id="pills-raiseNewSR-tab" data-bs-toggle="pill" data-bs-target="#pills-raiseNewSR" type="button" role="tab" aria-controls="pills-raiseNewSR" aria-selected="false">Raise SR</button>
             </li>
           </ul>
           <div className="tab-content" id="pills-tabContent">

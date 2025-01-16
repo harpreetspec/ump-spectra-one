@@ -10,6 +10,7 @@ const NetworkUsage = ({ networkParms }) => {
   const [getPinnedMRTGraph, setPinnedMRTGraph] = useState(null);
   const [estimatedSizeBytes, setEstimatedSizeBytes] = useState()
   const [getBandWidth, setBandWidth] = useState();
+  const [getDatalimit, setDatalimit] = useState();
   const [showUtilization, setShowUtilization] = useState();
   const segmentCheckHBB = localStorage.getItem('segmentCheckHBB')
   const locationID = localStorage.getItem('crm_location_id');
@@ -44,6 +45,7 @@ const NetworkUsage = ({ networkParms }) => {
     }
     // console.log("Current Sgment after", filteredData[0].Bandwidth);
     setBandWidth(filteredData[0].Bandwidth)
+    setDatalimit(filteredData[0].Datalimit)
     getMRTGBandwidthUtilization(service_id, filteredData[0].SegmentName, filteredData[0].Bandwidth);
     // setSegmnt(filteredData[0].SegmentName)
   }
@@ -96,6 +98,8 @@ const NetworkUsage = ({ networkParms }) => {
         "ProductSegment": productSegment,
         "dateType": dateType
       };
+      // console.log("getMRTGraph: ",data);
+      
       var response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -173,6 +177,8 @@ const NetworkUsage = ({ networkParms }) => {
       "ProductSegment": productSegment,
       "dateType": dateType
     };
+    // console.log("pinnedMRTGraph", data);
+    
     var response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -276,12 +282,12 @@ Date: ${apiFailureDetails.Date}`;
           {getPinnedMRTGraph == null && (estimatedSizeBytes > 100 ?
             <p className='data-exeed-msg' style={{ marginLeft: "15px"}}>
               <span style={{ backgroundColor: "red" }}>
-                {showUtilization > 80 ? "Your bandwidth utilization has exceeded 80% which might lead to connectivity issues please address promptly" : ""}
+                {getDatalimit !== "Unlimited" && showUtilization > 80 ? "Your bandwidth utilization has exceeded 80% which might lead to connectivity issues please address promptly" : ""}
               </span>
             </p> : "")
           }
           {getPinnedMRTGraph !== null && (showUtilization != NaN ?
-            <p> {showUtilization > 80 ? "Your bandwidth utilization has exceeded 80% which might lead to connectivity issues please address promptly" : ""}</p> : "")
+            <p> {getDatalimit !== "Unlimited" && showUtilization > 80 ? "Your bandwidth utilization has exceeded 80% which might lead to connectivity issues please address promptly" : ""}</p> : "")
 
           }
           <div class="network-graph-frame2" style={{ textAlign: "center" }} id="mrtg-img">

@@ -119,6 +119,8 @@ export default function LocNetworkUsage({locNetworkParms}) {
         "ProductSegment":productSegment ,
         "dateType":dateType
       };
+      // console.log("getMRTGraph: ", data);
+      
       var response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -183,7 +185,7 @@ export default function LocNetworkUsage({locNetworkParms}) {
     }
 
     getMRTGraph(localStorage.getItem("credentialKey"),localStorage.getItem("segment"),1);
-  }, []);
+  }, [localStorage.getItem("segment")]);
 
 
   async function onchangeGetMRTGraph(serviceID,productSegment,dateType) {
@@ -195,6 +197,7 @@ export default function LocNetworkUsage({locNetworkParms}) {
       "ProductSegment":productSegment ,
       "dateType":dateType
     };
+    // console.log("onchangeGetMRTGraph: ", data);
     var response = await fetch(url, {
       method: 'POST',
       headers: {

@@ -72,7 +72,7 @@ export default function HeaderNotification() {
         body: JSON.stringify(data)
       });
       const result = await response.json();
-      console.log("getAreaLists", result.data);
+      // console.log("getAreaLists", result.data);
       setGetAreaLists(result.data);
 
       // -----SolutionList Api----
@@ -87,7 +87,7 @@ export default function HeaderNotification() {
         body: JSON.stringify(data)
       });
       const result2 = await response2.json();
-      console.log("getSolutionLists", result2.data);
+      // console.log("getSolutionLists", result2.data);
 
       //----------Merge AreaList And SolutionList---------
       const mergedAreaSol = result.data.map((item) => {
@@ -102,7 +102,7 @@ export default function HeaderNotification() {
         return null;
       })
         .filter((item) => item !== null && item.AreaName !== "" && item.SegmentName !== ""); // Remove null entries from the array
-      console.log("mergedAreaSol:", mergedAreaSol);
+      // console.log("mergedAreaSol:", mergedAreaSol);
 
       if (crm_role === "L2") {
         try {
@@ -112,12 +112,12 @@ export default function HeaderNotification() {
           //   { CanId: 194155, LocationName: "Gurgaon", AreaName: "Sector 31", SegmentName: "HBB" }
           // ];
           const mergeArray1 = await Promise.all(mergedAreaSol.map(async (item) => {
-            console.log("filterAreaSol", item.CanId);
+            // console.log("filterAreaSol", item.CanId);
             const CanID = item.CanId;
-            console.log("CanID", CanID);
+            // console.log("CanID", CanID);
             try {
               let notificationByServiceId = await getUnreadNotification(CanID);
-              console.log("notificationByServiceId", notificationByServiceId);
+              // console.log("notificationByServiceId", notificationByServiceId);
 
               if (notificationByServiceId.data.length > 0) {
 
@@ -136,7 +136,7 @@ export default function HeaderNotification() {
                 // let mergedAreaSolNotifi = mergedAreaSol.reduce((result, item2) => {
                 const notification = notificationByServiceId.data.filter(obj => obj.service_id === String(item.CanId));
                 notification.sort((a, b) => new Date(b.created_spectra) - new Date(a.created_spectra));
-                console.log(notification);
+                // console.log(notification);
 
                 const result = {
                   ...item,
@@ -146,7 +146,7 @@ export default function HeaderNotification() {
                   notification
                 };
                 // }
-                console.log("mergedNotify Single:", result);
+                // console.log("mergedNotify Single:", result);
                 // return result;
                 // }, []);
 
@@ -164,7 +164,7 @@ export default function HeaderNotification() {
             }
           })); //Loop end i
           const mergeArray = mergeArray1.filter(item => item !== null);
-          console.log("finalDataComALl", notificationData);
+          // console.log("finalDataComALl", notificationData);
           setMergedArray(notificationData);
           // sessionStorage.setItem("Notify", JSON.stringify(mergeArray));
 
@@ -172,7 +172,7 @@ export default function HeaderNotification() {
             return count + array.notification.length;
           }, 0);
 
-          console.log("unreadNotificationCount", totalNotificationArrayLength);
+          // console.log("unreadNotificationCount", totalNotificationArrayLength);
           setUnreadNotificationCount(totalNotificationArrayLength);
 
           // Access the resolved data from each promise
@@ -196,10 +196,10 @@ export default function HeaderNotification() {
         try {
           let filterAreaSol = mergedAreaSol.filter(item => item.CanId === localStorage.getItem("credentialKey"));
           const CanID = filterAreaSol[0].CanId;
-          console.log("CanID", CanID);
+          // console.log("CanID", CanID);
 
           let notificationByServiceId = await getUnreadNotification(CanID);
-          console.log(notificationByServiceId);
+          // console.log(notificationByServiceId);
           // -------Filter Last Month Notification--------
           const currentDate = new Date();
           const oneMonthAgo = new Date();
@@ -209,13 +209,13 @@ export default function HeaderNotification() {
             const date = new Date(dateObj.created_spectra);
             return date >= oneMonthAgo && date <= currentDate;
           });
-          console.log("1MonthNotofication:", filteredNotification);
+          // console.log("1MonthNotofication:", filteredNotification);
 
           // if(filteredNotification.length > 0){
           let mergedAreaSolNotifi = mergedAreaSol.reduce((result, item) => {
 
             const notification = filteredNotification.filter(obj => obj.service_id === String(item.CanId));
-            console.log(notification);
+            // console.log(notification);
             notification.sort((a, b) => new Date(b.created_spectra) - new Date(a.created_spectra));
 
 
@@ -246,7 +246,7 @@ export default function HeaderNotification() {
             return result;
           }, []);
 
-          console.log("mergedAll:", [mergedAreaSolNotifi]);
+          // console.log("mergedAll:", [mergedAreaSolNotifi]);
           setMergedArray([mergedAreaSolNotifi]);
           // sessionStorage.setItem("Notify", JSON.stringify([mergedAreaSolNotifi]));
           // mergeArray.push(mergedAreaSolNotifi)
@@ -255,7 +255,7 @@ export default function HeaderNotification() {
             return count + array.notification.length;
           }, 0);
 
-      console.log("unreadNotificationCount", totalNotificationArrayLength);
+      // console.log("unreadNotificationCount", totalNotificationArrayLength);
       setUnreadNotificationCount(totalNotificationArrayLength);
           await updateNotificationAsRead(serviceID)
         } catch (error) {
@@ -318,7 +318,7 @@ export default function HeaderNotification() {
       body: JSON.stringify(data)
     });
     const result = await response.json();
-    console.log("getAreaLists", result.data);
+    // console.log("getAreaLists", result.data);
     setGetAreaLists(result.data);
 
     // -----SolutionList Api----
@@ -333,7 +333,7 @@ export default function HeaderNotification() {
       body: JSON.stringify(data)
     });
     const result2 = await response2.json();
-    console.log("getSolutionLists", result2.data);
+    // console.log("getSolutionLists", result2.data);
 
     //----------Merge AreaList And SolutionList---------
     const mergedAreaSol = result.data.map((item) => {
@@ -348,7 +348,7 @@ export default function HeaderNotification() {
       return null;
     })
       .filter((item) => item !== null && item.AreaName !== "" && item.SegmentName !== ""); // Remove null entries from the array
-    console.log("mergedAreaSol:", mergedAreaSol);
+    // console.log("mergedAreaSol:", mergedAreaSol);
 
     if (crm_role === "L2") {
       try {
@@ -358,11 +358,11 @@ export default function HeaderNotification() {
         //     { CanId: 194155, LocationName: "Gurgaon", AreaName: "Sector 31", SegmentName: "HBB" }
         //   ];
         const mergeArray1 = await Promise.all(mergedAreaSol.map(async (item) => {
-          console.log("filterAreaSol", item.CanId);
+          // console.log("filterAreaSol", item.CanId);
           const CanID = item.CanId;
           try {
             let notificationByServiceId = await getNotificationByServiceId(CanID);
-            console.log("notificationByServiceId", notificationByServiceId);
+            // console.log("notificationByServiceId", notificationByServiceId);
 
             if (notificationByServiceId.data.length > 0) {
 
@@ -375,13 +375,13 @@ export default function HeaderNotification() {
                 const date = new Date(dateObj.created_spectra);
                 return date >= oneMonthAgo && date <= currentDate;
               });
-              console.log("1MonthNotofication:", filteredNotification);
+              // console.log("1MonthNotofication:", filteredNotification);
 
               // if (filteredNotification.length > 0) {
               // let mergedAreaSolNotifi = mergedAreaSol.reduce((result, item2) => {
               const notification = filteredNotification.filter(obj => obj.service_id === String(item.CanId));
               notification.sort((a, b) => new Date(b.created_spectra) - new Date(a.created_spectra));
-              console.log(notification);
+              // console.log(notification);
 
               const result = {
                 ...item,
@@ -391,7 +391,7 @@ export default function HeaderNotification() {
                 notification
               };
               // }
-              console.log("mergedNotify Single:", result);
+              // console.log("mergedNotify Single:", result);
               // return result;
               // }, []);
 
@@ -410,7 +410,7 @@ export default function HeaderNotification() {
         })); //Loop end i
         const mergeArray = mergeArray1.filter(item => item !== null);
         notificationData.sort((a, b) => new Date(b.created_spectra) - new Date(a.created_spectra));
-        console.log("finalDataComALl", notificationData);
+        // console.log("finalDataComALl", notificationData);
         setFinalMergedArray(notificationData);
         // sessionStorage.setItem("Notify", JSON.stringify(mergeArray));
 
@@ -420,7 +420,7 @@ export default function HeaderNotification() {
           return count + array.notification.length;
         }, 0);
 
-        console.log("unreadNotificationCount", totalNotificationArrayLength);
+        // console.log("unreadNotificationCount", totalNotificationArrayLength);
         // setUnreadNotificationCount(totalNotificationArrayLength);
 
         // Access the resolved data from each promise
@@ -439,10 +439,10 @@ export default function HeaderNotification() {
       try {
         let filterAreaSol = mergedAreaSol.filter(item => item.CanId === localStorage.getItem("credentialKey"));
         const CanID = filterAreaSol[0].CanId;
-        console.log("CanID", CanID);
+        // console.log("CanID", CanID);
 
         let notificationByServiceId = await getNotificationByServiceId(CanID);
-        console.log(notificationByServiceId);
+        // console.log(notificationByServiceId);
         // -------Filter Last Month Notification--------
         const currentDate = new Date();
         const oneMonthAgo = new Date();
@@ -452,13 +452,13 @@ export default function HeaderNotification() {
           const date = new Date(dateObj.created_spectra);
           return date >= oneMonthAgo && date <= currentDate;
         });
-        console.log("1MonthNotofication:", filteredNotification);
+        // console.log("1MonthNotofication:", filteredNotification);
 
         // if(filteredNotification.length > 0){
         let mergedAreaSolNotifi = mergedAreaSol.reduce((result, item) => {
 
           const notification = filteredNotification.filter(obj => obj.service_id === String(item.CanId));
-          console.log(notification);
+          // console.log(notification);
           notification.sort((a, b) => new Date(b.created_spectra) - new Date(a.created_spectra));
 
           result = {
@@ -473,7 +473,7 @@ export default function HeaderNotification() {
           return result;
         }, []);
 
-        console.log("mergedAll:", [mergedAreaSolNotifi]);
+        // console.log("mergedAll:", [mergedAreaSolNotifi]);
         setFinalMergedArray([mergedAreaSolNotifi]);
         sessionStorage.setItem("Notify", JSON.stringify([mergedAreaSolNotifi]));
         // mergeArray.push(mergedAreaSolNotifi)
@@ -482,7 +482,7 @@ export default function HeaderNotification() {
           return count + array.notification.length;
         }, 0);
 
-        console.log("unreadNotificationCount", totalNotificationArrayLength);
+        // console.log("unreadNotificationCount", totalNotificationArrayLength);
         // setUnreadNotificationCount(totalNotificationArrayLength);
 
       } catch (error) {

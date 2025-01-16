@@ -1058,11 +1058,11 @@ export default function Support() {
                                     >
                                       <div className="accordion-body">
                                         <div className="faq-accordion-content">
-                                          {/* Click here (hyperlink to Raise a SR) to raise a SR. */}
+                                          {/* Click here (hyperlink to Raise an SR) to raise an SR. */}
                                           <ul><li> <a href="/servicerequests?pid=raiseNewSR">Click here</a> to raise your request.</li></ul>
                                           <ul>Or</ul> 
                                           <ul><li> Select Service Requests</li></ul>
-                                          <ul><li>	Click on ‘Raise a SR’ at the top of the page. </li></ul>
+                                          <ul><li>	Click on ‘Raise an SR’ at the top of the page. </li></ul>
                                           <ul><li>	Now select the issue, add any details of your concern in the description, mention your alternate contact number and submit. </li></ul>
 
                                         </div>
@@ -1926,11 +1926,11 @@ export default function Support() {
                                     >
                                       <div className="accordion-body">
                                         <div className="faq-accordion-content">
-                                          {/* Click here (hyperlink to Raise a SR) to raise a SR. */}
+                                          {/* Click here (hyperlink to Raise an SR) to raise an SR. */}
                                           <ul><li> <a href="/servicerequests?pid=raiseNewSR">Click here</a> to raise your request.</li></ul>
                                           <ul>Or</ul> 
                                           <ul><li> Select Service Requests</li></ul>
-                                          <ul><li>	Click on ‘Raise a SR’ at the top of the page. </li></ul>
+                                          <ul><li>	Click on ‘Raise an SR’ at the top of the page. </li></ul>
                                           <ul><li>	Now select the issue, add any details of your concern in the description, mention your alternate contact number and submit. </li></ul>
 
                                         </div>
@@ -3266,11 +3266,11 @@ export default function Support() {
                                     >
                                       <div className="accordion-body">
                                         <div className="faq-accordion-content">
-                                          {/* Click here (hyperlink to Raise a SR) to raise a SR. */}
+                                          {/* Click here (hyperlink to Raise an SR) to raise an SR. */}
                                           <ul><li> <a href="/servicerequests?pid=raiseNewSR">Click here</a> to raise your request.</li></ul>
                                           <ul>Or</ul> 
                                           <ul><li> Select Service Requests</li></ul>
-                                          <ul><li>	Click on ‘Raise a SR’ at the top of the page. </li></ul>
+                                          <ul><li>	Click on ‘Raise an SR’ at the top of the page. </li></ul>
                                           <ul><li>	Now select the issue, add any details of your concern in the description, mention your alternate contact number and submit. </li></ul>
 
                                         </div>
@@ -4134,11 +4134,11 @@ export default function Support() {
                                     >
                                       <div className="accordion-body">
                                         <div className="faq-accordion-content">
-                                          {/* Click here (hyperlink to Raise a SR) to raise a SR. */}
+                                          {/* Click here (hyperlink to Raise an SR) to raise an SR. */}
                                           <ul><li> <a href="/servicerequests?pid=raiseNewSR">Click here</a> to raise your request.</li></ul>
                                           <ul>Or</ul> 
                                           <ul><li> Select Service Requests</li></ul>
-                                          <ul><li>	Click on ‘Raise a SR’ at the top of the page. </li></ul>
+                                          <ul><li>	Click on ‘Raise an SR’ at the top of the page. </li></ul>
                                           <ul><li>	Now select the issue, add any details of your concern in the description, mention your alternate contact number and submit. </li></ul>
 
                                         </div>
