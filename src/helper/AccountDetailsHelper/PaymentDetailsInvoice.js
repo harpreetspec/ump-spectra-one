@@ -128,7 +128,7 @@ export default function PaymentDetailsInvoice({ goBackToTransactions, getInvoice
       });
       const result = await response.json();
       // ishan
-      // console.log("pay",result.data);
+      console.log("pay",result.data);
       setEmail(result.data.email ?? result.data.shipToEmail);
       setAccountName(result.data.accountName ?? result.data.orgName);
       setMobileNo(result.data.shipToMobileno ?? result.data.shipToPhone);
@@ -688,85 +688,85 @@ export default function PaymentDetailsInvoice({ goBackToTransactions, getInvoice
   //end ios app store payment function  for razorpat
 
   // console.log(accountName, "  ", email, "  ", mobileNo);
-  const handlePayNow_previous = async () => {
-    const CustAcctDetail = await CustomerAccountDetail();
-    const getMail = CustAcctDetail.email ?? CustAcctDetail.shipToEmail;
-    const getName = CustAcctDetail.accountName ?? CustAcctDetail.orgName;
-    const getMobile = CustAcctDetail.shipToMobileno ?? CustAcctDetail.shipToPhone;
-    const getOrgNo = CustAcctDetail.orgId;
-    const getUserName = CustAcctDetail.accountNo;
-    // console.log(getName, "  ", getMail, "  ", getMobile,  "  ", getOrgNo,  "  ", getUserName);
+  // const handlePayNow_previous = async () => {
+  //   const CustAcctDetail = await CustomerAccountDetail();
+  //   const getMail = CustAcctDetail.email ?? CustAcctDetail.shipToEmail;
+  //   const getName = CustAcctDetail.accountName ?? CustAcctDetail.orgName;
+  //   const getMobile = CustAcctDetail.shipToMobileno ?? CustAcctDetail.shipToPhone;
+  //   const getOrgNo = CustAcctDetail.orgId;
+  //   const getUserName = CustAcctDetail.accountNo;
+  //   // console.log(getName, "  ", getMail, "  ", getMobile,  "  ", getOrgNo,  "  ", getUserName);
 
-    setIsPayNowClicked(true);
+  //   setIsPayNowClicked(true);
 
-    // Wrap the code in a setTimeout function to delay its execution
-    setTimeout(async () => {
-      //   // Get the form element
-      const form = document.getElementById('transactionForm');
-      // console.log(form);
-
-
-      // Generate the $session value
-      const session = "SCP-" + new Date().toISOString().replace(/[-:.]/g, "");
-
-      // Set the values of the input fields
-      form.elements.uid.value = 'spectraone';
-      form.elements.session.value = session;
-      form.elements.passcode.value = 'S%fdM123S#$';
-      form.elements.amount.value = newTotalAmount ? newTotalAmount : getTotalAmount ? getTotalAmount : unpaidAmount;
-      form.elements.csubtype.value = 'Web';
-      form.elements.ctype.value = '1';
-      form.elements.source.value = '2';
-      form.elements.unpaid_amount.value = getTotalAmount ? getTotalAmount : unpaidAmount;
-      // dynamic changes for check ishan
-      form.elements.tds_amount.value = getTdsSlab ? getTdsSlab : "";
-      // dynamic changes for check ishan
-      form.elements.tds_checked.value = getTdsSlab ? "1" : "0";
-      // dynamic changes for check ishan
-      form.elements.invoice_amount.value = getTotalAmount ? getTotalAmount : unpaidAmount;
-      form.elements.invoiceno.value = getInvoicePayNowRow.item ? getInvoicePayNowRow.item.invoiceNo : getInvoicePayNowRow.top3Invoice[0].invoiceNo;
-      // dynamic changes for check ishan
-      form.elements.accmgr.value = accMgrName;
-      form.elements.accno.value = getInvoicePayNowRow.CanId;
-      // dynamic changes for check ishan
-      form.elements.accname.value = accountName ?? getName;
-      form.elements.emailid.value = email ?? getMail;
-      form.elements.mobileno.value = mobileNo ?? getMobile;
-      form.elements.orgid.value = id ?? getOrgNo;
-      form.elements.username.value = userName ?? getUserName;
-      form.elements.returnurl.value = 'https://one.spectra.co/accountdetails?pid=bill';
-
-      // Submit the form
-      form.submit();
+  //   // Wrap the code in a setTimeout function to delay its execution
+  //   setTimeout(async () => {
+  //     //   // Get the form element
+  //     const form = document.getElementById('transactionForm');
+  //     // console.log(form);
 
 
-      try {
-        const formDataObject = {};
-        Array.from(form.elements).forEach(element => {
-          if (element.name) { // Check if the element has a name attribute
-            formDataObject[element.name] = element.value;
-          }
-        });
-        const updatedFormDataObject = { IP: ip, ...formDataObject };
-        // console.log('Form Data Object:', updatedFormDataObject);
-        let res = await FunctionModule.logger(JSON.stringify(updatedFormDataObject))
+  //     // Generate the $session value
+  //     const session = "SCP-" + new Date().toISOString().replace(/[-:.]/g, "");
 
-      } catch (e) {
-        console.error(e);
-      }
+  //     // Set the values of the input fields
+  //     form.elements.uid.value = 'spectraone';
+  //     form.elements.session.value = session;
+  //     form.elements.passcode.value = 'S%fdM123S#$';
+  //     form.elements.amount.value = newTotalAmount ? newTotalAmount : getTotalAmount ? getTotalAmount : unpaidAmount;
+  //     form.elements.csubtype.value = 'Web';
+  //     form.elements.ctype.value = '1';
+  //     form.elements.source.value = '2';
+  //     form.elements.unpaid_amount.value = getTotalAmount ? getTotalAmount : unpaidAmount;
+  //     // dynamic changes for check ishan
+  //     form.elements.tds_amount.value = getTdsSlab ? getTdsSlab : "";
+  //     // dynamic changes for check ishan
+  //     form.elements.tds_checked.value = getTdsSlab ? "1" : "0";
+  //     // dynamic changes for check ishan
+  //     form.elements.invoice_amount.value = getTotalAmount ? getTotalAmount : unpaidAmount;
+  //     form.elements.invoiceno.value = getInvoicePayNowRow.item ? getInvoicePayNowRow.item.invoiceNo : getInvoicePayNowRow.top3Invoice[0].invoiceNo;
+  //     // dynamic changes for check ishan
+  //     form.elements.accmgr.value = accMgrName;
+  //     form.elements.accno.value = getInvoicePayNowRow.CanId;
+  //     // dynamic changes for check ishan
+  //     form.elements.accname.value = accountName ?? getName;
+  //     form.elements.emailid.value = email ?? getMail;
+  //     form.elements.mobileno.value = mobileNo ?? getMobile;
+  //     form.elements.orgid.value = id ?? getOrgNo;
+  //     form.elements.username.value = userName ?? getUserName;
+  //     form.elements.returnurl.value = 'https://one.spectra.co/accountdetails?pid=bill';
 
-    }, 0)
-  };
+  //     // Submit the form
+  //     form.submit();
+
+
+  //     try {
+  //       const formDataObject = {};
+  //       Array.from(form.elements).forEach(element => {
+  //         if (element.name) { // Check if the element has a name attribute
+  //           formDataObject[element.name] = element.value;
+  //         }
+  //       });
+  //       const updatedFormDataObject = { IP: ip, ...formDataObject };
+  //       // console.log('Form Data Object:', updatedFormDataObject);
+  //       let res = await FunctionModule.logger(JSON.stringify(updatedFormDataObject))
+
+  //     } catch (e) {
+  //       console.error(e);
+  //     }
+
+  //   }, 0)
+  // };
 
 
   const handlePayNow = async () => {
     try {
       const CustAcctDetail = await CustomerAccountDetail();
-      const getMail = CustAcctDetail.email ?? CustAcctDetail.shipToEmail;
-      const getName = CustAcctDetail.accountName ?? CustAcctDetail.orgName;
-      const getMobile = CustAcctDetail.shipToMobileno ?? CustAcctDetail.shipToPhone;
-      const getOrgNo = CustAcctDetail.orgId;
-      const getUserName = CustAcctDetail.accountNo;
+      const getMail = CustAcctDetail?.email ?? CustAcctDetail?.shipToEmail;
+      const getName = CustAcctDetail?.accountName ?? CustAcctDetail?.orgName;
+      const getMobile = CustAcctDetail?.shipToMobileno ?? CustAcctDetail?.shipToPhone ?? CustAcctDetail?.mobileno ?? "";
+      const getOrgNo = CustAcctDetail?.orgId;
+      const getUserName = CustAcctDetail?.accountNo;
       // console.log(getName, "  ", getMail, "  ", getMobile,  "  ", getOrgNo,  "  ", getUserName);
 
       setIsPayNowClicked(true);
@@ -808,6 +808,7 @@ export default function PaymentDetailsInvoice({ goBackToTransactions, getInvoice
         form.elements.returnurl.value = 'https://one.spectra.co/accountdetails?pid=bill';
 
         // Validation: Check required fields
+        // console.log("accno: ", form.elements.accno?.value, "accname: ", form.elements.accname?.value, "orgid: ", form.elements.orgid?.value, "username: ", form.elements.username?.value, "emailid: ", form.elements.emailid?.value, "mobileno: ", form.elements.mobileno?.value);        
         if (!form.elements.accno.value || !form.elements.accname.value || !form.elements.orgid.value || !form.elements.username.value || !form.elements.emailid.value || !form.elements.mobileno.value) {
           setTimeout(() => {
             Swal.fire({

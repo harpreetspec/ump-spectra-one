@@ -19,7 +19,7 @@ const DataConsumption = ({networkParms}) => {
       
       };
 
-      const response = await fetch('https://oneml.spectra.co/dataConsumptionGraph', {
+      const response = await fetch(process.env.REACT_APP_API_URL + '/dataConsumptionGraph', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -109,12 +109,15 @@ if(apistatus=="success"){
           class="data-box-wrapper wrapper-box-scroll custom-scrollbar"
         >
           
-           {sortedGroupedData.map(item => (
+           {sortedGroupedData?.length > 0 ? sortedGroupedData.map(item => (
               <div key={item.startDt} className="table-content d-flex align-items-center justify-content-between p-3">
                 <div>{item.date ? formatDate(item.date) : ""}</div>
                 <div className="px-4">{item.total ? `${convertBytesToMbps(parseFloat(item.total))} GB` : ""}</div>
               </div>
-            ))}
+            )): 
+            <div className="empty-networkusage d-flex align-items-center justify-content-between p-3">
+            No Data Usage Available
+          </div>}
           {/* <div
             class="table-content d-flex align-items-center justify-content-between p-3"
           >

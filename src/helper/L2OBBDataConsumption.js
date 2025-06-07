@@ -55,7 +55,7 @@ export default function L2OBBDataConsumption(DCParms){
       //   period : "4" 
       // };
 
-      const response = await fetch('https://oneml.spectra.co/dataConsumptionGraph', {
+      const response = await fetch(process.env.REACT_APP_API_URL + '/dataConsumptionGraph', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

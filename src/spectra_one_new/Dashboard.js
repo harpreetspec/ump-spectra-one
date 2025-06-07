@@ -54,7 +54,7 @@ import { useNavigate } from "react-router-dom";
 import { Link, useLocation } from 'react-router-dom';
 
 async function getUserName(serviceGroupId) {
-  return fetch('https://oneml.spectra.co/getCustomerAccountDetail', {
+  return fetch(process.env.REACT_APP_API_URL + '/getCustomerAccountDetail', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -113,6 +113,7 @@ export default function Dashboard() {
   const groupID = localStorage.getItem('crm_group_id');
 
   const companyID = localStorage.getItem('crm_company_id');
+  const crm_role = localStorage.getItem('crm_role');
 
   const companyName = localStorage.getItem('company_name');
   const [getInvoiceCount, setGetInvoiceCount] = useState();
@@ -129,15 +130,19 @@ export default function Dashboard() {
     "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":localStorage.getItem('crm_company_id'),
 
   }
+  
 
   const allcitydropLoc = {
 
     "groupID": localStorage.getItem('crm_group_id'),
 
-    "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":localStorage.getItem('crm_company_id'),
+    "companyID": (crm_role == "L3") ? companyID:"",
     // "locationID": localStorage.getItem("crm_location_id")
-    "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+    "locationID":  (crm_role == "L3") ? locationID:""
   }
+
+  // console.log(allcitydropLoc);
+  
 
   const filterData = {
 
@@ -198,8 +203,8 @@ export default function Dashboard() {
       // const data = {groupID: groupID, companyID: companyID, locationID: locationID};
       const data = {
         "groupID": localStorage.getItem("crm_group_id"),
-        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-        "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+        "companyID": (crm_role == "L3") ? companyID:"",
+        "locationID":  (crm_role == "L3") ? locationID:""
       };
       const response = await fetch(url, {
         method: 'POST',
@@ -224,8 +229,8 @@ export default function Dashboard() {
       const url = process.env.REACT_APP_API_URL + '/getLocationLists';
       const data = {
         "groupID": localStorage.getItem("crm_group_id"),
-        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-      "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+        "companyID": (crm_role == "L3") ? companyID:"",
+      "locationID":  (crm_role == "L3") ? locationID:""
       };
       const response = await fetch(url, {
         method: 'POST',
@@ -300,8 +305,8 @@ export default function Dashboard() {
     const url = process.env.REACT_APP_API_URL + '/getSolutionLists';
     const data = {
       groupID: localStorage.getItem("crm_group_id"),
-      "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-      "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+      "companyID": (crm_role == "L3") ? companyID:"",
+      "locationID":  (crm_role == "L3") ? locationID:""
     };
 
     const response = await fetch(url, {
@@ -321,8 +326,8 @@ export default function Dashboard() {
     // const data = {groupID: groupID, companyID: companyID, locationID: locationID};
     const data1 = {
       "groupID": localStorage.getItem("crm_group_id"),
-      "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-      "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+      "companyID": (crm_role == "L3") ? companyID:"",
+      "locationID":  (crm_role == "L3") ? locationID:""
     };
     const response1 = await fetch(url1, {
       method: 'POST',
@@ -360,8 +365,8 @@ export default function Dashboard() {
     const url = process.env.REACT_APP_API_URL + '/getSolutionLists';
     const data = {
       "groupID": localStorage.getItem("crm_group_id"),
-      "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-        "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+      "companyID": (crm_role == "L3") ? companyID:"",
+        "locationID":  (crm_role == "L3") ? locationID:""
     };
 
     const response = await fetch(url, {
@@ -435,8 +440,8 @@ export default function Dashboard() {
       const data = {
 
         "groupID": groupID,
-        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-        "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+        "companyID": (crm_role == "L3") ? companyID:"",
+        "locationID":  (crm_role == "L3") ? locationID:""
 
       }
 
@@ -492,9 +497,9 @@ export default function Dashboard() {
 
         "groupID": groupID,
 
-        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
+        "companyID": (crm_role == "L3") ? companyID:"",
 
-        "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+        "locationID":  (crm_role == "L3") ? locationID:""
 
       }
 
@@ -566,8 +571,8 @@ export default function Dashboard() {
 
         "groupID": groupID,
 
-        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-        "locationID":  (segmentCheckHBB == "HBB") ? locationID:"",
+        "companyID": (crm_role == "L3") ? companyID:"",
+        "locationID":  (crm_role == "L3") ? locationID:"",
         "fromDate": fromDate.toISOString().slice(0, 10),
         "toDate": toDate.toISOString().slice(0, 10)
 
@@ -728,8 +733,8 @@ export default function Dashboard() {
       const url = process.env.REACT_APP_API_URL + '/getAreaLists';
       const data = {
         "groupID": groupID,
-        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-        "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+        "companyID": (crm_role == "L3") ? companyID:"",
+        "locationID":  (crm_role == "L3") ? locationID:""
       };
       const response = await fetch(url, {
         method: 'POST',
@@ -755,7 +760,7 @@ export default function Dashboard() {
       
       // console.log(date3Monthsbefore);
       
-      var mm = date3Monthsbefore.getMonth();
+      var mm = date3Monthsbefore.getMonth() + 1;
       var c_m = currentDate.getMonth() + 1;
       // console.log(mm, c_m);
       
@@ -818,7 +823,7 @@ export default function Dashboard() {
     let gmcToken = localStorage.getItem('gmcToken');
 
     async function postData() {
-      const url = 'https://oneml.spectra.co/gmcData';
+      const url = process.env.REACT_APP_API_URL + '/gmcData';
       const data = { gmcToken: gmcToken, canID: credentialKeyLogin, screen_width: width, screen_height: height, user_device_os: user_device_os };
       const response = await fetch(url, {
         method: 'POST',
@@ -840,8 +845,8 @@ export default function Dashboard() {
       const url = process.env.REACT_APP_API_URL + '/getAreaLists';
       const data = {
         "groupID": groupID,
-        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-        "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+        "companyID": (crm_role == "L3") ? companyID:"",
+        "locationID":  (crm_role == "L3") ? locationID:""
       };
       const response = await fetch(url, {
         method: 'POST',
@@ -905,8 +910,8 @@ export default function Dashboard() {
       const url = process.env.REACT_APP_API_URL + '/getSolutionLists';
       const data = {
         "groupID": localStorage.getItem("crm_group_id"),
-        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-        "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+        "companyID": (crm_role == "L3") ? companyID:"",
+        "locationID":  (crm_role == "L3") ? locationID:""
       };
       const response = await fetch(url, {
         method: 'POST',
@@ -943,8 +948,8 @@ export default function Dashboard() {
 
       const data = {
         "groupID": groupID,
-        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-        "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+        "companyID": (crm_role == "L3") ? companyID:"",
+        "locationID":  (crm_role == "L3") ? locationID:""
       };
       const response = await fetch(url, {
         method: 'POST',
@@ -969,7 +974,7 @@ export default function Dashboard() {
       let currentDate2 = new Date();
       let date3Monthsbefore = new Date(currentDate2.setMonth(currentDate2.getMonth() - 2));
 
-      var mm = date3Monthsbefore.getMonth();
+      var mm = date3Monthsbefore.getMonth() + 1;
       var c_m = currentDate.getMonth() + 1;
       var i_m = ''; var j_m = '';
       if (mm < 10) {
@@ -1035,7 +1040,7 @@ export default function Dashboard() {
       let currentDate2 = new Date();
       let date3Monthsbefore = new Date(currentDate2.setMonth(currentDate2.getMonth() - 2));
 
-      var mm = date3Monthsbefore.getMonth();
+      var mm = date3Monthsbefore.getMonth() + 1;
       var c_m = currentDate.getMonth() + 1;
       var i_m = ''; var j_m = '';
       if (mm < 10) {
@@ -1091,24 +1096,26 @@ export default function Dashboard() {
     segmentName: segment
   }
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    async function funGraph() {
-      const url = process.env.REACT_APP_API_URL + '/getupTimeGraph';
+  //   async function funGraph() {
+  //     const url = process.env.REACT_APP_API_URL + '/getupTimeGraph';
 
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+  //     const response = await fetch(url, {
+  //       method: 'GET',
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       },
 
-      });
-      const result = await response.json();
-      // console.log("uptimegraph", result);
-    }
+  //     });
+  //     const result = await response.json();
+  //     // console.log("uptimegraph", result);
+  //   }
 
-    funGraph();
-  }, []);
+  //   funGraph();
+  // }, []);
+
+
   useEffect(() => {
 
     async function canIdDetails() {
@@ -1121,8 +1128,8 @@ export default function Dashboard() {
 
           "groupID": localStorage.getItem("crm_group_id"),
 
-          "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-        "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+          "companyID": (crm_role == "L3") ? companyID:"",
+        "locationID":  (crm_role == "L3") ? locationID:""
 
         };
 
@@ -1292,8 +1299,8 @@ export default function Dashboard() {
 
 
             {/* top header */}
-            {segment != "HBB" && <Header />}
-            {segment == "HBB" && <HeaderHbb />}
+            {crm_role == "L2" && <Header />}
+            {crm_role == "L3" && <HeaderHbb />}
             {/* DASHBOARD  */}
             <div class="dashboard-main dashboard-main2">
               {/* company top details */}
@@ -1380,7 +1387,7 @@ export default function Dashboard() {
               </div>}
 
               {/* location top details */}
-              {(crmRole == 'L3' && segment != "HBB") && <div class="dashboard-main-top">
+              {/* {(crmRole == 'L3' && segment != "HBB") && <div class="dashboard-main-top">
                 <div class="row">
                   <div class="dashboard-banner">
                     <div>
@@ -1407,7 +1414,6 @@ export default function Dashboard() {
                         <div class="card-head">Service Desk <span className='small-text'>(Last 1 Month)</span></div>
                         <div class="card-info pt-2">
                           <div class="card-count">
-                            {/* 14 <img src="./images/arrow-outward.svg" alt="" /> */}
                             {(localcanid == 9098697) && <>00</> }
                             {(localcanid != 9098697) && (getServiceListCount1 < 10 ? `0${getServiceListCount1}` : getServiceListCount1)} <img src={arrowOutward} alt="" />
                           </div>
@@ -1447,10 +1453,9 @@ export default function Dashboard() {
                   </div>
                 </div>
               </div>
+              } */}
 
-              }
-
-              {(crmRole == 'L3' && segment == "HBB") && <div class="dashboard-main-top">
+              {(crmRole == 'L3') && <div class="dashboard-main-top">
                 <div class="row">
                   <div class="dashboard-banner">
                     <div>

@@ -36,15 +36,16 @@ export default function LocNetworkUsage({locNetworkParms}) {
   const [getBandWidth, setBandWidth] = useState();
   const [solutionLists, setSolutionLists] = useState();
   const[showUtilization,setShowUtilization] = useState();
-
+  const companyID = localStorage.getItem('crm_company_id');
+  const crm_role = localStorage.getItem('crm_role');
   // console.log("locNetworkParms",locNetworkParms);
 
   async function allSolutionList(service_id) {
     const url = process.env.REACT_APP_API_URL + '/getSolutionLists';
     const data = {
       "groupID": localStorage.getItem("crm_group_id"),
-      "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-      "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+      "companyID": (crm_role == "L3") ? companyID:"",
+      "locationID":  (crm_role == "L3") ? locationID:""
     };
     const response = await fetch(url, {
       method: 'POST',
@@ -163,7 +164,7 @@ export default function LocNetworkUsage({locNetworkParms}) {
   Message : ${apiFailureDetails.Message}  
   Date: ${apiFailureDetails.Date}`;
       try {
-        const response = await fetch('https://oneml.spectra.co/sendMailS1', {
+        const response = await fetch(process.env.REACT_APP_API_URL + '/sendMailS1', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -239,7 +240,7 @@ Response : ${JSON.stringify(apiFailureDetails.response)}
 Message : ${apiFailureDetails.Message}  
 Date: ${apiFailureDetails.Date}`;
     try {
-      const response = await fetch('https://oneml.spectra.co/sendMailS1', {
+      const response = await fetch(process.env.REACT_APP_API_URL + '/sendMailS1', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

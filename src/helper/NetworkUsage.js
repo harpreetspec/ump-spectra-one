@@ -143,7 +143,7 @@ const NetworkUsage = ({ networkParms }) => {
   Message : ${apiFailureDetails.Message}  
   Date: ${apiFailureDetails.Date}`;
         try {
-          const response = await fetch('https://oneml.spectra.co/sendMailS1', {
+          const response = await fetch(process.env.REACT_APP_API_URL + '/sendMailS1', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -221,7 +221,7 @@ Response : ${JSON.stringify(apiFailureDetails.response)}
 Message : ${apiFailureDetails.Message}  
 Date: ${apiFailureDetails.Date}`;
       try {
-        const response = await fetch('https://oneml.spectra.co/sendMailS1', {
+        const response = await fetch(process.env.REACT_APP_API_URL + '/sendMailS1', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

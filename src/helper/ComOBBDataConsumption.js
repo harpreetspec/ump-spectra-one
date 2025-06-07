@@ -48,7 +48,7 @@ export default function ComOBBDataConsumption({networkParms}){
       
       };
 
-      const response = await fetch('https://oneml.spectra.co/dataConsumptionGraph', {
+      const response = await fetch(process.env.REACT_APP_API_URL + '/dataConsumptionGraph', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

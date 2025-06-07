@@ -1,3 +1,5 @@
+
+
 export const getAreaLists = async (groupID, companyID, locationID) => {
     const url = process.env.REACT_APP_API_URL + '/getAreaLists';
     const data = {
@@ -236,7 +238,7 @@ export const getServiceLists = async (groupID, companyID, locationID, fromDate, 
 
 export const getServiceListsTemp = async (groupID, companyID, locationID, fromDate, toDate) => {
     // console.log("getServiceLists:",groupID, companyID, locationID, fromDate, toDate);
-      const url = "https://oneml.spectra.co/getServiceListsUat";
+      const url = process.env.REACT_APP_API_URL + "/getServiceListsUat";
       const data = {
           groupID: "G602988",         // groupID
           companyID: "C602988",       // companyID,
@@ -471,3 +473,5 @@ export const logger = async (log_data) => {
     // console.log("createSRAivis", result.meta.Message);
     return result;
 }
+
+

@@ -90,7 +90,7 @@ const YourComponent = ({networkParms}) => {
 
   const fetchData = async (service_id) => {
     try {
-      const url = 'https://oneml.spectra.co/getupTimeGraph';
+      const url = process.env.REACT_APP_API_URL + '/getupTimeGraph';
       const reqBody = {
         "service_id": service_id
       };
@@ -214,7 +214,7 @@ const YourComponent = ({networkParms}) => {
 
   const fetchDataforMonth = async (month,year) => {
     try {
-      const url = 'https://oneml.spectra.co/getupTimeGraph';
+      const url = process.env.REACT_APP_API_URL + '/getupTimeGraph';
 
       const reqBody = {
         "service_id": pinnedAvailability? pinnedAvailability.service_id : networkParm.service_id

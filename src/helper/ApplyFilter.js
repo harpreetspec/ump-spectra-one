@@ -51,7 +51,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 
 
 async function getUserName(serviceGroupId) {
-  return fetch('https://oneml.spectra.co/getCustomerAccountDetail', {
+  return fetch(process.env.REACT_APP_API_URL + '/getCustomerAccountDetail', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -962,7 +962,7 @@ useEffect(() => {
     let gmcToken = localStorage.getItem('gmcToken');
 
     async function postData() {
-      const url = 'https://oneml.spectra.co/gmcData';
+      const url = process.env.REACT_APP_API_URL + '/gmcData';
       const data = { gmcToken: gmcToken, canID: credentialKeyLogin, screen_width: width, screen_height: height, user_device_os: user_device_os };
       const response = await fetch(url, {
         method: 'POST',

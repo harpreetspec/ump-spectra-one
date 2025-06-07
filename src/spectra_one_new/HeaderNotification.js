@@ -61,8 +61,8 @@ export default function HeaderNotification() {
       // const data = { groupID: groupID, companyID: companyID, locationID: locationID };
       const data = {
         "groupID": groupID,
-        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-        "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+        "companyID": (crm_role == "L3") ? companyID : "",
+        "locationID":  (crm_role == "L3") ? locationID:""
       }
       const response = await fetch(url, {
         method: 'POST',
@@ -307,8 +307,8 @@ export default function HeaderNotification() {
     // const data = { groupID: groupID, companyID: companyID, locationID: locationID };
     const data = {
       "groupID": groupID,
-      "companyID": (segmentCheckHBB == "HBB") ? "CIndividual" : "",
-      "locationID": (segmentCheckHBB == "HBB") ? locationID : ""
+      "companyID": (crm_role == "L3") ? companyID : "",
+      "locationID": (crm_role == "L3") ? locationID : ""
     }
     const response = await fetch(url, {
       method: 'POST',

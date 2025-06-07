@@ -49,7 +49,7 @@ export default function ComOBBDataConsumption({networkParms}){
       
       };
 
-      const response = await fetch('https://oneml.spectra.co/dataConsumptionGraph', {
+      const response = await fetch(process.env.REACT_APP_API_URL + '/dataConsumptionGraph', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -59,6 +59,8 @@ export default function ComOBBDataConsumption({networkParms}){
 
       const json = await response.json();
       const responseData = json.data.response;
+      // console.log(json);
+      
       if(json.data.response){
       if(networkParms.period == "3"){
         if(Array.isArray(responseData)){
@@ -146,7 +148,7 @@ export default function ComOBBDataConsumption({networkParms}){
     // Extract the labels and totalData from the object
     const labels = Object.keys(totalDataByDate);
     const totalData = Object.values(totalDataByDate);
-    // console.log("totalData",totalData);
+    // console.log("totalData",totalData, labels);
     var chartContext
     // Create the chart context
     if(apistatus == "success"){
@@ -275,7 +277,7 @@ export default function ComOBBDataConsumption({networkParms}){
                 </div>
                 <div class="data-inner-box">
                   <div class="chartjs-container" id="chartContainer">
-                    {apistatus=="success" ? <canvas id="myChart"></canvas>  : <span className='empty-networkusage'>No Graph Available</span>}
+                    {(apistatus=="success" && data.length > 1) ? <canvas id="myChart"></canvas>  : <span className='empty-networkusage'>No Graph Available</span>}
                   </div>
                 </div>
               </div>

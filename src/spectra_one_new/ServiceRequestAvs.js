@@ -390,7 +390,7 @@ export default function AccountDetails() {
                 SubType: "Mobile App",
                 SubTypeId: "ST_629", 
                 SubSubType: "Login Not Working" ,
-                SubSubTypeId: "SST_15071",
+                SubSubTypeId: "SST_1558",
                 CaseCategoryId: "2",
                 CaseCategory: "Complaint",
                 Owner:"Agrex Team",

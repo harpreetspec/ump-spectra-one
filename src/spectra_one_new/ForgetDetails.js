@@ -14,7 +14,7 @@ import {
 } from "../function";
 
 async function sendOtp(credentials) {
-    return fetch('https://oneml.spectra.co/sendOtp', {
+    return fetch(process.env.REACT_APP_API_URL + '/sendOtp', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

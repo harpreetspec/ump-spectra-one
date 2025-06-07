@@ -114,7 +114,7 @@ export default function Otp() {
       "user_device_os" : deviceDetect().osName ? deviceDetect().osName : deviceDetect().os
     };
 
-    const apiCall = await fetch('https://oneml.spectra.co/loginWithMobile', {
+    const apiCall = await fetch(process.env.REACT_APP_API_URL + '/loginWithMobile', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

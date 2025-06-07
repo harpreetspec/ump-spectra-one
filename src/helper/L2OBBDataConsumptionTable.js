@@ -24,7 +24,7 @@ const L2OBBDataConsumptionTable = (DCParms) => {
   //   canID: 207648,
   //   period : "4" 
   // };
-      const response = await fetch('https://oneml.spectra.co/dataConsumptionGraph', {
+      const response = await fetch(process.env.REACT_APP_API_URL + '/dataConsumptionGraph', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

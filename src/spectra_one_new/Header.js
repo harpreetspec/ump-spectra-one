@@ -29,6 +29,11 @@ export default function Header() {
   const groupID = localStorage.getItem('crm_group_id')
   const segmentCheckHBB = localStorage.getItem('segmentCheckHBB')
   const locationID = localStorage.getItem('crm_location_id');
+  const companyID = localStorage.getItem('crm_company_id');
+  const crm_role = localStorage.getItem('crm_role');
+
+
+
   const handleSearchClick = (element) => {
     const searchBox = document.getElementById("headerSearchInput");
 
@@ -52,8 +57,8 @@ export default function Header() {
     // const data = { groupID: groupID, companyID: companyID, locationID: locationID };
     const data = {
         "groupID": groupID,
-        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-        "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+        "companyID": (crm_role == "L3") ? companyID:"",
+        "locationID":  (crm_role == "L3") ? locationID:""
     }
     const response = await fetch(url, {
         method: 'POST',

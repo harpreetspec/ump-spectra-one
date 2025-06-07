@@ -46,6 +46,8 @@ export default function Support() {
   const [getLoginAreaSol, setLoginAreaSol] = useState(false);
   const crmRole = localStorage.getItem('crm_role');
   const segment = localStorage.getItem('segment');
+  const companyID = localStorage.getItem('crm_company_id');
+  const crm_role = localStorage.getItem('crm_role');
 
   //Naveen
   const pinnedFetchData = async () => {
@@ -257,8 +259,8 @@ export default function Support() {
       // const data = { groupID: groupID, companyID: companyID, locationID: locationID };
       const dataAreaSol = {
         "groupID": groupID,
-        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-        "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+        "companyID": (crm_role == "L3") ? companyID : "",
+        "locationID":  (crm_role == "L3") ? locationID:""
       }
       const responseAreaList = await fetch(urlAreaList, {
         method: 'POST',
@@ -2610,9 +2612,9 @@ export default function Support() {
               {/* SIDE NAVBAR  */}
               <SideBar />
               {/* top header */}
-              {/* <Header /> */}
-              {segment != "HBB" && <Header />}
-              {segment == "HBB" && <HeaderHbb />}
+              <HeaderHbb />
+              {/* {segment != "HBB" && <Header />}
+              {segment == "HBB" && <HeaderHbb />} */}
               {/* My ACCOUNTS  */}
               <div className="dashboard-main">
                 <div className="dashboard-content">

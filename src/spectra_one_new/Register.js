@@ -49,7 +49,7 @@ export default function Register() {
     const fetchRegistration = async () => {
     
       try {
-        const apiUrl = 'https://oneml.spectra.co/getDecodecanid';
+        const apiUrl = process.env.REACT_APP_API_URL + '/getDecodecanid';
 
         const requestData = {
           encP : key
@@ -140,7 +140,7 @@ export default function Register() {
     const handleRegisterClick = async () => {
     
       try {
-        const apiUrl = 'https://oneml.spectra.co/insertNewUserFromBw';
+        const apiUrl = process.env.REACT_APP_API_URL + '/insertNewUserFromBw';
 
         const requestData = {
           service_id : username,

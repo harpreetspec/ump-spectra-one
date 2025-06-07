@@ -28,6 +28,8 @@ import Spare from "../assets/images/Spare.png";
 
 
 const LocOBBpinnedfeature = ({ allcitydropLoc }) => {
+  // console.log(allcitydropLoc);
+  
   const swiperRef = useRef(null);
   // const [showFullAreaName, setShowFullAreaName] = useState(false);
   const [locations, setLocations] = useState([]);
@@ -41,7 +43,10 @@ const LocOBBpinnedfeature = ({ allcitydropLoc }) => {
   const [loginCanId,setLoginCanId] = useState("")
   const selectRef = useRef(null);
   const segmentCheckHBB = localStorage.getItem('segmentCheckHBB')
+  const companyID = localStorage.getItem('crm_company_id');
   const locationID = localStorage.getItem('crm_location_id');
+  const crm_role = localStorage.getItem('crm_role');
+
 
   useEffect(() => {
     $(selectRef.current).select2({
@@ -67,8 +72,8 @@ const LocOBBpinnedfeature = ({ allcitydropLoc }) => {
       const url = process.env.REACT_APP_API_URL + '/getSolutionLists';
       const data = {
         "groupID": localStorage.getItem("crm_group_id"),
-        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-        "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+        "companyID": (crm_role == "L3") ? companyID:"",
+        "locationID":  (crm_role == "L3") ? locationID:""
       };
 
       const response = await fetch(url, {

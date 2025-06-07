@@ -189,9 +189,9 @@ export default function AccountDetails() {
   const [getSolution, setSolution] = useState("3 Months");
   const [filteredAll, setFilteredAll] = useState([]);
   const [flag, setFlag] = useState(true);
-
   const CanId = localStorage.getItem('credentialKey')
   // console.log('lofi', CanId)
+  const crm_role = localStorage.getItem('crm_role');
 
   // BIA single case ishan
   useEffect(() => {
@@ -203,8 +203,8 @@ export default function AccountDetails() {
       const groupID = localStorage.getItem("crm_group_id");
       const data = {
         "groupID": groupID,
-        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-        "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+        "companyID": (crm_role == "L3") ? companyID:"",
+        "locationID":  (crm_role == "L3") ? locationID:""
       };
 
       // Fetch location lists
@@ -271,8 +271,8 @@ export default function AccountDetails() {
       const url = process.env.REACT_APP_API_URL + '/getSolutionLists';
       const data = {
         "groupID": localStorage.getItem("crm_group_id"),
-        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-        "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+        "companyID": (crm_role == "L3") ? companyID : "",
+        "locationID":  (crm_role == "L3") ? locationID : ""
       };
       const response = await fetch(url, {
         method: 'POST',
@@ -327,27 +327,24 @@ export default function AccountDetails() {
   // end
   // end
 
+  // this function changed because it was returning date pre 1day
+  // const formatDate = (dateString) => {
+  //   // console.log("dateString:",dateString);
+  //   const date = new Date(dateString);
+  //   const day = ('0' + date.getDate()).slice(-2);
+  //   const month = date.toLocaleString('en', { month: 'short' });
+  //   const year = date.getFullYear().toString().slice(-2);
+  //   return `${day} ${month}'${year}`;
+  // };
+
   const formatDate = (dateString) => {
-    // console.log("dateString:",dateString);
     const date = new Date(dateString);
-    const day = ('0' + date.getDate()).slice(-2);
-    const month = date.toLocaleString('en', { month: 'short' });
-    const year = date.getFullYear().toString().slice(-2);
+    const day = ('0' + date.getUTCDate()).slice(-2);
+    const month = date.toLocaleString('en', { month: 'short', timeZone: 'UTC' });
+    const year = date.getUTCFullYear().toString().slice(-2);
     return `${day} ${month}'${year}`;
   };
 
-  // const formatDate = (dateString) => {
-  //   // console.log("dateString:", dateString);
-  //   const date = new Date(dateString);
-  //   // console.log("date:", date.toISOString());  // Always logs in UTC format
-    
-  //   // Extract UTC values to prevent local timezone issues
-  //   const day = ('0' + date.getUTCDate()).slice(-2);
-  //   const month = date.toLocaleString('en', { month: 'short', timeZone: 'UTC' });  // Ensure month is in English
-  //   const year = date.getUTCFullYear().toString().slice(-2);
-    
-  //   return `${day} ${month}'${year}`;
-  // };
   
 
   function pre7DaysDate(dateString) {
@@ -488,8 +485,8 @@ export default function AccountDetails() {
 
   async function areaProd() {
     try {
-      const resultAreaList = await getAreaLists(groupID, (segmentCheckHBB == "HBB") ? "CIndividual":"", (segmentCheckHBB == "HBB") ? locationID:"");
-      const resultSolutionLists = await getSolutionLists(groupID, (segmentCheckHBB == "HBB") ? "CIndividual":"", (segmentCheckHBB == "HBB") ? locationID:"");
+      const resultAreaList = await getAreaLists(groupID, (crm_role == "L3") ? companyID : "", (crm_role == "L3") ? locationID : "");
+      const resultSolutionLists = await getSolutionLists(groupID, (crm_role == "L3") ? companyID : "", (crm_role == "L3") ? locationID : "");
     
       // console.log("orgDetailsTrans",responseArea);
       // setFinalDropdownSelectionTrans(orgDetails);
@@ -658,7 +655,7 @@ export default function AccountDetails() {
         }
         const filteredInvoice = invoiceList.data.filter(item => new Date(item.invoicedt) >= new Date(startDate) && new Date(item.invoicedt) <= new Date(endDate))
         const planName = getSolution.filter(item => item.CanId === serviceId)
-        const area = await getAreaLists(groupID, (segmentCheckHBB == "HBB") ? "CIndividual":"", (segmentCheckHBB == "HBB") ? locationID:"");
+        const area = await getAreaLists(groupID, (crm_role == "L3") ? companyID : "", (crm_role == "L3") ? locationID : "");
         const areaL = area.data.filter(item => item.CanId === serviceId);
         // console.log("planName", planName[0].PlanName);
 
@@ -744,7 +741,7 @@ export default function AccountDetails() {
         }
         const transactionHistory = modifiedTrans.filter(item => new Date(item.transactionDate) >= new Date(startDate) && new Date(item.transactionDate) <= new Date(endDate))
         const areaProd = getSolution.filter(item => item.CanId === serviceId)
-        const area = await getAreaLists(groupID, (segmentCheckHBB == "HBB") ? "CIndividual":"", (segmentCheckHBB == "HBB") ? locationID:"");
+        const area = await getAreaLists(groupID, (crm_role == "L3") ? companyID : "", (crm_role == "L3") ? locationID : "");
         const areaL = area.data.filter(item => item.CanId === serviceId);
         // console.log("filteredTrans", areaProd);
 
@@ -831,8 +828,8 @@ export default function AccountDetails() {
       const url = process.env.REACT_APP_API_URL + '/getLocationLists';
       const data = {
         "groupID": localStorage.getItem("crm_group_id"),
-        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-      "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+        "companyID": (crm_role == "L3") ? companyID : "",
+      "locationID":  (crm_role == "L3") ? locationID : ""
       };
       const response = await fetch(url, {
         method: 'POST',
@@ -863,8 +860,8 @@ export default function AccountDetails() {
       const groupID = localStorage.getItem("crm_group_id");
       const data = {
         "groupID": groupID,
-        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-        "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+        "companyID": (crm_role == "L3") ? companyID : "",
+        "locationID": (crm_role == "L3") ? locationID : ""
       };
 
       const dropAreaResponse = await fetch(dropAreaUrl, {
@@ -1609,8 +1606,8 @@ export default function AccountDetails() {
       // const data = { groupID: groupID, companyID: companyID, locationID: locationID };
       const dataAreaSol = {
         "groupID": groupID,
-        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-        "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+        "companyID": (crm_role == "L3") ? companyID : "",
+        "locationID": (crm_role == "L3") ? locationID : ""
       }
       const responseAreaList = await fetch(urlAreaList, {
         method: 'POST',
@@ -2680,8 +2677,8 @@ export default function AccountDetails() {
     // const data = { groupID: groupID, companyID: companyID, locationID: locationID };
     const dataAreaSol = {
       "groupID": groupID,
-      "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-      "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+      "companyID":  (crm_role == "L3") ? companyID : "",
+      "locationID":  (crm_role == "L3") ? locationID : ""
     }
     const responseAreaList = await fetch(urlAreaList, {
       method: 'POST',
@@ -2920,8 +2917,8 @@ export default function AccountDetails() {
     // const data = { groupID: groupID, companyID: companyID, locationID: locationID };
     const dataAreaSol = {
       "groupID": groupID,
-      "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-      "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+      "companyID": (crm_role == "L3") ? companyID : "",
+      "locationID":  (crm_role == "L3") ? locationID : ""
     }
     const responseAreaList = await fetch(urlAreaList, {
       method: 'POST',
@@ -3147,8 +3144,8 @@ export default function AccountDetails() {
         const url = process.env.REACT_APP_API_URL + '/getSolutionLists';
         const data = {
           groupID: localStorage.getItem("crm_group_id"),
-          "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-        "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+          "companyID": (crm_role == "L3") ? companyID : "",
+        "locationID":  (crm_role == "L3") ? locationID : ""
         };
         const response = await fetch(url, {
           method: 'POST',
@@ -3187,8 +3184,8 @@ export default function AccountDetails() {
         const url = process.env.REACT_APP_API_URL + '/getAreaLists';
         const data = {
           "groupID": localStorage.getItem("crm_group_id"),
-          "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-          "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+          "companyID": (crm_role == "L3") ? companyID : "",
+          "locationID":  (crm_role == "L3") ? locationID : ""
         };
         const response = await fetch(url, {
           method: 'POST',
@@ -4750,7 +4747,7 @@ export default function AccountDetails() {
                                         highlightClassName="custom-highlight"
                                         searchWords={searchTerm}
                                         autoEscape={true}
-                                        textToHighlight={getPinnedSessionData && getPinnedSessionData.SegmentName === "HBB" ? pre2DaysDate(item.duedt) : pre7DaysDate(item.duedt)}
+                                        textToHighlight={getPinnedSessionData && getPinnedSessionData.SegmentName === "HBB" ? formatDate(item.duedt) : formatDate(item.duedt)}
                                       />
                                     </td>
                                     {item.unPaidBalance > 0 ? (
@@ -4904,7 +4901,7 @@ export default function AccountDetails() {
                                         highlightClassName="custom-highlight"
                                         searchWords={searchTerm}
                                         autoEscape={true}
-                                        textToHighlight={getFinalDropdownSelection.SegmentName === "HBB" ? pre2DaysDate(item.duedt) : pre7DaysDate(item.duedt)}
+                                        textToHighlight={getFinalDropdownSelection.SegmentName === "HBB" ? formatDate(item.duedt) : formatDate(item.duedt)}
                                       />
                                     </td>
                                     {item.unPaidBalance > 0 ? (
@@ -5063,7 +5060,7 @@ export default function AccountDetails() {
                                           highlightClassName="custom-highlight"
                                           searchWords={searchTerm}
                                           autoEscape={true}
-                                          textToHighlight={item.SegmentName === "HBB" ? pre2DaysDate(item.top3Invoice[0].duedt) : pre7DaysDate(item.top3Invoice[0].duedt)}
+                                          textToHighlight={item.SegmentName === "HBB" ? formatDate(item.top3Invoice[0].duedt) : formatDate(item.top3Invoice[0].duedt)}
                                         />
                                       </td>
                                       {item.top3Invoice[0].unPaidBalance > 0 ? (
@@ -5227,7 +5224,7 @@ export default function AccountDetails() {
                                           highlightClassName="custom-highlight"
                                           searchWords={searchTerm}
                                           autoEscape={true}
-                                          textToHighlight={item.SegmentName === "HBB" ? pre2DaysDate(item.top3Invoice[1].duedt) : pre7DaysDate(item.top3Invoice[1].duedt)}
+                                          textToHighlight={item.SegmentName === "HBB" ? formatDate(item.top3Invoice[1].duedt) : formatDate(item.top3Invoice[1].duedt)}
                                         />
                                       </td>
                                       {item.top3Invoice[1].unPaidBalance > 0 ? (
@@ -5388,7 +5385,7 @@ export default function AccountDetails() {
                                           highlightClassName="custom-highlight"
                                           searchWords={searchTerm}
                                           autoEscape={true}
-                                          textToHighlight={item.SegmentName === "HBB" ? pre2DaysDate(item.top3Invoice[2].duedt) : pre7DaysDate(item.top3Invoice[2].duedt)}
+                                          textToHighlight={item.SegmentName === "HBB" ? formatDate(item.top3Invoice[2].duedt) : formatDate(item.top3Invoice[2].duedt)}
                                         />
                                       </td>
                                       {item.top3Invoice[1].unPaidBalance > 0 ? (
@@ -5683,7 +5680,7 @@ export default function AccountDetails() {
                                           highlightClassName="custom-highlight"
                                           searchWords={searchTerm}
                                           autoEscape={true}
-                                          textToHighlight={pre7DaysDate(item.duedt)}
+                                          textToHighlight={formatDate(item.duedt)}
                                         />
                                       </div>
                                     </div>
@@ -5920,7 +5917,7 @@ export default function AccountDetails() {
                                           highlightClassName="custom-highlight"
                                           searchWords={searchTerm}
                                           autoEscape={true}
-                                          textToHighlight={getFinalDropdownSelection.SegmentName === "HBB" ? pre2DaysDate(item.duedt) : pre7DaysDate(item.duedt)}
+                                          textToHighlight={getFinalDropdownSelection.SegmentName === "HBB" ? formatDate(item.duedt) : formatDate(item.duedt)}
                                         />
                                       </div>
                                     </div>
@@ -6159,7 +6156,7 @@ export default function AccountDetails() {
                                             highlightClassName="custom-highlight"
                                             searchWords={searchTerm}
                                             autoEscape={true}
-                                            textToHighlight={item.SegmentName === "HBB" ? pre2DaysDate(item.top3Invoice[0].duedt) : pre7DaysDate(item.top3Invoice[0].duedt)}
+                                            textToHighlight={item.SegmentName === "HBB" ? formatDate(item.top3Invoice[0].duedt) : formatDate(item.top3Invoice[0].duedt)}
                                           />
                                         </div>
                                       </div>
@@ -6391,7 +6388,7 @@ export default function AccountDetails() {
                                             highlightClassName="custom-highlight"
                                             searchWords={searchTerm}
                                             autoEscape={true}
-                                            textToHighlight={item.SegmentName === "HBB" ? pre2DaysDate(item.top3Invoice[1].duedt) : pre7DaysDate(item.top3Invoice[1].duedt)}
+                                            textToHighlight={item.SegmentName === "HBB" ? formatDate(item.top3Invoice[1].duedt) : formatDate(item.top3Invoice[1].duedt)}
                                           />
                                         </div>
                                       </div>
@@ -6623,7 +6620,7 @@ export default function AccountDetails() {
                                             highlightClassName="custom-highlight"
                                             searchWords={searchTerm}
                                             autoEscape={true}
-                                            textToHighlight={item.top3Invoice && item.top3Invoice.length > 2 && item.top3Invoice[2] ? item.SegmentName === "HBB" ? pre2DaysDate(item.top3Invoice[2].duedt) : pre7DaysDate(item.top3Invoice[2].duedt) : ""}
+                                            textToHighlight={item.top3Invoice && item.top3Invoice.length > 2 && item.top3Invoice[2] ? item.SegmentName === "HBB" ? formatDate(item.top3Invoice[2].duedt) : formatDate(item.top3Invoice[2].duedt) : ""}
                                           />
                                         </div>
                                       </div>
@@ -8050,8 +8047,9 @@ export default function AccountDetails() {
             {/* SIDE NAVBAR  */}
             <SideBar />
             {/* top header */}
-            {segment != "HBB" && <Header />}
-            {segment == "HBB" && <HeaderHbb />}
+            {/* {segment != "HBB" && <Header />}
+            {segment == "HBB" && <HeaderHbb />} */}
+            <HeaderHbb />
             {/* My ACCOUNTS  */}
             <div className="dashboard-main">
               <div className="dashboard-content">
@@ -9362,7 +9360,7 @@ export default function AccountDetails() {
                                         highlightClassName="custom-highlight"
                                         searchWords={searchTerm}
                                         autoEscape={true}
-                                        textToHighlight={getMergedAreaProdOne.SegmentName === "HBB" ? pre2DaysDate(item.duedt) : pre7DaysDate(item.duedt)}
+                                        textToHighlight={getMergedAreaProdOne.SegmentName === "HBB" ? formatDate(item.duedt) : formatDate(item.duedt)}
                                       />
                                     </td>
                                     {item.unPaidBalance > 0 ? (
@@ -9648,7 +9646,7 @@ export default function AccountDetails() {
                                           highlightClassName="custom-highlight"
                                           searchWords={searchTerm}
                                           autoEscape={true}
-                                          textToHighlight={item.duedt ? item.SegmentName === "HBB" ? pre2DaysDate(item.duedt) : pre7DaysDate(item.duedt) : "N/A"}
+                                          textToHighlight={item.duedt ? item.SegmentName === "HBB" ? formatDate(item.duedt) : formatDate(item.duedt) : "N/A"}
                                         />
                                       </div>
                                     </div>

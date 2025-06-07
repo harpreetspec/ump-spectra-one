@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 async function loginUser(credentials) {
-    return fetch('https://oneml.spectra.co/login', {
+    return fetch(process.env.REACT_APP_API_URL + '/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -68,7 +68,7 @@ async function loginUser(credentials) {
 }
 
 async function sendOtp(credentials) {
-    return fetch('https://oneml.spectra.co/sendOtp', {
+    return fetch(process.env.REACT_APP_API_URL + '/sendOtp', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -79,8 +79,7 @@ async function sendOtp(credentials) {
 }
 
 async function checkMobileNumber(credentials) {
-    // https://oneml.spectra.co/checkMobileNumber
-    return fetch('https://oneml.spectra.co/checkMobileNumber', {
+    return fetch(process.env.REACT_APP_API_URL + '/checkMobileNumber', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -605,7 +604,7 @@ Message: ${apiFailureDetails.Message}
 Date: ${apiFailureDetails.Date}
 `;
                 try {
-                    const response = await fetch('https://oneml.spectra.co/sendMailS1', {
+                    const response = await fetch(process.env.REACT_APP_API_URL + '/sendMailS1', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -687,7 +686,7 @@ Message: ${apiFailureDetails.Message}
 Date: ${apiFailureDetails.Date}
 `;
                 try {
-                    const response = await fetch('https://oneml.spectra.co/sendMailS1', {
+                    const response = await fetch(process.env.REACT_APP_API_URL + '/sendMailS1', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -993,7 +992,7 @@ Date: ${apiFailureDetails.Date}
                                                     id="loginBtn"
                                                     type="submit"
                                                     class="spectra-btn"
-                                                    disabled={!username || !password || username.length < 5 || username.startsWith('00')}
+                                                    disabled={!username || !password || username.length < 5 }   // username.startsWith('00')
                                                 >
                                                     Login
                                                 </button>

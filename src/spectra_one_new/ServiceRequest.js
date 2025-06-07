@@ -91,6 +91,10 @@ export default function AccountDetails() {
   const searchParams = new URLSearchParams(location.search);
   const segmentCheckHBB = localStorage.getItem('segmentCheckHBB')
   const locationID = localStorage.getItem('crm_location_id');
+  const companyID = localStorage.getItem('crm_company_id');
+  const crm_role = localStorage.getItem('crm_role');
+
+
 
   const DateParsing = (dateString) => {
     // const dateString = '18/01/2023 11:26:41';
@@ -164,7 +168,7 @@ export default function AccountDetails() {
     let toDate = new Date(); 
     // alert("qwerty")
   // console.log(groupID, companyID, locationID, fromDate, toDate);
-  let srList = await getServiceLists(groupID, (segmentCheckHBB == "HBB") ? "CIndividual":"", (segmentCheckHBB == "HBB") ? locationID:"", fromDate.toISOString().slice(0, 10), toDate.toISOString().slice(0, 10));
+  let srList = await getServiceLists(groupID, (crm_role == "L3") ? companyID : "", (crm_role == "L3") ? locationID:"", fromDate.toISOString().slice(0, 10), toDate.toISOString().slice(0, 10));
   // console.log("FilteredSR", srList);
   // alert("12345")
   // console.log("FilteredSR", selectedcanidToFilter);
@@ -265,10 +269,11 @@ export default function AccountDetails() {
       // fromDate2.setMonth(fromDate2.getMonth() - 3);
       // console.log(fromDate2);
       // alert("pinnedFetchData")
-      const pinnedSR = await getServiceLists(groupID, (segmentCheckHBB == "HBB") ? "CIndividual":"", (segmentCheckHBB == "HBB") ? locationID:"", fromDate.toISOString().slice(0, 10), toDate.toISOString().slice(0, 10));
-
+      const pinnedSR = await getServiceLists(groupID, (crm_role == "L3") ? companyID : "", (crm_role == "L3") ? locationID:"", fromDate.toISOString().slice(0, 10), toDate.toISOString().slice(0, 10));
+ 
       if (pinnedClickedData && !allCityFlag) {
-        if (pinnedClickedData.SegmentName !== "HBB") {
+        // if (pinnedClickedData.SegmentName !== "HBB") {
+        if (crm_role == "L2") {
           let currentDate = new Date();
           let startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
           setPinnedClickedData(pinnedClickedData[0]);
@@ -317,7 +322,7 @@ ${JSON.stringify(apiFailureDetails.Request, null, 2)}
 Message : ${apiFailureDetails.Message}  
 Date: ${apiFailureDetails.Date}`;
     try {
-      const response = await fetch('https://oneml.spectra.co/sendMailS1', {
+      const response = await fetch(process.env.REACT_APP_API_URL + '/sendMailS1', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -351,7 +356,7 @@ Date: ${apiFailureDetails.Date}`;
       // console.log(fromDate2);
       if (canId) {
         // console.log(groupID, companyID, locationID, fromDate, toDate);
-        let srList = await getServiceLists(groupID, (segmentCheckHBB == "HBB") ? "CIndividual":"", (segmentCheckHBB == "HBB") ? locationID:"", new Date(fromDate.setMonth(fromDate.getMonth() - 3)), toDate);
+        let srList = await getServiceLists(groupID, (crm_role == "L3") ? companyID : "", (crm_role == "L3") ? locationID:"", new Date(fromDate.setMonth(fromDate.getMonth() - 3)), toDate);
         // console.log("FilteredDefaultSR", srList);
         const FilteredDefaultSR = srList.data.filter((item) => item.CanId === canId && new Date(item.LastUpdateDate) > new Date(fromDate.setMonth(fromDate.getMonth() - 3)));
         // console.log("FilteredDefaultSR", FilteredDefaultSR);
@@ -367,8 +372,8 @@ Date: ${apiFailureDetails.Date}`;
     // const data = {groupID: groupID, companyID: companyID, locationID: locationID};
     const data = {
       groupID: localStorage.getItem("crm_group_id"),
-      "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-      "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+      "companyID": (crm_role == "L3") ? companyID : "",
+      "locationID":  (crm_role == "L3") ? locationID:""
     };
     const response = await fetch(url, {
       method: 'POST',
@@ -386,8 +391,8 @@ Date: ${apiFailureDetails.Date}`;
     // const data = {groupID: groupID, companyID: companyID, locationID: locationID};
     const data = {
       "groupID": localStorage.getItem("crm_group_id"),
-      "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-      "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+      "companyID": (crm_role == "L3") ? companyID : "",
+      "locationID":  (crm_role == "L3") ? locationID:""
     };
     const response = await fetch(url, {
       method: 'POST',
@@ -697,8 +702,8 @@ Date: ${apiFailureDetails.Date}`;
       // const data = {groupID: groupID, companyID: companyID, locationID: locationID};
       const data = {
         groupID: localStorage.getItem("crm_group_id"),
-        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-        "locationID":  (segmentCheckHBB == "HBB") ? locationID:"",
+        "companyID": (crm_role == "L3") ? companyID : "",
+        "locationID":  (crm_role == "L3") ? locationID:"",
         fromDate: fromDate1.toISOString().slice(0, 10),
         toDate: toDate.toISOString().slice(0, 10)
       };
@@ -729,8 +734,8 @@ Date: ${apiFailureDetails.Date}`;
       // const data = {groupID: groupID, companyID: companyID, locationID: locationID};
       const data = {
         "groupID": localStorage.getItem("crm_group_id"),
-        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-      "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+        "companyID": (crm_role == "L3") ? companyID : "",
+      "locationID":  (crm_role == "L3")  ? locationID:""
 
       };
       const response = await fetch(url, {
@@ -748,8 +753,8 @@ Date: ${apiFailureDetails.Date}`;
       // const data = {groupID: groupID, companyID: companyID, locationID: locationID};
       const data1 = {
         "groupID": localStorage.getItem("crm_group_id"),
-        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-        "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+        "companyID": (crm_role == "L3") ? companyID : "",
+        "locationID":  (crm_role == "L3") ? locationID:""
 
       };
       const response1 = await fetch(url1, {
@@ -869,8 +874,8 @@ Date: ${apiFailureDetails.Date}`;
     const url = process.env.REACT_APP_API_URL + '/getSolutionLists';
     const data = {
       "groupID": localStorage.getItem("crm_group_id"),
-      "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-      "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+      "companyID": (crm_role == "L3") ? companyID : "",
+      "locationID":  (crm_role == "L3")? locationID:""
     };
 
     const response = await fetch(url, {
@@ -904,8 +909,8 @@ Date: ${apiFailureDetails.Date}`;
     const url = process.env.REACT_APP_API_URL + '/getSolutionLists';
     const data = {
       "groupID": localStorage.getItem("crm_group_id"),
-      "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-      "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+      "companyID": (crm_role == "L3") ? companyID : "",
+      "locationID":  (crm_role == "L3") ? locationID:""
     };
 
     const response = await fetch(url, {
@@ -2388,9 +2393,9 @@ if (pageid == 'raiseNewSR') {
             {/* SIDE NAVBAR  */}
             <SideBar />
             {/* top header */}
-            {/* <Header /> */}
-            {segment != "HBB" && <Header />}
-            {segment == "HBB" && <HeaderHbb />}
+            <HeaderHbb />
+            {/* {segment != "HBB" && <Header />}
+            {segment == "HBB" && <HeaderHbb />} */}
             {/* Service Request  */}
             <div className="dashboard-main">
               <div className="dashboard-content">
