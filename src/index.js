@@ -8,7 +8,20 @@ import reportWebVitals from './reportWebVitals';
 
 // Disable F12, Ctrl+Shift+I, Ctrl+U, Right-click
 import disableDevtool from 'disable-devtool';
-if(window.location.hostname === "one.spectra.co" ){
+
+function isDevUser() {
+  // Allow access if URL has devAccess=true (e.g. ?devAccess=true)
+  console.log(window.location.search);
+  if (window.location.search.includes('key=!@3$%')) {
+    // console.log(window.location.search);    
+    sessionStorage.setItem('key', '!@3$%');
+    return true;
+  } 
+  // Allow if localStorage has saved the dev flag
+  return sessionStorage.getItem('key') === '!@3!@$%';
+}
+
+if(window.location.hostname === "one.spectra.co" && window.top === window.self && !isDevUser()){
   disableDevtool(); // <-- Block DevTools here
 }
 
