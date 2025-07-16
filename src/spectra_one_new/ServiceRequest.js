@@ -98,12 +98,12 @@ export default function AccountDetails() {
 
   const DateParsing = (dateString) => {
     // const dateString = '18/01/2023 11:26:41';
-    
+
     // Split the date string into its components
     const [datePart, timePart] = dateString.split(' ');
     const [day, month, year] = datePart.split('/');
     const [hours, minutes, seconds] = timePart.split(':');
-    
+
     // Create a new Date object with the parsed components
     const parsedDate = new Date(year, month - 1, day, hours, minutes, seconds);
     // console.log(parsedDate);
@@ -114,23 +114,23 @@ export default function AccountDetails() {
     // console.log(picker);
     let startDate;
     let endDate;
-    if(picker.chosenLabel !== "Custom Range"){
-        setSelectedRange(picker.chosenLabel);
-        startDate = picker.startDate._d;
-        endDate = picker.endDate._d;
-        // pinnedFetchData(startDate);
-        // console.log("Start Date",picker.startDate._d);
-        // console.log("End Date",picker.endDate._d);
-    }else{
+    if (picker.chosenLabel !== "Custom Range") {
+      setSelectedRange(picker.chosenLabel);
+      startDate = picker.startDate._d;
+      endDate = picker.endDate._d;
+      // pinnedFetchData(startDate);
+      // console.log("Start Date",picker.startDate._d);
+      // console.log("End Date",picker.endDate._d);
+    } else {
 
       const oneYearLater = new Date(picker.startDate._d);
       oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
       // alert(oneYearLater)
-      if(new Date(picker.endDate._d) < oneYearLater){
-      startDate = picker.startDate._d;
-      endDate = picker.endDate._d;
-      // console.log("Start Date",  new Date(startDate));
-      // console.log("End Date",picker.endDate._d);
+      if (new Date(picker.endDate._d) < oneYearLater) {
+        startDate = picker.startDate._d;
+        endDate = picker.endDate._d;
+        // console.log("Start Date",  new Date(startDate));
+        // console.log("End Date",picker.endDate._d);
         // alert(moment(picker.startDate._d).format('DD MMM\'YY') + "-" + moment(picker.endDate._d).format('DD MMM\'YY'))
         // pinnedFetchData(startDate);
         setSelectedRange(moment(picker.startDate._d).format('DD MMM\'YY') + "-" + moment(picker.endDate._d).format('DD MMM\'YY'))
@@ -139,70 +139,70 @@ export default function AccountDetails() {
         //     startDate: picker.startDate,
         //     endDate: picker.endDate,
         // });
-      }else{
+      } else {
         // swal("Date range should not be more than one year")
         Swal.fire({
           //  text: "TDS slab value cannot be more than 2%",
-           html: '<div style="font-size: 15px;">Date range should not be more than one year</div>', // Adjust text size as needed
+          html: '<div style="font-size: 15px;">Date range should not be more than one year</div>', // Adjust text size as needed
           //  icon: 'error',
           //  iconHtml: '<div style="font-size: 28px; color: red; box-sizing: border-box ;">&#10006;</div>', // Adjust icon size and style as needed
-           width: '29%',
-           confirmButtonText: 'OK',
-           imageHeight : '100%',
-           imageWidth : '20%',
-           iconColor : 'red',
-           iconHeight : '100%',
+          width: '29%',
+          confirmButtonText: 'OK',
+          imageHeight: '100%',
+          imageWidth: '20%',
+          iconColor: 'red',
+          iconHeight: '100%',
           //  customClass: {
           //   icon : 'custom-icon'
           //  }
-         });
+        });
       }
     }
     // console.log(startDate, endDate);   
-    
+
     let groupID = localStorage.getItem('crm_group_id');
     let companyID = "";
     let locationID = localStorage.getItem('crm_location_id');
     let fromDate = new Date();
     fromDate.setMonth(fromDate.getMonth() - 24)        //new Date().setMonth(new Date().getMonth() - 3);
-    let toDate = new Date(); 
+    let toDate = new Date();
     // alert("qwerty")
-  // console.log(groupID, companyID, locationID, fromDate, toDate);
-  let srList = await getServiceLists(groupID, (crm_role == "L3") ? companyID : "", (crm_role == "L3") ? locationID:"", fromDate.toISOString().slice(0, 10), toDate.toISOString().slice(0, 10));
-  // console.log("FilteredSR", srList);
-  // alert("12345")
-  // console.log("FilteredSR", selectedcanidToFilter);
-  // console.log(new Date(startDate));
-  // const FilteredDefaultSR = srList.data.filter((item) => item.CanId === selectedcanidToFilter && new Date(item.LastUpdateDate) > startDate && new Date(item.LastUpdateDate) < endDate);
-  if(selectedcanidToFilter){
-    // console.log(new Date(DateParsing(srList[0].LastUpdateDate)));
-  const FilteredDefaultSR = srList.data.filter((item) => item.CanId === selectedcanidToFilter && new Date(DateParsing(item.LastUpdateDate)) > new Date(startDate) && new Date(DateParsing(item.LastUpdateDate)) < new Date(endDate));
-  // console.log("FilteredSR", FilteredDefaultSR);
-  setFilterSrData(FilteredDefaultSR);
-  setFlagCheck(true);
-  }else if(getPinnedClickedData?.CanId){
-    // alert(getPinnedClickedData?.CanId)
-    // console.log(new Date(DateParsing(srList[0].LastUpdateDate)));
-    const FilteredDefaultSR = srList.data.filter((item) => item.CanId === getPinnedClickedData?.CanId && new Date(DateParsing(item.LastUpdateDate)) > new Date(startDate) && new Date(DateParsing(item.LastUpdateDate)) < new Date(endDate));
-  // console.log("FilteredSR", FilteredDefaultSR);
-  setFilterSrData(FilteredDefaultSR);
-  setFlagCheck(true);
-  }
-  else{
-    // console.log(serviceID);
-    // alert(serviceID)
+    // console.log(groupID, companyID, locationID, fromDate, toDate);
+    let srList = await getServiceLists(groupID, (crm_role == "L3") ? companyID : "", (crm_role == "L3") ? locationID : "", fromDate.toISOString().slice(0, 10), toDate.toISOString().slice(0, 10));
     // console.log("FilteredSR", srList);
-  let FilteredDefaultSR;
-  if(crmRole == "L3"){
-  FilteredDefaultSR = srList.data.filter((item) => item.CanId === serviceID && new Date(DateParsing(item.LastUpdateDate)) > new Date(startDate) && new Date(DateParsing(item.LastUpdateDate)) < new Date(endDate));
-  }else{
-  FilteredDefaultSR = srList.data.filter((item) => new Date(DateParsing(item.LastUpdateDate)) > new Date(startDate) && new Date(DateParsing(item.LastUpdateDate)) < new Date(endDate));
-  }
-  // console.log("FilteredSR", FilteredDefaultSR);
-  setFilterSrData(FilteredDefaultSR);
-  setFlagCheck(true);
-  }
-};
+    // alert("12345")
+    // console.log("FilteredSR", selectedcanidToFilter);
+    // console.log(new Date(startDate));
+    // const FilteredDefaultSR = srList.data.filter((item) => item.CanId === selectedcanidToFilter && new Date(item.LastUpdateDate) > startDate && new Date(item.LastUpdateDate) < endDate);
+    if (selectedcanidToFilter) {
+      // console.log(new Date(DateParsing(srList[0].LastUpdateDate)));
+      const FilteredDefaultSR = srList.data.filter((item) => item.CanId === selectedcanidToFilter && new Date(DateParsing(item.LastUpdateDate)) > new Date(startDate) && new Date(DateParsing(item.LastUpdateDate)) < new Date(endDate));
+      // console.log("FilteredSR", FilteredDefaultSR);
+      setFilterSrData(FilteredDefaultSR);
+      setFlagCheck(true);
+    } else if (getPinnedClickedData?.CanId) {
+      // alert(getPinnedClickedData?.CanId)
+      // console.log(new Date(DateParsing(srList[0].LastUpdateDate)));
+      const FilteredDefaultSR = srList.data.filter((item) => item.CanId === getPinnedClickedData?.CanId && new Date(DateParsing(item.LastUpdateDate)) > new Date(startDate) && new Date(DateParsing(item.LastUpdateDate)) < new Date(endDate));
+      // console.log("FilteredSR", FilteredDefaultSR);
+      setFilterSrData(FilteredDefaultSR);
+      setFlagCheck(true);
+    }
+    else {
+      // console.log(serviceID);
+      // alert(serviceID)
+      // console.log("FilteredSR", srList);
+      let FilteredDefaultSR;
+      if (crmRole == "L3") {
+        FilteredDefaultSR = srList.data.filter((item) => item.CanId === serviceID && new Date(DateParsing(item.LastUpdateDate)) > new Date(startDate) && new Date(DateParsing(item.LastUpdateDate)) < new Date(endDate));
+      } else {
+        FilteredDefaultSR = srList.data.filter((item) => new Date(DateParsing(item.LastUpdateDate)) > new Date(startDate) && new Date(DateParsing(item.LastUpdateDate)) < new Date(endDate));
+      }
+      // console.log("FilteredSR", FilteredDefaultSR);
+      setFilterSrData(FilteredDefaultSR);
+      setFlagCheck(true);
+    }
+  };
 
   // useEffect(() => {
   //   initDateRangePicker('reportrange');
@@ -254,66 +254,66 @@ export default function AccountDetails() {
   const pinnedFetchData = async () => {
     // console.log("fromDate", selectedfromDate);
     // let defaultFromDate = new Date(new Date().getFullYear(), new Date().getMonth() - 3, new Date().getDate());
-    if(crmRole == "L2"){
-    try {
-      const pinnedClickedData = JSON.parse(sessionStorage.getItem('pinnedClicked'));
+    if (crmRole == "L2") {
+      try {
+        const pinnedClickedData = JSON.parse(sessionStorage.getItem('pinnedClicked'));
 
-      let groupID = localStorage.getItem('crm_group_id');
-      let companyID = "";
-      let locationID = "";
-      let fromDate = new Date();        //new Date().setMonth(new Date().getMonth() - 3);
-      fromDate.setMonth(fromDate.getMonth() - 24)
-      let toDate = new Date();      //new Date();
+        let groupID = localStorage.getItem('crm_group_id');
+        let companyID = "";
+        let locationID = "";
+        let fromDate = new Date();        //new Date().setMonth(new Date().getMonth() - 3);
+        fromDate.setMonth(fromDate.getMonth() - 24)
+        let toDate = new Date();      //new Date();
 
-      // let fromDate2 = new Date();
-      // fromDate2.setMonth(fromDate2.getMonth() - 3);
-      // console.log(fromDate2);
-      // alert("pinnedFetchData")
-      const pinnedSR = await getServiceLists(groupID, (crm_role == "L3") ? companyID : "", (crm_role == "L3") ? locationID:"", fromDate.toISOString().slice(0, 10), toDate.toISOString().slice(0, 10));
- 
-      if (pinnedClickedData && !allCityFlag) {
-        // if (pinnedClickedData.SegmentName !== "HBB") {
-        if (crm_role == "L2") {
+        // let fromDate2 = new Date();
+        // fromDate2.setMonth(fromDate2.getMonth() - 3);
+        // console.log(fromDate2);
+        // alert("pinnedFetchData")
+        const pinnedSR = await getServiceLists(groupID, (crm_role == "L3") ? companyID : "", (crm_role == "L3") ? locationID : "", fromDate.toISOString().slice(0, 10), toDate.toISOString().slice(0, 10));
+
+        if (pinnedClickedData && !allCityFlag) {
+          // if (pinnedClickedData.SegmentName !== "HBB") {
+          if (crm_role == "L2") {
+            let currentDate = new Date();
+            let startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+            setPinnedClickedData(pinnedClickedData[0]);
+            // console.log("pinnedClickedData", pinnedClickedData[0].CanId);
+            //Pinned data fetch from Contact Api 
+            // let pinnedSR = await getServiceLists(groupID, companyID, locationID, new Date(fromDate.setMonth(fromDate.getMonth() - 3)).toISOString().slice(0, 10), toDate.toISOString().slice(0, 10));
+            const FilteredPinnedSR = pinnedSR.data.filter((item) => item.CanId === pinnedClickedData[0].CanId && new Date(DateParsing(item.LastUpdateDate)) > startDate);
+            // console.log("FilteredPinnedSR", FilteredPinnedSR);
+            setPinnedSRLists(FilteredPinnedSR); //: alert("Something went wrong");
+          }
+        } else {
+          // setPinnedSRLists(null);  
           let currentDate = new Date();
           let startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-          setPinnedClickedData(pinnedClickedData[0]);
-          // console.log("pinnedClickedData", pinnedClickedData[0].CanId);
-          //Pinned data fetch from Contact Api 
-          // let pinnedSR = await getServiceLists(groupID, companyID, locationID, new Date(fromDate.setMonth(fromDate.getMonth() - 3)).toISOString().slice(0, 10), toDate.toISOString().slice(0, 10));
-          const FilteredPinnedSR = pinnedSR.data.filter((item) => item.CanId === pinnedClickedData[0].CanId && new Date(DateParsing(item.LastUpdateDate)) > startDate);
-          // console.log("FilteredPinnedSR", FilteredPinnedSR);
-          setPinnedSRLists(FilteredPinnedSR); //: alert("Something went wrong");
+          // console.log(groupID, companyID, locationID, fromDate, toDate);
+          // let srList = await getServiceLists(groupID, companyID, locationID, fromDate.toISOString().slice(0, 10), toDate.toISOString().slice(0, 10));
+          // console.log("FilteredDefaultSR", srList);
+
+          const FilteredDefaultSR = pinnedSR.data.filter((item) => item.CanId === serviceID && new Date(DateParsing(item.LastUpdateDate)) > startDate);
+          // console.log("FilteredSR", FilteredDefaultSR);
+          setPinnedSRLists(FilteredDefaultSR);
         }
-      } else {
-        // setPinnedSRLists(null);  
-        let currentDate = new Date();
-        let startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-        // console.log(groupID, companyID, locationID, fromDate, toDate);
-        // let srList = await getServiceLists(groupID, companyID, locationID, fromDate.toISOString().slice(0, 10), toDate.toISOString().slice(0, 10));
-        // console.log("FilteredDefaultSR", srList);
+      } catch (error) {
+        console.error(error);
 
-        const FilteredDefaultSR = pinnedSR.data.filter((item) => item.CanId === serviceID && new Date(DateParsing(item.LastUpdateDate)) > startDate);
-        // console.log("FilteredSR", FilteredDefaultSR);
-        setPinnedSRLists(FilteredDefaultSR);
-      }
-    } catch (error) {
-      console.error(error);
+        // Construct the email message
+        const apiFailureDetails = {
+          API_Name: "pinnedFetchData", // Name of the API where failure occurred
+          Request: {
+            groupID: localStorage.getItem('crm_group_id'),
+            companyID: "",
+            locationID: "",
+            fromDate: new Date().toISOString(),
+            toDate: new Date().toISOString(),
+          },
+          Date: new Date().toISOString(),
+          Message: error.message
 
-              // Construct the email message
-    const apiFailureDetails = {
-      API_Name: "pinnedFetchData", // Name of the API where failure occurred
-      Request: {
-        groupID: localStorage.getItem('crm_group_id'),
-        companyID: "",
-        locationID: "",
-        fromDate: new Date().toISOString(),
-        toDate: new Date().toISOString(),
-      },
-      Date: new Date().toISOString(),
-      Message: error.message
-
-    };
-    const emailBody = `
+        };
+        const emailBody = `
 API Failure Report
 --------------------
 API Name: ${apiFailureDetails.API_Name} (ServiceRequest.js) 
@@ -321,24 +321,24 @@ Request:
 ${JSON.stringify(apiFailureDetails.Request, null, 2)}   
 Message : ${apiFailureDetails.Message}  
 Date: ${apiFailureDetails.Date}`;
-    try {
-      const response = await fetch(process.env.REACT_APP_API_URL + '/sendMailS1', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          text: emailBody, // Send the structured email body
-          subject: "Service Request"
-        })
-      });
-      const data = await response.json();
-      // console.log("Mail sent successfully:", data);
-    } catch (mailError) {
-      console.error("Failed to send mail:", mailError);
+        try {
+          const response = await fetch(process.env.REACT_APP_API_URL + '/sendMailS1', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              text: emailBody, // Send the structured email body
+              subject: "Service Request"
+            })
+          });
+          const data = await response.json();
+          // console.log("Mail sent successfully:", data);
+        } catch (mailError) {
+          console.error("Failed to send mail:", mailError);
+        }
+      }
     }
-    }
-  }
   };
 
   const selectedSrData = async (canId) => {
@@ -356,7 +356,7 @@ Date: ${apiFailureDetails.Date}`;
       // console.log(fromDate2);
       if (canId) {
         // console.log(groupID, companyID, locationID, fromDate, toDate);
-        let srList = await getServiceLists(groupID, (crm_role == "L3") ? companyID : "", (crm_role == "L3") ? locationID:"", new Date(fromDate.setMonth(fromDate.getMonth() - 3)), toDate);
+        let srList = await getServiceLists(groupID, (crm_role == "L3") ? companyID : "", (crm_role == "L3") ? locationID : "", new Date(fromDate.setMonth(fromDate.getMonth() - 3)), toDate);
         // console.log("FilteredDefaultSR", srList);
         const FilteredDefaultSR = srList.data.filter((item) => item.CanId === canId && new Date(item.LastUpdateDate) > new Date(fromDate.setMonth(fromDate.getMonth() - 3)));
         // console.log("FilteredDefaultSR", FilteredDefaultSR);
@@ -373,7 +373,7 @@ Date: ${apiFailureDetails.Date}`;
     const data = {
       groupID: localStorage.getItem("crm_group_id"),
       "companyID": (crm_role == "L3") ? companyID : "",
-      "locationID":  (crm_role == "L3") ? locationID:""
+      "locationID": (crm_role == "L3") ? locationID : ""
     };
     const response = await fetch(url, {
       method: 'POST',
@@ -392,7 +392,7 @@ Date: ${apiFailureDetails.Date}`;
     const data = {
       "groupID": localStorage.getItem("crm_group_id"),
       "companyID": (crm_role == "L3") ? companyID : "",
-      "locationID":  (crm_role == "L3") ? locationID:""
+      "locationID": (crm_role == "L3") ? locationID : ""
     };
     const response = await fetch(url, {
       method: 'POST',
@@ -703,7 +703,7 @@ Date: ${apiFailureDetails.Date}`;
       const data = {
         groupID: localStorage.getItem("crm_group_id"),
         "companyID": (crm_role == "L3") ? companyID : "",
-        "locationID":  (crm_role == "L3") ? locationID:"",
+        "locationID": (crm_role == "L3") ? locationID : "",
         fromDate: fromDate1.toISOString().slice(0, 10),
         toDate: toDate.toISOString().slice(0, 10)
       };
@@ -735,7 +735,7 @@ Date: ${apiFailureDetails.Date}`;
       const data = {
         "groupID": localStorage.getItem("crm_group_id"),
         "companyID": (crm_role == "L3") ? companyID : "",
-      "locationID":  (crm_role == "L3")  ? locationID:""
+        "locationID": (crm_role == "L3") ? locationID : ""
 
       };
       const response = await fetch(url, {
@@ -754,7 +754,7 @@ Date: ${apiFailureDetails.Date}`;
       const data1 = {
         "groupID": localStorage.getItem("crm_group_id"),
         "companyID": (crm_role == "L3") ? companyID : "",
-        "locationID":  (crm_role == "L3") ? locationID:""
+        "locationID": (crm_role == "L3") ? locationID : ""
 
       };
       const response1 = await fetch(url1, {
@@ -768,7 +768,7 @@ Date: ${apiFailureDetails.Date}`;
       // console.log("setGetAreaLists", result1.data);
       setGetAreaLists(result1.data);
       // const filteredData = result1.data.filter(item => item.AreaName !== "" && item.SegmentName !== "");
-      
+
 
       const filteredData = result1.data.map(item => ({
         ...item,
@@ -875,7 +875,7 @@ Date: ${apiFailureDetails.Date}`;
     const data = {
       "groupID": localStorage.getItem("crm_group_id"),
       "companyID": (crm_role == "L3") ? companyID : "",
-      "locationID":  (crm_role == "L3")? locationID:""
+      "locationID": (crm_role == "L3") ? locationID : ""
     };
 
     const response = await fetch(url, {
@@ -910,7 +910,7 @@ Date: ${apiFailureDetails.Date}`;
     const data = {
       "groupID": localStorage.getItem("crm_group_id"),
       "companyID": (crm_role == "L3") ? companyID : "",
-      "locationID":  (crm_role == "L3") ? locationID:""
+      "locationID": (crm_role == "L3") ? locationID : ""
     };
 
     const response = await fetch(url, {
@@ -935,19 +935,19 @@ Date: ${apiFailureDetails.Date}`;
 
   const handleSegmentChange = async (event) => {
     setSelectedRange("Select Period");
-    try{
-    // console.log(event);
-    const selectedCanid = event.target.getAttribute('data-value');
-    const selectedSegment = event.target.innerText;
-    setSelectedSegment(selectedSegment);
+    try {
+      // console.log(event);
+      const selectedCanid = event.target.getAttribute('data-value');
+      const selectedSegment = event.target.innerText;
+      setSelectedSegment(selectedSegment);
 
-    setSelectedcanidToFilter(selectedCanid);
-    setPinnedClickedData(false);
-    // console.log("filterSrData",selectedSegment, "selectedCanid:", selectedCanid);
-    // let match = selectedSegment.match(/\d+/)
-    // let canId = match[0]; 
-    // console.log(canId);
-  
+      setSelectedcanidToFilter(selectedCanid);
+      setPinnedClickedData(false);
+      // console.log("filterSrData",selectedSegment, "selectedCanid:", selectedCanid);
+      // let match = selectedSegment.match(/\d+/)
+      // let canId = match[0]; 
+      // console.log(canId);
+
     } catch (error) {
       console.error(error);
     }
@@ -1082,51 +1082,51 @@ Date: ${apiFailureDetails.Date}`;
     if (id == "issue1" || id == "issue4" || id == "issue5") {
       setShowSpecification(false);
     }
-}
+  }
 
-useEffect(() => {
-  // Add an event listener to handle clicks outside the notification
-  document.addEventListener('mousedown', SRclickOutside);
+  useEffect(() => {
+    // Add an event listener to handle clicks outside the notification
+    document.addEventListener('mousedown', SRclickOutside);
 
-  // return () => {
-  //   // Remove the event listener when the component unmounts
-  //   document.removeEventListener('mousedown', handleClickOutside);
-  // };
-}, []);
+    // return () => {
+    //   // Remove the event listener when the component unmounts
+    //   document.removeEventListener('mousedown', handleClickOutside);
+    // };
+  }, []);
 
-const SRclickOutside = (event) => {
-  const chatBox = document.querySelector(".help-box")
-  // console.log("chatBox", chatBox);
-  chatBox?.classList.add("d-none");
-};
+  const SRclickOutside = (event) => {
+    const chatBox = document.querySelector(".help-box")
+    // console.log("chatBox", chatBox);
+    chatBox?.classList.add("d-none");
+  };
 
-const pid = new URLSearchParams(window.location.search);
+  const pid = new URLSearchParams(window.location.search);
 
-var pageid = pid.get('pid') ? pid.get('pid') : '';
+  var pageid = pid.get('pid') ? pid.get('pid') : '';
 
-// console.log('AccountPageParam=', pageid);
+  // console.log('AccountPageParam=', pageid);
 
-if (pageid == 'raiseNewSR') {
+  if (pageid == 'raiseNewSR') {
 
-  var actTabAcc = 'nav-link account-tab-btn';
+    var actTabAcc = 'nav-link account-tab-btn';
 
-  var actTabBill = 'nav-link account-tab-btn active';
+    var actTabBill = 'nav-link account-tab-btn active';
 
-  var actBill = 'tab-pane fade show active';
+    var actBill = 'tab-pane fade show active';
 
-  var actAcc = 'tab-pane tab-pane-spacing fade';
+    var actAcc = 'tab-pane tab-pane-spacing fade';
 
-} else {
+  } else {
 
-  var actTabAcc = 'nav-link account-tab-btn active';
+    var actTabAcc = 'nav-link account-tab-btn active';
 
-  var actTabBill = 'nav-link account-tab-btn';
+    var actTabBill = 'nav-link account-tab-btn';
 
-  var actAcc = 'tab-pane fade active show';
+    var actAcc = 'tab-pane fade active show';
 
-  var actBill = 'tab-pane tab-pane-spacing fade';
+    var actBill = 'tab-pane tab-pane-spacing fade';
 
-}
+  }
 
 
   if (crmRole === "L2") {
@@ -1170,9 +1170,11 @@ if (pageid == 'raiseNewSR') {
                   <li className="nav-item" role="presentation" >
                     <button className={actTabAcc} id="pills-srStatus-tab" data-bs-toggle="pill" data-bs-target="#pills-srStatus" type="button" role="tab" aria-controls="pills-srStatus" aria-selected="true">SR Status</button>
                   </li>
-                  <li className="nav-item" role="presentation">
-                    <button className={actTabBill} id="pills-raiseNewSR-tab" data-bs-toggle="pill" data-bs-target="#pills-raiseNewSR" type="button" role="tab" aria-controls="pills-raiseNewSR" aria-selected="false">Raise SR</button>
-                  </li>
+                  {segment != "Hotel" && segment != "PG" && segment != "Office" &&
+                    <li className="nav-item" role="presentation">
+                      <button className={actTabBill} id="pills-raiseNewSR-tab" data-bs-toggle="pill" data-bs-target="#pills-raiseNewSR" type="button" role="tab" aria-controls="pills-raiseNewSR" aria-selected="false">Raise SR</button>
+                    </li>
+                  }
                 </ul>
                 <div className="tab-content" id="pills-tabContent">
                   {/* ****************** SR STATUS TAB ************* */}
@@ -1213,7 +1215,7 @@ if (pageid == 'raiseNewSR') {
                                   </div>
                                 </div>
                                 <ul className="dropdown-menu">
-                                  { <li
+                                  {<li
                                     className="dropdown-item"
                                     data-value="All City"
                                     onClick={handleLocationChange}
@@ -1258,7 +1260,7 @@ if (pageid == 'raiseNewSR') {
                                   </div>
                                 </div>
                                 <ul className="dropdown-menu">
-                                  { uniqueAreaList ? uniqueAreaList.map((area, index) => (
+                                  {uniqueAreaList ? uniqueAreaList.map((area, index) => (
                                     <li
                                       key={index}
                                       className="dropdown-item"
@@ -1307,7 +1309,7 @@ if (pageid == 'raiseNewSR') {
                                   </div>
                                 </div>
                                 <ul className="dropdown-menu">
-                                  { segmentDropDownValue && segmentDropDownValue.map((product, index) => (
+                                  {segmentDropDownValue && segmentDropDownValue.map((product, index) => (
                                     <li
                                       key={index}
                                       className="dropdown-item"
@@ -1346,7 +1348,7 @@ if (pageid == 'raiseNewSR') {
                                 >
                                   <div className="d-flex align-items-center gap-2">
                                     <img src={iconcalendar} alt="" /> */}
-                                    {/* <span>Today </span> */}
+                              {/* <span>Today </span> */}
 
                               <DateRangePicker
                                 initialSettings={{
@@ -1380,9 +1382,9 @@ if (pageid == 'raiseNewSR') {
                                   </div>
                                 </div>
                               </DateRangePicker>
-                                  {/* </div>
+                              {/* </div>
                                 </div> */}
-                                {/* <div>Selected Date Range: {selectedDateRange}</div> */}
+                              {/* <div>Selected Date Range: {selectedDateRange}</div> */}
 
 
                               {/* </div> */}
@@ -1402,7 +1404,7 @@ if (pageid == 'raiseNewSR') {
                                 <th className="table-header-data">Last Update Date</th>
                                 <th className="table-header-data">SLA/ETR</th>
                                 <th className="table-header-data">Status</th>
-                                
+
                               </tr>
 
                                 {/* for Pinned Feature Click */}
@@ -1443,47 +1445,47 @@ if (pageid == 'raiseNewSR') {
                                       })()}
                                     </td> */}
                                     <td className="table-row-data">
-{(() => {
-    if (row.SLA_ETR) {
-      const slaEtrParts = row.SLA_ETR.split(/\/|\s|:/);
-      const daySla = parseInt(slaEtrParts[1]);
-      const monthSla = parseInt(slaEtrParts[0]) - 1; // Months are zero-indexed
-      const yearSla = parseInt(slaEtrParts[2].substring(2)); // Extract last two digits of the year
-      const hourSla = parseInt(slaEtrParts[3]);
-      const minuteSla = parseInt(slaEtrParts[4]);
+                                      {(() => {
+                                        if (row.SLA_ETR) {
+                                          const slaEtrParts = row.SLA_ETR.split(/\/|\s|:/);
+                                          const daySla = parseInt(slaEtrParts[1]);
+                                          const monthSla = parseInt(slaEtrParts[0]) - 1; // Months are zero-indexed
+                                          const yearSla = parseInt(slaEtrParts[2].substring(2)); // Extract last two digits of the year
+                                          const hourSla = parseInt(slaEtrParts[3]);
+                                          const minuteSla = parseInt(slaEtrParts[4]);
 
-      const dateSla = new Date(yearSla, monthSla, daySla, hourSla, minuteSla);
+                                          const dateSla = new Date(yearSla, monthSla, daySla, hourSla, minuteSla);
 
-      const formattedMonthSla = dateSla.toLocaleString('default', { month: 'short' });
-      const formattedYearSla = dateSla.toLocaleString('default', { year: '2-digit' });
-      const formattedTimeSla = dateSla.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+                                          const formattedMonthSla = dateSla.toLocaleString('default', { month: 'short' });
+                                          const formattedYearSla = dateSla.toLocaleString('default', { year: '2-digit' });
+                                          const formattedTimeSla = dateSla.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
 
-      return `${daySla} ${formattedMonthSla}'${formattedYearSla} ${formattedTimeSla}`;
-    } else {
-      return "N/A";
-    }
-  })()}
-</td>
+                                          return `${daySla} ${formattedMonthSla}'${formattedYearSla} ${formattedTimeSla}`;
+                                        } else {
+                                          return "N/A";
+                                        }
+                                      })()}
+                                    </td>
                                     <td className="table-row-data">
-  {(() => {
-    const statusText =
-      row.status === "In Progress" ||
-      row.status === "On Hold - SLA clock Stop" ||
-      row.status === "Waiting for Information"
-        ? "Open"
-        : row.status === "Resolved - Not Contacted" ||
-          row.status === "Resolved - Contacted" ||
-          row.status === "Duplicate Merged"
-        ? "Closed"
-        : row.status;
+                                      {(() => {
+                                        const statusText =
+                                          row.status === "In Progress" ||
+                                            row.status === "On Hold - SLA clock Stop" ||
+                                            row.status === "Waiting for Information"
+                                            ? "Open"
+                                            : row.status === "Resolved - Not Contacted" ||
+                                              row.status === "Resolved - Contacted" ||
+                                              row.status === "Duplicate Merged"
+                                              ? "Closed"
+                                              : row.status;
 
-    const statusClassName =
-      statusText === "Open" ? "status-red" : "status-green";
+                                        const statusClassName =
+                                          statusText === "Open" ? "status-red" : "status-green";
 
-    return <div className={`status-active-btn ${statusClassName}`}>{statusText}</div>;
-  })()}
-</td> 
-                                  
+                                        return <div className={`status-active-btn ${statusClassName}`}>{statusText}</div>;
+                                      })()}
+                                    </td>
+
                                   </tr>
 
                                 ))
@@ -1530,46 +1532,46 @@ if (pageid == 'raiseNewSR') {
                                       })()}
                                     </td> */}
                                     <td className="table-row-data">
-{(() => {
-    if (row.SLA_ETR) {
-      const slaEtrParts = row.SLA_ETR.split(/\/|\s|:/);
-      const daySla = parseInt(slaEtrParts[1]);
-      const monthSla = parseInt(slaEtrParts[0]) - 1; // Months are zero-indexed
-      const yearSla = parseInt(slaEtrParts[2].substring(2)); // Extract last two digits of the year
-      const hourSla = parseInt(slaEtrParts[3]);
-      const minuteSla = parseInt(slaEtrParts[4]);
+                                      {(() => {
+                                        if (row.SLA_ETR) {
+                                          const slaEtrParts = row.SLA_ETR.split(/\/|\s|:/);
+                                          const daySla = parseInt(slaEtrParts[1]);
+                                          const monthSla = parseInt(slaEtrParts[0]) - 1; // Months are zero-indexed
+                                          const yearSla = parseInt(slaEtrParts[2].substring(2)); // Extract last two digits of the year
+                                          const hourSla = parseInt(slaEtrParts[3]);
+                                          const minuteSla = parseInt(slaEtrParts[4]);
 
-      const dateSla = new Date(yearSla, monthSla, daySla, hourSla, minuteSla);
+                                          const dateSla = new Date(yearSla, monthSla, daySla, hourSla, minuteSla);
 
-      const formattedMonthSla = dateSla.toLocaleString('default', { month: 'short' });
-      const formattedYearSla = dateSla.toLocaleString('default', { year: '2-digit' });
-      const formattedTimeSla = dateSla.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+                                          const formattedMonthSla = dateSla.toLocaleString('default', { month: 'short' });
+                                          const formattedYearSla = dateSla.toLocaleString('default', { year: '2-digit' });
+                                          const formattedTimeSla = dateSla.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
 
-      return `${daySla} ${formattedMonthSla}'${formattedYearSla} ${formattedTimeSla}`;
-    } else {
-      return "N/A";
-    }
-  })()}
-</td>
+                                          return `${daySla} ${formattedMonthSla}'${formattedYearSla} ${formattedTimeSla}`;
+                                        } else {
+                                          return "N/A";
+                                        }
+                                      })()}
+                                    </td>
                                     <td className="table-row-data">
-  {(() => {
-    const statusText =
-      row.status === "In Progress" ||
-      row.status === "On Hold - SLA clock Stop" ||
-      row.status === "Waiting for Information"
-        ? "Open"
-        : row.status === "Resolved - Not Contacted" ||
-          row.status === "Resolved - Contacted" ||
-          row.status === "Duplicate Merged"
-        ? "Closed"
-        : row.status;
+                                      {(() => {
+                                        const statusText =
+                                          row.status === "In Progress" ||
+                                            row.status === "On Hold - SLA clock Stop" ||
+                                            row.status === "Waiting for Information"
+                                            ? "Open"
+                                            : row.status === "Resolved - Not Contacted" ||
+                                              row.status === "Resolved - Contacted" ||
+                                              row.status === "Duplicate Merged"
+                                              ? "Closed"
+                                              : row.status;
 
-    const statusClassName =
-      statusText === "Open" ? "status-red" : "status-green";
+                                        const statusClassName =
+                                          statusText === "Open" ? "status-red" : "status-green";
 
-    return <div className={`status-active-btn ${statusClassName}`}>{statusText}</div>;
-  })()}
-</td>
+                                        return <div className={`status-active-btn ${statusClassName}`}>{statusText}</div>;
+                                      })()}
+                                    </td>
 
                                   </tr>
 
@@ -1617,47 +1619,47 @@ if (pageid == 'raiseNewSR') {
                                       })()}
                                     </td> */}
                                     <td className="table-row-data">
-{(() => {
-    if (row.SLA_ETR) {
-      const slaEtrParts = row.SLA_ETR.split(/\/|\s|:/);
-      const daySla = parseInt(slaEtrParts[1]);
-      const monthSla = parseInt(slaEtrParts[0]) - 1; // Months are zero-indexed
-      const yearSla = parseInt(slaEtrParts[2].substring(2)); // Extract last two digits of the year
-      const hourSla = parseInt(slaEtrParts[3]);
-      const minuteSla = parseInt(slaEtrParts[4]);
+                                      {(() => {
+                                        if (row.SLA_ETR) {
+                                          const slaEtrParts = row.SLA_ETR.split(/\/|\s|:/);
+                                          const daySla = parseInt(slaEtrParts[1]);
+                                          const monthSla = parseInt(slaEtrParts[0]) - 1; // Months are zero-indexed
+                                          const yearSla = parseInt(slaEtrParts[2].substring(2)); // Extract last two digits of the year
+                                          const hourSla = parseInt(slaEtrParts[3]);
+                                          const minuteSla = parseInt(slaEtrParts[4]);
 
-      const dateSla = new Date(yearSla, monthSla, daySla, hourSla, minuteSla);
+                                          const dateSla = new Date(yearSla, monthSla, daySla, hourSla, minuteSla);
 
-      const formattedMonthSla = dateSla.toLocaleString('default', { month: 'short' });
-      const formattedYearSla = dateSla.toLocaleString('default', { year: '2-digit' });
-      const formattedTimeSla = dateSla.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+                                          const formattedMonthSla = dateSla.toLocaleString('default', { month: 'short' });
+                                          const formattedYearSla = dateSla.toLocaleString('default', { year: '2-digit' });
+                                          const formattedTimeSla = dateSla.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
 
-      return `${daySla} ${formattedMonthSla}'${formattedYearSla} ${formattedTimeSla}`;
-    } else {
-      return "N/A";
-    }
-  })()}
-</td>
+                                          return `${daySla} ${formattedMonthSla}'${formattedYearSla} ${formattedTimeSla}`;
+                                        } else {
+                                          return "N/A";
+                                        }
+                                      })()}
+                                    </td>
                                     <td className="table-row-data">
-  {(() => {
-    const statusText =
-      row.status === "In Progress" ||
-      row.status === "On Hold - SLA clock Stop" ||
-      row.status === "Waiting for Information"
-        ? "Open"
-        : row.status === "Resolved - Not Contacted" ||
-          row.status === "Resolved - Contacted" ||
-          row.status === "Duplicate Merged"
-        ? "Closed"
-        : row.status;
+                                      {(() => {
+                                        const statusText =
+                                          row.status === "In Progress" ||
+                                            row.status === "On Hold - SLA clock Stop" ||
+                                            row.status === "Waiting for Information"
+                                            ? "Open"
+                                            : row.status === "Resolved - Not Contacted" ||
+                                              row.status === "Resolved - Contacted" ||
+                                              row.status === "Duplicate Merged"
+                                              ? "Closed"
+                                              : row.status;
 
-    const statusClassName =
-      statusText === "Open" ? "status-red" : "status-green";
+                                        const statusClassName =
+                                          statusText === "Open" ? "status-red" : "status-green";
 
-    return <div className={`status-active-btn ${statusClassName}`}>{statusText}</div>;
-  })()}
-</td>
-{/* <td className="table-row-data">{row.SLA_ETR}</td> */}
+                                        return <div className={`status-active-btn ${statusClassName}`}>{statusText}</div>;
+                                      })()}
+                                    </td>
+                                    {/* <td className="table-row-data">{row.SLA_ETR}</td> */}
                                   </tr>
 
                                 ))
@@ -1687,8 +1689,8 @@ if (pageid == 'raiseNewSR') {
                                           : row.status === "Resolved - Not Contacted" || row.status === "Resolved - Contacted" || row.status === "Duplicate Merged"
                                             ? "Closed"
                                             : row.status;
-                                            const statusClassName =
-      statusText === "Open" ? "status-red" : "status-green";
+                                      const statusClassName =
+                                        statusText === "Open" ? "status-red" : "status-green";
                                       return <div className={`status-active-btn ${statusClassName}`}>{statusText}</div>;
                                     })()}
                                   </div>
@@ -1751,8 +1753,8 @@ if (pageid == 'raiseNewSR') {
                                           : row.status === "Resolved - Not Contacted" || row.status === "Resolved - Contacted" || row.status === "Duplicate Merged"
                                             ? "Closed"
                                             : row.status;
-                                            const statusClassName =
-      statusText === "Open" ? "status-red" : "status-green";
+                                      const statusClassName =
+                                        statusText === "Open" ? "status-red" : "status-green";
                                       return <div className={`status-active-btn ${statusClassName}`}>{statusText}</div>;
                                     })()}
                                   </div>
@@ -1775,7 +1777,7 @@ if (pageid == 'raiseNewSR') {
                                     })()}
                                   </div>
                                 </div>
-                               
+
                                 <div className="d-flex align-items-center justify-content-between flex-wrap">
                                   <div className="table-row-data">
                                     <div className="resp-innerHeading">Category</div>
@@ -1793,29 +1795,29 @@ if (pageid == 'raiseNewSR') {
                                   <div className="table-row-data">
                                     <div className="resp-innerHeading">SLA ETR</div>
                                     <div className="resp-contact">
-                                    {(() => {
-    if (row.SLA_ETR) {
-      const slaEtrParts = row.SLA_ETR.split(/\/|\s|:/);
-      const daySla = parseInt(slaEtrParts[1]);
-      const monthSla = parseInt(slaEtrParts[0]) - 1; // Months are zero-indexed
-      const yearSla = parseInt(slaEtrParts[2].substring(2)); // Extract last two digits of the year
-      const hourSla = parseInt(slaEtrParts[3]);
-      const minuteSla = parseInt(slaEtrParts[4]);
+                                      {(() => {
+                                        if (row.SLA_ETR) {
+                                          const slaEtrParts = row.SLA_ETR.split(/\/|\s|:/);
+                                          const daySla = parseInt(slaEtrParts[1]);
+                                          const monthSla = parseInt(slaEtrParts[0]) - 1; // Months are zero-indexed
+                                          const yearSla = parseInt(slaEtrParts[2].substring(2)); // Extract last two digits of the year
+                                          const hourSla = parseInt(slaEtrParts[3]);
+                                          const minuteSla = parseInt(slaEtrParts[4]);
 
-      const dateSla = new Date(yearSla, monthSla, daySla, hourSla, minuteSla);
+                                          const dateSla = new Date(yearSla, monthSla, daySla, hourSla, minuteSla);
 
-      const formattedMonthSla = dateSla.toLocaleString('default', { month: 'short' });
-      const formattedYearSla = dateSla.toLocaleString('default', { year: '2-digit' });
-      const formattedTimeSla = dateSla.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+                                          const formattedMonthSla = dateSla.toLocaleString('default', { month: 'short' });
+                                          const formattedYearSla = dateSla.toLocaleString('default', { year: '2-digit' });
+                                          const formattedTimeSla = dateSla.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
 
-      return `${daySla} ${formattedMonthSla}'${formattedYearSla} ${formattedTimeSla}`;
-    } else {
-      return "No SLA_ETR available";
-    }
-  })()}
+                                          return `${daySla} ${formattedMonthSla}'${formattedYearSla} ${formattedTimeSla}`;
+                                        } else {
+                                          return "No SLA_ETR available";
+                                        }
+                                      })()}
                                     </div>
                                   </div>
-                                  
+
                                 </div>
                               </div>
                             ))
@@ -1839,8 +1841,8 @@ if (pageid == 'raiseNewSR') {
                                           : row.status === "Resolved - Not Contacted" || row.status === "Resolved - Contacted" || row.status === "Duplicate Merged"
                                             ? "Closed"
                                             : row.status;
-                                            const statusClassName =
-      statusText === "Open" ? "status-red" : "status-green";
+                                      const statusClassName =
+                                        statusText === "Open" ? "status-red" : "status-green";
                                       return <div className={`status-active-btn ${statusClassName}`}>{statusText}</div>;
                                     })()}
                                   </div>
@@ -2109,7 +2111,7 @@ if (pageid == 'raiseNewSR') {
                                 <div className="d-flex align-items-center gap-2">
                                   {/* <img src="./images/product-icon.svg" alt="" /> */}
                                   <span className="textValue">
-                                    { selectedSegmentcreateSr ? selectedSegmentcreateSr : getPinnedClickedData && getLogInFlagC ? getPinnedClickedData.SegmentName + " (" + getPinnedClickedData.CanId + ")" : getLogInFlagC ? getLogInSegment + " (" + getLogInCanId + ")" : "Product name"}
+                                    {selectedSegmentcreateSr ? selectedSegmentcreateSr : getPinnedClickedData && getLogInFlagC ? getPinnedClickedData.SegmentName + " (" + getPinnedClickedData.CanId + ")" : getLogInFlagC ? getLogInSegment + " (" + getLogInCanId + ")" : "Product name"}
                                     {/* {(crmRole === "L3" || (crmRole === "L2" && segment === "OBB")) && getLogInSegment} */}
                                   </span>
                                 </div>
@@ -2159,10 +2161,10 @@ if (pageid == 'raiseNewSR') {
                             Internet not working
                           </label> */}
                                   <label className="request-issue" htmlFor="issue1">
-                                    <input type="radio" value={caseName.length > 0 ? caseName[0].case_type : ""} 
-                                    // onChange={handleRadioChange} 
-                                    onClick={chatBoxClick}
-                                    name="issues" required="" id="issue1" />
+                                    <input type="radio" value={caseName.length > 0 ? caseName[0].case_type : ""}
+                                      // onChange={handleRadioChange} 
+                                      onClick={chatBoxClick}
+                                      name="issues" required="" id="issue1" />
                                     <p className="caption">{caseName.length > 0 ? caseName[0].service_request_name : ""}</p>
                                     <span className="dotmark-outer">
                                       <span className="dotmark-inner" />
@@ -2188,13 +2190,13 @@ if (pageid == 'raiseNewSR') {
                                   </label>
                                 </div>
                                 <div className="col-lg-4 col-md-6 col-sm-12 px-0 my-2">
-                                  
+
 
                                   <label className="request-issue" htmlFor="issue5">
-                                    <input type="radio" value={caseName.length > 0 ? caseName[2].case_type : ""} 
-                                    // onChange={handleRadioChange} 
-                                    onClick={chatBoxClick}
-                                    name="issues" required="" id="issue5" />
+                                    <input type="radio" value={caseName.length > 0 ? caseName[2].case_type : ""}
+                                      // onChange={handleRadioChange} 
+                                      onClick={chatBoxClick}
+                                      name="issues" required="" id="issue5" />
                                     <p className="caption">{caseName.length > 0 ? caseName[2].service_request_name : ""}</p>
                                     <span className="dotmark-outer">
                                       <span className="dotmark-inner" />
@@ -2234,11 +2236,11 @@ if (pageid == 'raiseNewSR') {
                                   </label>
                                 </div>
                                 <div className="col-lg-4 col-md-6 col-sm-12 px-0 my-2">
-                                <label className="request-issue" htmlFor="issue4">
-                                    <input type="radio" value={caseName.length > 0 ? caseName[1].case_type : ""} 
-                                    // onChange={handleRadioChange} 
-                                    onClick={chatBoxClick}
-                                    name="issues" required="" id="issue4" />
+                                  <label className="request-issue" htmlFor="issue4">
+                                    <input type="radio" value={caseName.length > 0 ? caseName[1].case_type : ""}
+                                      // onChange={handleRadioChange} 
+                                      onClick={chatBoxClick}
+                                      name="issues" required="" id="issue4" />
                                     <p className="caption">{caseName.length > 0 ? caseName[1].service_request_name : ""}</p>
                                     <span className="dotmark-outer">
                                       <span className="dotmark-inner" />
@@ -2322,12 +2324,12 @@ if (pageid == 'raiseNewSR') {
                         </div>
                       </div>
 
-                      
+
                     </div>
 
                     <div class="sr-bot">
-                        <div class="help-box d-none">
-                          <iframe
+                      <div class="help-box d-none">
+                        <iframe
                           class="help-box"
                           style={{ backgroundColor: 'white' }}
                           src={`https://web.powerva.microsoft.com/environments/0dd3532b-98c0-e41f-8b03-270bee4632d1/bots/crd2f_spectraQuerySolutions/webchat?CAN_ID=${selectedfinalcanid ? selectedfinalcanid : serviceID}&CAN_ID_SS=${selectedfinalcanid ? selectedfinalcanid : serviceID}&CAN_ID_FF=${selectedfinalcanid ? selectedfinalcanid : serviceID}`}
@@ -2336,21 +2338,21 @@ if (pageid == 'raiseNewSR') {
                           height="445"
                         >
                         </iframe>
-                          {/* <h3>Welcome to My Spectra! 👋</h3>
+                        {/* <h3>Welcome to My Spectra! 👋</h3>
                     <p>How can we help?</p>
                     <button type="button">Chat with a Human</button>
                     <button type="button">Contact Sales</button>
                     <button type="button">FAQs</button> */}
-                        </div>
-                        <button id="chat-btn" class=""
-                          // onClick={handleChatBox}
-                          onClick={chatBoxClick}
-                        >
-                          {/* > */}
-                          {/* <img src={chatcircle2} alt="" /> */}
-                        </button>
-                      </div> 
-                      
+                      </div>
+                      <button id="chat-btn" class=""
+                        // onClick={handleChatBox}
+                        onClick={chatBoxClick}
+                      >
+                        {/* > */}
+                        {/* <img src={chatcircle2} alt="" /> */}
+                      </button>
+                    </div>
+
                   </div>
                 </div>
                 {/* FOOTER START  */}
@@ -2407,9 +2409,11 @@ if (pageid == 'raiseNewSR') {
                   <li className="nav-item" role="presentation" >
                     <button className={actTabAcc} id="pills-srStatus-tab" data-bs-toggle="pill" data-bs-target="#pills-srStatus" type="button" role="tab" aria-controls="pills-srStatus" aria-selected="true">SR Status</button>
                   </li>
-                  <li className="nav-item" role="presentation">
-                    <button className={actTabBill} id="pills-raiseNewSR-tab" data-bs-toggle="pill" data-bs-target="#pills-raiseNewSR" type="button" role="tab" aria-controls="pills-raiseNewSR" aria-selected="false">Raise SR</button>
-                  </li>
+                  {segment != "Hotel" && segment != "PG" && segment != "Office" &&
+                    <li className="nav-item" role="presentation">
+                      <button className={actTabBill} id="pills-raiseNewSR-tab" data-bs-toggle="pill" data-bs-target="#pills-raiseNewSR" type="button" role="tab" aria-controls="pills-raiseNewSR" aria-selected="false">Raise SR</button>
+                    </li>
+                  }
                 </ul>
                 <div className="tab-content" id="pills-tabContent">
                   {/* ****************** SR STATUS TAB ************* */}
@@ -2666,24 +2670,24 @@ if (pageid == 'raiseNewSR') {
                                       })()}
                                     </td> */}
                                     <td className="table-row-data">
-  {(() => {
-    const statusText =
-      row.status === "In Progress" ||
-      row.status === "On Hold - SLA clock Stop" ||
-      row.status === "Waiting for Information"
-        ? "Open"
-        : row.status === "Resolved - Not Contacted" ||
-          row.status === "Resolved - Contacted" ||
-          row.status === "Duplicate Merged"
-        ? "Closed"
-        : row.status;
+                                      {(() => {
+                                        const statusText =
+                                          row.status === "In Progress" ||
+                                            row.status === "On Hold - SLA clock Stop" ||
+                                            row.status === "Waiting for Information"
+                                            ? "Open"
+                                            : row.status === "Resolved - Not Contacted" ||
+                                              row.status === "Resolved - Contacted" ||
+                                              row.status === "Duplicate Merged"
+                                              ? "Closed"
+                                              : row.status;
 
-    const statusClassName =
-      statusText === "Open" ? "status-red" : "status-green";
+                                        const statusClassName =
+                                          statusText === "Open" ? "status-red" : "status-green";
 
-    return <div className={`status-active-btn ${statusClassName}`}>{statusText}</div>;
-  })()}
-</td>
+                                        return <div className={`status-active-btn ${statusClassName}`}>{statusText}</div>;
+                                      })()}
+                                    </td>
                                   </tr>
 
                                 ))
@@ -2730,24 +2734,24 @@ if (pageid == 'raiseNewSR') {
                                       })()}
                                     </td> */}
                                     <td className="table-row-data">
-  {(() => {
-    const statusText =
-      row.status === "In Progress" ||
-      row.status === "On Hold - SLA clock Stop" ||
-      row.status === "Waiting for Information"
-        ? "Open"
-        : row.status === "Resolved - Not Contacted" ||
-          row.status === "Resolved - Contacted" ||
-          row.status === "Duplicate Merged"
-        ? "Closed"
-        : row.status;
+                                      {(() => {
+                                        const statusText =
+                                          row.status === "In Progress" ||
+                                            row.status === "On Hold - SLA clock Stop" ||
+                                            row.status === "Waiting for Information"
+                                            ? "Open"
+                                            : row.status === "Resolved - Not Contacted" ||
+                                              row.status === "Resolved - Contacted" ||
+                                              row.status === "Duplicate Merged"
+                                              ? "Closed"
+                                              : row.status;
 
-    const statusClassName =
-      statusText === "Open" ? "status-red" : "status-green";
+                                        const statusClassName =
+                                          statusText === "Open" ? "status-red" : "status-green";
 
-    return <div className={`status-active-btn ${statusClassName}`}>{statusText}</div>;
-  })()}
-</td>
+                                        return <div className={`status-active-btn ${statusClassName}`}>{statusText}</div>;
+                                      })()}
+                                    </td>
                                   </tr>
 
                                 ))
@@ -2793,25 +2797,25 @@ if (pageid == 'raiseNewSR') {
                                         return <div className="status-active-btn">{statusText}</div>;
                                       })()}
                                     </td> */}
-                                               <td className="table-row-data">
-  {(() => {
-    const statusText =
-      row.status === "In Progress" ||
-      row.status === "On Hold - SLA clock Stop" ||
-      row.status === "Waiting for Information"
-        ? "Open"
-        : row.status === "Resolved - Not Contacted" ||
-          row.status === "Resolved - Contacted" ||
-          row.status === "Duplicate Merged"
-        ? "Closed"
-        : row.status;
+                                    <td className="table-row-data">
+                                      {(() => {
+                                        const statusText =
+                                          row.status === "In Progress" ||
+                                            row.status === "On Hold - SLA clock Stop" ||
+                                            row.status === "Waiting for Information"
+                                            ? "Open"
+                                            : row.status === "Resolved - Not Contacted" ||
+                                              row.status === "Resolved - Contacted" ||
+                                              row.status === "Duplicate Merged"
+                                              ? "Closed"
+                                              : row.status;
 
-    const statusClassName =
-      statusText === "Open" ? "status-red" : "status-green";
+                                        const statusClassName =
+                                          statusText === "Open" ? "status-red" : "status-green";
 
-    return <div className={`status-active-btn ${statusClassName}`}>{statusText}</div>;
-  })()}
-</td>
+                                        return <div className={`status-active-btn ${statusClassName}`}>{statusText}</div>;
+                                      })()}
+                                    </td>
                                   </tr>
 
                                 ))
@@ -2841,8 +2845,8 @@ if (pageid == 'raiseNewSR') {
                                           : row.status === "Resolved - Not Contacted" || row.status === "Resolved - Contacted" || row.status === "Duplicate Merged"
                                             ? "Closed"
                                             : row.status;
-                                            const statusClassName =
-                                            statusText === "Open" ? "status-red" : "status-green";
+                                      const statusClassName =
+                                        statusText === "Open" ? "status-red" : "status-green";
                                       return <div className={`status-active-btn ${statusClassName}`}>{statusText}</div>;
                                     })()}
                                   </div>
@@ -2901,8 +2905,8 @@ if (pageid == 'raiseNewSR') {
                                           : row.status === "Resolved - Not Contacted" || row.status === "Resolved - Contacted" || row.status === "Duplicate Merged"
                                             ? "Closed"
                                             : row.status;
-                                            const statusClassName =
-                                            statusText === "Open" ? "status-red" : "status-green";
+                                      const statusClassName =
+                                        statusText === "Open" ? "status-red" : "status-green";
                                       return <div className={`status-active-btn ${statusClassName}`}>{statusText}</div>;
                                     })()}
                                   </div>
@@ -2961,8 +2965,8 @@ if (pageid == 'raiseNewSR') {
                                           : row.status === "Resolved - Not Contacted" || row.status === "Resolved - Contacted" || row.status === "Duplicate Merged"
                                             ? "Closed"
                                             : row.status;
-                                            const statusClassName =
-                                            statusText === "Open" ? "status-red" : "status-green";
+                                      const statusClassName =
+                                        statusText === "Open" ? "status-red" : "status-green";
                                       return <div className={`status-active-btn ${statusClassName}`}>{statusText}</div>;
                                     })()}
                                   </div>
@@ -3278,8 +3282,8 @@ if (pageid == 'raiseNewSR') {
                           </label> */}
                                   <label className="request-issue" htmlFor="issue1">
                                     <input type="radio" value={caseName.length > 0 ? caseName[0].case_type : ""}
-                                    //  onChange={handleRadioChange}
-                                     onClick={chatBoxClick}
+                                      //  onChange={handleRadioChange}
+                                      onClick={chatBoxClick}
 
                                       name="issues" required="" id="issue1" />
                                     <p className="caption">{caseName.length > 0 ? caseName[0].service_request_name : ""}</p>
@@ -3318,10 +3322,10 @@ if (pageid == 'raiseNewSR') {
                                     </span>
                                   </label> */}
                                   <label className="request-issue" htmlFor="issue5">
-                                    <input type="radio" value={caseName.length > 0 ? caseName[2].case_type : ""} 
-                                    // onChange={handleRadioChange} 
-                                    onClick={chatBoxClick}
-                                    name="issues" required="" id="issue5" />
+                                    <input type="radio" value={caseName.length > 0 ? caseName[2].case_type : ""}
+                                      // onChange={handleRadioChange} 
+                                      onClick={chatBoxClick}
+                                      name="issues" required="" id="issue5" />
                                     <p className="caption">{caseName.length > 0 ? caseName[2].service_request_name : ""}</p>
                                     <span className="dotmark-outer">
                                       <span className="dotmark-inner" />
@@ -3361,11 +3365,11 @@ if (pageid == 'raiseNewSR') {
                                   </label>
                                 </div>
                                 <div className="col-lg-4 col-md-6 col-sm-12 px-0 my-2">
-                                <label className="request-issue" htmlFor="issue4">
-                                    <input type="radio" value={caseName.length > 0 ? caseName[1].case_type : ""} 
-                                    // onChange={handleRadioChange} 
-                                    onClick={chatBoxClick}
-                                    name="issues" required="" id="issue4" />
+                                  <label className="request-issue" htmlFor="issue4">
+                                    <input type="radio" value={caseName.length > 0 ? caseName[1].case_type : ""}
+                                      // onChange={handleRadioChange} 
+                                      onClick={chatBoxClick}
+                                      name="issues" required="" id="issue4" />
                                     <p className="caption">{caseName.length > 0 ? caseName[1].service_request_name : ""}</p>
                                     <span className="dotmark-outer">
                                       <span className="dotmark-inner" />
@@ -3443,14 +3447,14 @@ if (pageid == 'raiseNewSR') {
                           <div />
                           {!isLoading && <button className="newSR-request-btn" onClick={handleSubmit} id="req-submitBtn" disabled={isSubmitDisabled}>
                             submit
-                          </button>}                          
+                          </button>}
                         </div>
-                        
+
                       </div>
                     </div>
 
                     <div class="sr-bot">
-                        <div class="help-box d-none">
+                      <div class="help-box d-none">
                         <iframe
                           class="help-box"
                           style={{ backgroundColor: 'white' }}
@@ -3460,20 +3464,20 @@ if (pageid == 'raiseNewSR') {
                           height="445"
                         >
                         </iframe>
-                          {/* <h3>Welcome to My Spectra! 👋</h3>
+                        {/* <h3>Welcome to My Spectra! 👋</h3>
                     <p>How can we help?</p>
                     <button type="button">Chat with a Human</button>
                     <button type="button">Contact Sales</button>
                     <button type="button">FAQs</button> */}
-                        </div>
-                        <button id="chat-btn" class=""
-                          // onClick={handleChatBox}
-                          onClick={chatBoxClick}
-                        >
-                          {/* > */}
-                          {/* <img src={chatcircle2} alt="" /> */}
-                        </button>
-                      </div> 
+                      </div>
+                      <button id="chat-btn" class=""
+                        // onClick={handleChatBox}
+                        onClick={chatBoxClick}
+                      >
+                        {/* > */}
+                        {/* <img src={chatcircle2} alt="" /> */}
+                      </button>
+                    </div>
                   </div>
                 </div>
                 {/* FOOTER START  */}

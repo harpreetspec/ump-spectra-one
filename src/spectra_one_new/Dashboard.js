@@ -127,22 +127,22 @@ export default function Dashboard() {
 
     "groupID": localStorage.getItem('crm_group_id'),
 
-    "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":localStorage.getItem('crm_company_id'),
+    "companyID": (segmentCheckHBB == "HBB") ? "CIndividual" : localStorage.getItem('crm_company_id'),
 
   }
-  
+
 
   const allcitydropLoc = {
 
     "groupID": localStorage.getItem('crm_group_id'),
 
-    "companyID": (crm_role == "L3") ? companyID:"",
+    "companyID": (crm_role == "L3") ? companyID : "",
     // "locationID": localStorage.getItem("crm_location_id")
-    "locationID":  (crm_role == "L3") ? locationID:""
+    "locationID": (crm_role == "L3") ? locationID : ""
   }
 
   // console.log(allcitydropLoc);
-  
+
 
   const filterData = {
 
@@ -203,8 +203,8 @@ export default function Dashboard() {
       // const data = {groupID: groupID, companyID: companyID, locationID: locationID};
       const data = {
         "groupID": localStorage.getItem("crm_group_id"),
-        "companyID": (crm_role == "L3") ? companyID:"",
-        "locationID":  (crm_role == "L3") ? locationID:""
+        "companyID": (crm_role == "L3") ? companyID : "",
+        "locationID": (crm_role == "L3") ? locationID : ""
       };
       const response = await fetch(url, {
         method: 'POST',
@@ -229,8 +229,8 @@ export default function Dashboard() {
       const url = process.env.REACT_APP_API_URL + '/getLocationLists';
       const data = {
         "groupID": localStorage.getItem("crm_group_id"),
-        "companyID": (crm_role == "L3") ? companyID:"",
-      "locationID":  (crm_role == "L3") ? locationID:""
+        "companyID": (crm_role == "L3") ? companyID : "",
+        "locationID": (crm_role == "L3") ? locationID : ""
       };
       const response = await fetch(url, {
         method: 'POST',
@@ -305,8 +305,8 @@ export default function Dashboard() {
     const url = process.env.REACT_APP_API_URL + '/getSolutionLists';
     const data = {
       groupID: localStorage.getItem("crm_group_id"),
-      "companyID": (crm_role == "L3") ? companyID:"",
-      "locationID":  (crm_role == "L3") ? locationID:""
+      "companyID": (crm_role == "L3") ? companyID : "",
+      "locationID": (crm_role == "L3") ? locationID : ""
     };
 
     const response = await fetch(url, {
@@ -326,8 +326,8 @@ export default function Dashboard() {
     // const data = {groupID: groupID, companyID: companyID, locationID: locationID};
     const data1 = {
       "groupID": localStorage.getItem("crm_group_id"),
-      "companyID": (crm_role == "L3") ? companyID:"",
-      "locationID":  (crm_role == "L3") ? locationID:""
+      "companyID": (crm_role == "L3") ? companyID : "",
+      "locationID": (crm_role == "L3") ? locationID : ""
     };
     const response1 = await fetch(url1, {
       method: 'POST',
@@ -365,8 +365,8 @@ export default function Dashboard() {
     const url = process.env.REACT_APP_API_URL + '/getSolutionLists';
     const data = {
       "groupID": localStorage.getItem("crm_group_id"),
-      "companyID": (crm_role == "L3") ? companyID:"",
-        "locationID":  (crm_role == "L3") ? locationID:""
+      "companyID": (crm_role == "L3") ? companyID : "",
+      "locationID": (crm_role == "L3") ? locationID : ""
     };
 
     const response = await fetch(url, {
@@ -394,8 +394,8 @@ export default function Dashboard() {
   //   (area) => selectedCity === 'All Cities' || area.LocationName === selectedCity
   // );
   const filteredAreaOptions = Array.isArray(areaOptions)
-  ? areaOptions.filter((area) => selectedCity === 'All Cities' || area.LocationName === selectedCity)
-  : [];
+    ? areaOptions.filter((area) => selectedCity === 'All Cities' || area.LocationName === selectedCity)
+    : [];
 
 
   const uniqueAreaNames = Array.from(new Set(filteredAreaOptions.map((area) => area.AreaName)));
@@ -440,8 +440,8 @@ export default function Dashboard() {
       const data = {
 
         "groupID": groupID,
-        "companyID": (crm_role == "L3") ? companyID:"",
-        "locationID":  (crm_role == "L3") ? locationID:""
+        "companyID": (crm_role == "L3") ? companyID : "",
+        "locationID": (crm_role == "L3") ? locationID : ""
 
       }
 
@@ -497,9 +497,9 @@ export default function Dashboard() {
 
         "groupID": groupID,
 
-        "companyID": (crm_role == "L3") ? companyID:"",
+        "companyID": (crm_role == "L3") ? companyID : "",
 
-        "locationID":  (crm_role == "L3") ? locationID:""
+        "locationID": (crm_role == "L3") ? locationID : ""
 
       }
 
@@ -545,12 +545,12 @@ export default function Dashboard() {
   //----Service List-----
   const DateParsing = (dateString) => {
     // const dateString = '18/01/2023 11:26:41';
-    
+
     // Split the date string into its components
     const [datePart, timePart] = dateString.split(' ');
     const [day, month, year] = datePart.split('/');
     const [hours, minutes, seconds] = timePart.split(':');
-    
+
     // Create a new Date object with the parsed components
     const parsedDate = new Date(year, month - 1, day);
     // console.log(parsedDate);
@@ -571,8 +571,8 @@ export default function Dashboard() {
 
         "groupID": groupID,
 
-        "companyID": (crm_role == "L3") ? companyID:"",
-        "locationID":  (crm_role == "L3") ? locationID:"",
+        "companyID": (crm_role == "L3") ? companyID : "",
+        "locationID": (crm_role == "L3") ? locationID : "",
         "fromDate": fromDate.toISOString().slice(0, 10),
         "toDate": toDate.toISOString().slice(0, 10)
 
@@ -596,7 +596,7 @@ export default function Dashboard() {
       const startDate = new Date();
       startDate.setMonth(startDate.getMonth() - 1);
       const endDate = new Date();
-    //  console.log(startDate , "---", endDate);
+      //  console.log(startDate , "---", endDate);
       // const filteredData = result.data.filter(item => {2023-07-11 2023-08-31
       //   const createDate = new Date(item.LastUpdateDate);
       //   return createDate >= startDate && createDate <= endDate;
@@ -614,9 +614,9 @@ export default function Dashboard() {
       } else {
 
         const filteredData = result.data.filter(item => {
-      
+
           const createDate = new Date(DateParsing(item.LastUpdateDate));
-          return createDate >= startDate && createDate <= endDate; 
+          return createDate >= startDate && createDate <= endDate;
         });
         // console.log("filteredData[0].LastUpdateDate)",result.data);
         setGetServiceListCount(filteredData.length);
@@ -657,7 +657,7 @@ export default function Dashboard() {
         "groupID": groupID,
 
         "companyID": companyID,
-        "locationID":  locationID,
+        "locationID": locationID,
         "fromDate": fromDate.toISOString().slice(0, 10),
         "toDate": toDate.toISOString().slice(0, 10)
 
@@ -681,7 +681,7 @@ export default function Dashboard() {
       const startDate = new Date();
       startDate.setMonth(startDate.getMonth() - 1);
       const endDate = new Date();
-    //  console.log(startDate , "---", endDate);
+      //  console.log(startDate , "---", endDate);
       // const filteredData = result.data.filter(item => {2023-07-11 2023-08-31
       //   const createDate = new Date(item.LastUpdateDate);
       //   return createDate >= startDate && createDate <= endDate;
@@ -699,9 +699,9 @@ export default function Dashboard() {
       } else {
 
         const filteredData = result.data.filter(item => {
-      
+
           const createDate = new Date(DateParsing(item.LastUpdateDate));
-          return createDate >= startDate && createDate <= endDate; 
+          return createDate >= startDate && createDate <= endDate;
         });
         // console.log("filteredData[0].LastUpdateDate)",result.data);
         setGetServiceListCount1(filteredData.length);
@@ -728,13 +728,13 @@ export default function Dashboard() {
 
 
   useEffect(() => {
-    let  canIdsString;
+    let canIdsString;
     async function areaList() {
       const url = process.env.REACT_APP_API_URL + '/getAreaLists';
       const data = {
         "groupID": groupID,
-        "companyID": (crm_role == "L3") ? companyID:"",
-        "locationID":  (crm_role == "L3") ? locationID:""
+        "companyID": (crm_role == "L3") ? companyID : "",
+        "locationID": (crm_role == "L3") ? locationID : ""
       };
       const response = await fetch(url, {
         method: 'POST',
@@ -747,7 +747,7 @@ export default function Dashboard() {
       //      console.log("areaList", result.data);
       const canIds = result.data.map(item => item.CanId);
       // console.log("canIds",canIds);
-       canIdsString = canIds.join(',');
+      canIdsString = canIds.join(',');
       setInvoiceCanId(canIdsString);
     }
 
@@ -757,13 +757,13 @@ export default function Dashboard() {
       let currentDate = new Date();
       let currentDate2 = new Date();
       let date3Monthsbefore = new Date(currentDate2.setMonth(currentDate2.getMonth() - 2));
-      
+
       // console.log(date3Monthsbefore);
-      
+
       var mm = date3Monthsbefore.getMonth() + 1;
       var c_m = currentDate.getMonth() + 1;
       // console.log(mm, c_m);
-      
+
       var i_m = ''; var j_m = '';
       if (mm < 10) {
         i_m = 0;
@@ -774,14 +774,14 @@ export default function Dashboard() {
 
       var dayOfMonth = currentDate.getDate()
       //var dd = currentDate.getDate();
-      var dd =dayOfMonth < 10 ? `0${dayOfMonth}` : dayOfMonth
+      var dd = dayOfMonth < 10 ? `0${dayOfMonth}` : dayOfMonth
       var yy = currentDate.getFullYear();
       var yyl = date3Monthsbefore.getFullYear();
       var lastMonth = yyl + '-' + i_m + mm + '-' + dd;
       var currentMonth = yy + '-' + j_m + c_m + '-' + dd;
 
       // console.log("lastMonth: ", lastMonth, currentMonth);
-      
+
       const data = {
         "canIds": `${canIdsString}`,
         "fromDate": lastMonth + 'T00:00:00',
@@ -845,8 +845,8 @@ export default function Dashboard() {
       const url = process.env.REACT_APP_API_URL + '/getAreaLists';
       const data = {
         "groupID": groupID,
-        "companyID": (crm_role == "L3") ? companyID:"",
-        "locationID":  (crm_role == "L3") ? locationID:""
+        "companyID": (crm_role == "L3") ? companyID : "",
+        "locationID": (crm_role == "L3") ? locationID : ""
       };
       const response = await fetch(url, {
         method: 'POST',
@@ -857,42 +857,42 @@ export default function Dashboard() {
       });
       const result = await response.json();
       //      console.log("areaList", result.data);
-       canIDs = result.data.map(item => item.CanId);
+      canIDs = result.data.map(item => item.CanId);
       // console.log("canIds",canIDs);
-     
+
     }
     async function postDeviceTokenLogin(canIDs) {
       // console.log("indide fun ",canIDs);
       const url = 'https://custappmw.spectra.co/index.php';
       for (const canId of canIDs) {
-      const data = {
-        "Action": "deviceSignIn",
-        "Authkey": "AdgT68HnjC8U5S3TkehEqlkd4",
-        "deviceData": {
-          "canId": [
-            canId
-          ],
-          "deviceToken": [
-            localStorage.getItem('gmcToken')
-          ],
-          "deviceType": [
-            "Android"
-          ],
-          "portalType": [
-            "spectraone"
-          ]
-        }
-      };
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      });
-      const result = await response.json();
-      // console.log("postDeviceTokenLogin",result);
-    }
+        const data = {
+          "Action": "deviceSignIn",
+          "Authkey": "AdgT68HnjC8U5S3TkehEqlkd4",
+          "deviceData": {
+            "canId": [
+              canId
+            ],
+            "deviceToken": [
+              localStorage.getItem('gmcToken')
+            ],
+            "deviceType": [
+              "Android"
+            ],
+            "portalType": [
+              "spectraone"
+            ]
+          }
+        };
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        // console.log("postDeviceTokenLogin",result);
+      }
     }
     async function fetchDataLogin() {
       await areaListLogin();
@@ -910,8 +910,8 @@ export default function Dashboard() {
       const url = process.env.REACT_APP_API_URL + '/getSolutionLists';
       const data = {
         "groupID": localStorage.getItem("crm_group_id"),
-        "companyID": (crm_role == "L3") ? companyID:"",
-        "locationID":  (crm_role == "L3") ? locationID:""
+        "companyID": (crm_role == "L3") ? companyID : "",
+        "locationID": (crm_role == "L3") ? locationID : ""
       };
       const response = await fetch(url, {
         method: 'POST',
@@ -941,15 +941,15 @@ export default function Dashboard() {
 
   /*Get Invloice Count HP 20 Jun invoiceCanId*/
   useEffect(() => {
-    let  canIdsString;
+    let canIdsString;
     async function areaList() {
       const url = process.env.REACT_APP_API_URL + '/getAreaLists';
 
 
       const data = {
         "groupID": groupID,
-        "companyID": (crm_role == "L3") ? companyID:"",
-        "locationID":  (crm_role == "L3") ? locationID:""
+        "companyID": (crm_role == "L3") ? companyID : "",
+        "locationID": (crm_role == "L3") ? locationID : ""
       };
       const response = await fetch(url, {
         method: 'POST',
@@ -986,7 +986,7 @@ export default function Dashboard() {
 
       var dayOfMonth = currentDate.getDate()
       //var dd = currentDate.getDate();
-      var dd =dayOfMonth < 10 ? `0${dayOfMonth}` : dayOfMonth
+      var dd = dayOfMonth < 10 ? `0${dayOfMonth}` : dayOfMonth
       var yy = currentDate.getFullYear();
       var yyl = date3Monthsbefore.getFullYear();
       var lastMonth = yyl + '-' + i_m + mm + '-' + dd;
@@ -1016,7 +1016,7 @@ export default function Dashboard() {
       // console.log('InvoiceCount', result);
       setGetInvoiceCount(result.data.invoiceCount);
       setGetInvoiceAmount(inrRupee.format(Math.round(result.data.invoiceAmount ? result.data.invoiceAmount : 0)).replace('.00', ''));
-      setGetInvoiceDueAmount(inrRupee.format(Math.round((result.data.invoiceAmount? result.data.invoiceAmount : 0) - (result.data.paidAmount? result.data.paidAmount : 0))).replace('.00', ''));
+      setGetInvoiceDueAmount(inrRupee.format(Math.round((result.data.invoiceAmount ? result.data.invoiceAmount : 0) - (result.data.paidAmount ? result.data.paidAmount : 0))).replace('.00', ''));
       // console.log("result.data.invoiceAmount",result.data.invoiceAmount);
     }
 
@@ -1052,7 +1052,7 @@ export default function Dashboard() {
 
       var dayOfMonth = currentDate.getDate()
       //var dd = currentDate.getDate();
-      var dd =dayOfMonth < 10 ? `0${dayOfMonth}` : dayOfMonth
+      var dd = dayOfMonth < 10 ? `0${dayOfMonth}` : dayOfMonth
       var yy = currentDate.getFullYear();
       var yyl = date3Monthsbefore.getFullYear();
       var lastMonth = yyl + '-' + i_m + mm + '-' + dd;
@@ -1082,7 +1082,7 @@ export default function Dashboard() {
       //console.log('InvoiceCount', result);
       setGetInvoiceCount1(result.data.invoiceCount);
       setGetInvoiceAmount1(inrRupee.format(Math.round(result.data.invoiceAmount ? result.data.invoiceAmount : 0)).replace('.00', ''));
-      setGetInvoiceDueAmount1(inrRupee.format(Math.round((result.data.invoiceAmount? result.data.invoiceAmount : 0) - ( result.data.paidAmount ? result.data.paidAmount : 0))).replace('.00', ''));
+      setGetInvoiceDueAmount1(inrRupee.format(Math.round((result.data.invoiceAmount ? result.data.invoiceAmount : 0) - (result.data.paidAmount ? result.data.paidAmount : 0))).replace('.00', ''));
       // console.log("result.data.invoiceAmount",result.data);
     }
 
@@ -1128,8 +1128,8 @@ export default function Dashboard() {
 
           "groupID": localStorage.getItem("crm_group_id"),
 
-          "companyID": (crm_role == "L3") ? companyID:"",
-        "locationID":  (crm_role == "L3") ? locationID:""
+          "companyID": (crm_role == "L3") ? companyID : "",
+          "locationID": (crm_role == "L3") ? locationID : ""
 
         };
 
@@ -1270,12 +1270,12 @@ export default function Dashboard() {
     };
   }, []);
   const navigate = useNavigate();
-  
+
   const handleRedirectSrPage = () => {
     // console.log('clicked card box')
     navigate('/servicerequests');
   };
-  
+
   const handleRedirectBillPage = () => {
     // console.log('clicked card box')
     navigate('/accountdetails?pid=bill');
@@ -1328,58 +1328,58 @@ export default function Dashboard() {
                     </div>
                     <div class="dashboard-cards">
                       {/* <Link className="side-link" to="/servicerequests"> */}
-                        <div class="card-box" onClick={handleRedirectSrPage}>
-                          <div class="card-head">Service Desk <span className='small-text'>(Last 1 Month)</span></div>
-                          <div class="card-info pt-2">
-                            <div class="card-count">
-                              
-                              {getServiceListCount < 10 ? `0${getServiceListCount}` : getServiceListCount} <img src={arrowOutward} alt="" />
-                            </div>
+                      <div class="card-box" onClick={handleRedirectSrPage}>
+                        <div class="card-head">Service Desk <span className='small-text'>(Last 1 Month)</span></div>
+                        <div class="card-info pt-2">
+                          <div class="card-count">
 
-                            <div class="card-option">
-                              <div class="card-options pb-3">
-                                Open <span class="span-positive">
-                                  
-                                  {getGetServiceListNotResolved < 10 ? `0${getGetServiceListNotResolved}` : getGetServiceListNotResolved}
-                                  </span>
-                              </div>
-                              <div class="card-options">
-                                Closed <span class="span-negative">
-                                  
-                                  {getGetServiceListResolved < 10 ? `0${getGetServiceListResolved}` : getGetServiceListResolved}
-                                  </span>
-                              </div>
+                            {getServiceListCount < 10 ? `0${getServiceListCount}` : getServiceListCount} <img src={arrowOutward} alt="" />
+                          </div>
+
+                          <div class="card-option">
+                            <div class="card-options pb-3">
+                              Open <span class="span-positive">
+
+                                {getGetServiceListNotResolved < 10 ? `0${getGetServiceListNotResolved}` : getGetServiceListNotResolved}
+                              </span>
+                            </div>
+                            <div class="card-options">
+                              Closed <span class="span-negative">
+
+                                {getGetServiceListResolved < 10 ? `0${getGetServiceListResolved}` : getGetServiceListResolved}
+                              </span>
                             </div>
                           </div>
-                          {/* <span style={{ fontSize: '0.6em' }}>(1 month)</span> */}
                         </div>
+                        {/* <span style={{ fontSize: '0.6em' }}>(1 month)</span> */}
+                      </div>
                       {/* </Link> */}
                       {/* <Link className="side-link" to="/accountdetails?pid=bill"> */}
-                        <div class="card-box card-box-2" onClick={handleRedirectBillPage}>
-                          <div class="card-head card-head2">Bill Desk <span className='small-text'>(Last 3 Months)</span></div>
-                          <div class="card-info pt-2">
-                            <div class="card-count">
-                              
-                              {getInvoiceCount} 
-                              <img src={arrowOutward} alt="" />
+                      <div class="card-box card-box-2" onClick={handleRedirectBillPage}>
+                        <div class="card-head card-head2">Bill Desk <span className='small-text'>(Last 3 Months)</span></div>
+                        <div class="card-info pt-2">
+                          <div class="card-count">
+
+                            {getInvoiceCount}
+                            <img src={arrowOutward} alt="" />
+                          </div>
+                          <div class="card-option">
+                            <div class="card-options pb-3">
+                              Total <span class="span-positive">
+
+                                {getGetInvoiceAmount}
+                              </span>
                             </div>
-                            <div class="card-option">
-                              <div class="card-options pb-3">
-                                Total <span class="span-positive">
-                               
-                                  {getGetInvoiceAmount}
-                                  </span>
-                              </div>
-                              <div class="card-options">
-                                Due <span class="span-negative">
-                                
-                                  {getGetInvoiceDueAmount}
-                                  </span>
-                              </div>
+                            <div class="card-options">
+                              Due <span class="span-negative">
+
+                                {getGetInvoiceDueAmount}
+                              </span>
                             </div>
                           </div>
-                          {/* <span style={{ fontSize: '0.6em' }}>(3 month)</span> */}
                         </div>
+                        {/* <span style={{ fontSize: '0.6em' }}>(3 month)</span> */}
+                      </div>
                       {/* </Link> */}
                     </div>
                   </div>
@@ -1478,8 +1478,8 @@ export default function Dashboard() {
                       </div>
                     </div>
                     <div class="dashboard-cards">
-                    {/* <Link className="side-link" to="/servicerequests"> */}
-                    
+                      {/* <Link className="side-link" to="/servicerequests"> */}
+
                       <div class="card-box" onClick={handleRedirectSrPage}>
                         <div class="card-head">Service Desk <span className='small-text'>(Last 1 Month)</span></div>
                         <div class="card-info pt-2">
@@ -1528,22 +1528,26 @@ export default function Dashboard() {
                 <div class="dashboard-content row">
                   <div class="col-xl-8 col-lg-7 col-sm-12 col-12">
                     <LocOBBpinnedfeature allcitydropLoc={allcitydropLoc} />
-                    <div class="dashboard-box-top-bar">
-                      <div class="dashboard-box-heading">
-                    <p>Network Usage & Availability (Uptime)</p>
-                    </div>
-      </div>
-                    < LocNetworkUsage locNetworkParms={locNetworkParms} />                     
 
-                    {/* LocOBBDataConsumption added temp for a customer 9057356 (1513-1514) */}
-                    {/* { getSolutionList?.PlanName != "ENT_BIA50_F505" && < LocNetworkUsage locNetworkParms={locNetworkParms} />} */}
-                    {!flagCheck && (getSolutionList?.PlanName == "ENT_BIA50_F505") && <LocOBBDataConsumption networkParms={defaultNetworkUsage} />}
-                    {flagCheck && (getSolutionList?.PlanName == "ENT_BIA50_F505") && <LocOBBDataConsumption networkParms={networkParms} />}
+                    {segment != "Hotel" && segment != "PG" && segment != "Office" &&
+                      <div>
+                        <div class="dashboard-box-top-bar">
+                          <div class="dashboard-box-heading">
+                            <p>Network Usage & Availability (Uptime)</p>
+                          </div>
+                        </div>
+                        < LocNetworkUsage locNetworkParms={locNetworkParms} />
 
-                    {/* < LocAvilability /> */}
-                    {!flagCheck && <AvailabilityTest networkParms={[null, defaultNetworkUsage]} />}
-                    {flagCheck && <AvailabilityTest networkParms={availabilityParms} />}
-                    {/* <LocResources /> */}
+                        {/* LocOBBDataConsumption added temp for a customer 9057356 (1513-1514) */}
+                        {/* { getSolutionList?.PlanName != "ENT_BIA50_F505" && < LocNetworkUsage locNetworkParms={locNetworkParms} />} */}
+                        {!flagCheck && (getSolutionList?.PlanName == "ENT_BIA50_F505") && <LocOBBDataConsumption networkParms={defaultNetworkUsage} />}
+                        {flagCheck && (getSolutionList?.PlanName == "ENT_BIA50_F505") && <LocOBBDataConsumption networkParms={networkParms} />}
+
+                        {/* < LocAvilability /> */}
+                        {!flagCheck && <AvailabilityTest networkParms={[null, defaultNetworkUsage]} />}
+                        {flagCheck && <AvailabilityTest networkParms={availabilityParms} />}
+                        {/* <LocResources /> */}
+                      </div>}
                   </div>
                   <div class="col-xl-4 col-lg-5 col-sm-12 col-12">
                     <TopNotification crmRole={crmRole} segment={segment} />
@@ -1556,108 +1560,108 @@ export default function Dashboard() {
 
               {(crmRole == 'L3' && segment == "OBB") &&
                 <div class="dashboard-content row">
-                <div class="col-xl-8 col-lg-7 col-sm-12 col-12">
-                  <LocOBBpinnedfeature allcitydropLoc={allcitydropLoc} />
-                  {/* FILTER BOX  */}
-                  <div class="dashboard-box">
-                    <div
-                      class="filter-head d-flex justify-content-between align-items-center"
-                    >
-                      <p class="p-0 m-0">Service ID:{flagCheck ? (!getBandwidth ? getCanIdDetails.serviceID : getBandwidth[0]?.CanId) : filterData.serviceID}
-                      </p>
-
-                      <button class="filter-apply-btn px-3 py-2" onClick={handleApplyClick}>Apply</button>
-
-                    </div>
-                    <div class="filter-box">
+                  <div class="col-xl-8 col-lg-7 col-sm-12 col-12">
+                    <LocOBBpinnedfeature allcitydropLoc={allcitydropLoc} />
+                    {/* FILTER BOX  */}
+                    <div class="dashboard-box">
                       <div
-                        class="row justify-content-between justify-content-sm-start"
+                        class="filter-head d-flex justify-content-between align-items-center"
                       >
+                        <p class="p-0 m-0">Service ID:{flagCheck ? (!getBandwidth ? getCanIdDetails.serviceID : getBandwidth[0]?.CanId) : filterData.serviceID}
+                        </p>
+
+                        <button class="filter-apply-btn px-3 py-2" onClick={handleApplyClick}>Apply</button>
+
+                      </div>
+                      <div class="filter-box">
                         <div
-                          class="col-xl-2 col-md-3 col-sm-4 col-5 mb-3 mb-sm-0 filter-padding-reset"
+                          class="row justify-content-between justify-content-sm-start"
                         >
-                          <div class="filter-inner-box removeCSS">
-                            <div class="dashboard-box-option">City</div>
-                            <div className="filter-row mt-2">
-                              <select
-                                className="select2-custom w-100"
-                                value={selectedCity}
-                                onChange={handleCityChange}
-                                ref={cityRef}
-                              >
-                                {/* <option value="All Cities">Select City</option> */}
-                                <option value="All Cities" selected style={{ display: "none" }}>{getCanIdDetails ? getCanIdDetails.locationName : ""}</option>
-                                {/* {locations.map((location) => (
+                          <div
+                            class="col-xl-2 col-md-3 col-sm-4 col-5 mb-3 mb-sm-0 filter-padding-reset"
+                          >
+                            <div class="filter-inner-box removeCSS">
+                              <div class="dashboard-box-option">City</div>
+                              <div className="filter-row mt-2">
+                                <select
+                                  className="select2-custom w-100"
+                                  value={selectedCity}
+                                  onChange={handleCityChange}
+                                  ref={cityRef}
+                                >
+                                  {/* <option value="All Cities">Select City</option> */}
+                                  <option value="All Cities" selected style={{ display: "none" }}>{getCanIdDetails ? getCanIdDetails.locationName : ""}</option>
+                                  {/* {locations.map((location) => (
                                   <option key={location.LocationName} value={location.LocationName}>
                                     {location.LocationName}
                                   </option>
                                 ))} */}
-                              </select>
+                                </select>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div
-                          class="col-xl-2 col-md-3 col-sm-4 col-5 mb-3 mb-sm-0 filter-padding-reset filter-divider"
-                        >
-                          <div class="filter-inner-box">
-                            <div class="dashboard-box-option">Location</div>
-                            <div className="filter-row mt-2">
+                          <div
+                            class="col-xl-2 col-md-3 col-sm-4 col-5 mb-3 mb-sm-0 filter-padding-reset filter-divider"
+                          >
+                            <div class="filter-inner-box">
+                              <div class="dashboard-box-option">Location</div>
+                              <div className="filter-row mt-2">
 
-                              <select
-                                id="filterCity"
-                                className="select2-custom w-100"
-                                value={selectedLocation}
-                                onChange={handleLocationChange}
-                                ref={locationRef}
-                              >
-                                {/* <option value="All Locations">All Locations</option> */}
-                                <option value="All Locations" selected style={{ display: "none" }}>{getCanIdDetails ? getCanIdDetails.areaName : ""}</option>
-                                {uniqueAreaNames.map((areaName) => (
-                                  <option key={areaName} value={areaName}>
-                                    {areaName}
-                                  </option>
-                                ))}
-                              </select>
+                                <select
+                                  id="filterCity"
+                                  className="select2-custom w-100"
+                                  value={selectedLocation}
+                                  onChange={handleLocationChange}
+                                  ref={locationRef}
+                                >
+                                  {/* <option value="All Locations">All Locations</option> */}
+                                  <option value="All Locations" selected style={{ display: "none" }}>{getCanIdDetails ? getCanIdDetails.areaName : ""}</option>
+                                  {uniqueAreaNames.map((areaName) => (
+                                    <option key={areaName} value={areaName}>
+                                      {areaName}
+                                    </option>
+                                  ))}
+                                </select>
 
+                              </div>
+                            </div>
+
+
+                          </div>
+
+                          <div
+                            class="col-xl-2 col-md-3 col-sm-4 col-5 mb-3 mb-sm-0 filter-padding-reset filter-divider"
+                          >
+                            <div class="filter-inner-box removeCSSMobile">
+                              <div class="dashboard-box-option">
+                                Product/Solution
+                              </div>
+                              <div class="filter-row mt-2">
+
+                                <select
+                                  className="select2-custom w-100"
+                                  value={selectedValue}
+                                  onChange={handleValueChange}
+                                  ref={productRef}
+                                >
+                                  {/* <option value="">Select an option</option> */}
+                                  <option value="" selected style={{ display: "none" }}>{getCanIdDetails ? getCanIdDetails.segmentName + " (" + getCanIdDetails.serviceID + ")" : ""}</option>
+                                  {segmentDropdown?.map((item, index) => (
+                                    <option key={index} value={item.SegmentName + " (" + item.CanId + ")"}>
+                                      {item.SegmentName + " (" + item.CanId + ")"}
+                                    </option>
+                                  ))}
+                                </select>
+                              </div>
                             </div>
                           </div>
 
-
-                        </div>
-
-                        <div
-                          class="col-xl-2 col-md-3 col-sm-4 col-5 mb-3 mb-sm-0 filter-padding-reset filter-divider"
-                        >
-                          <div class="filter-inner-box removeCSSMobile">
-                            <div class="dashboard-box-option">
-                              Product/Solution
-                            </div>
-                            <div class="filter-row mt-2">
-
-                              <select
-                                className="select2-custom w-100"
-                                value={selectedValue}
-                                onChange={handleValueChange}
-                                ref={productRef}
-                              >
-                                {/* <option value="">Select an option</option> */}
-                                <option value="" selected style={{ display: "none" }}>{getCanIdDetails ? getCanIdDetails.segmentName + " (" + getCanIdDetails.serviceID + ")" : ""}</option>
-                                {segmentDropdown?.map((item, index) => (
-                                  <option key={index} value={item.SegmentName + " (" + item.CanId + ")"}>
-                                    {item.SegmentName + " (" + item.CanId + ")"}
-                                  </option>
-                                ))}
-                              </select>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div
-                          class="col-xl-2 col-md-3 col-sm-4 col-5 mb-3 mb-sm-0 filter-padding-reset filter-divider"
-                        >
-                          <div class="filter-inner-box">
-                            <div class="dashboard-box-option">Period</div>
-                            {/* <div class="filter-row mt-2">
+                          <div
+                            class="col-xl-2 col-md-3 col-sm-4 col-5 mb-3 mb-sm-0 filter-padding-reset filter-divider"
+                          >
+                            <div class="filter-inner-box">
+                              <div class="dashboard-box-option">Period</div>
+                              {/* <div class="filter-row mt-2">
                             <div
                               class="custom-select date-range"
                               id="reportrange"
@@ -1665,78 +1669,78 @@ export default function Dashboard() {
                               <span>Today</span>
                             </div>
                           </div> */}
-                            <div class="filter-row mt-2">
+                              <div class="filter-row mt-2">
 
-                              <select
-                                className="select2-custom w-100"
-                                value={selectedPeriod}
-                                onChange={handlePeriodChange}
-                                ref={periodRef}
-                              >
-                                <option value="">Select an option</option>
-                                <option value="1">24 Hours</option>
-                                <option value="2">Today</option>
-                                <option value="3">Yesterday</option>
-                                <option value="4">Last 7 Days</option>
-                                <option value="5">This Week</option>
-                                <option value="6">Last Week</option>
-                                <option value="7">Last 30 Days</option>
-                                <option value="8">This Month</option>
-                                <option value="9">Last Month</option>
-                              </select>
+                                <select
+                                  className="select2-custom w-100"
+                                  value={selectedPeriod}
+                                  onChange={handlePeriodChange}
+                                  ref={periodRef}
+                                >
+                                  <option value="">Select an option</option>
+                                  <option value="1">24 Hours</option>
+                                  <option value="2">Today</option>
+                                  <option value="3">Yesterday</option>
+                                  <option value="4">Last 7 Days</option>
+                                  <option value="5">This Week</option>
+                                  <option value="6">Last Week</option>
+                                  <option value="7">Last 30 Days</option>
+                                  <option value="8">This Month</option>
+                                  <option value="9">Last Month</option>
+                                </select>
 
 
 
+                              </div>
                             </div>
                           </div>
-                        </div>
 
 
-                        <div
-                          class="col-xl-2 col-md-3 col-sm-4 col-5 mb-3 mb-sm-0 filter-padding-reset filter-divider"
-                        >
-                          <div class="filter-inner-box">
-                            <div class="dashboard-box-option mb-1">Bandwidth</div>
-                            <div class="filter-row mt-2">
-                              {/* {getBandwidth?.map((item, index) => (
+                          <div
+                            class="col-xl-2 col-md-3 col-sm-4 col-5 mb-3 mb-sm-0 filter-padding-reset filter-divider"
+                          >
+                            <div class="filter-inner-box">
+                              <div class="dashboard-box-option mb-1">Bandwidth</div>
+                              <div class="filter-row mt-2">
+                                {/* {getBandwidth?.map((item, index) => (
                               <div key={index} class="filter-value">{item.Bandwidth}</div>
                             ))} */}
-                              <div class="filter-value"> {getCanIdDetails ? getCanIdDetails.bandwidth : ""}</div>
+                                <div class="filter-value"> {getCanIdDetails ? getCanIdDetails.bandwidth : ""}</div>
 
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div
-                          class="col-xl-2 col-md-3 col-sm-4 col-5 mb-3 mb-sm-0 filter-padding-reset filter-divider"
-                        >
-                          <div class="filter-inner-box">
-                            <div class="dashboard-box-option mb-1">
-                              Data Limit
-                            </div>
-                            <div class="filter-row mt-2">
-                              {/* {getBandwidth?.map((item, index) => (
+                          <div
+                            class="col-xl-2 col-md-3 col-sm-4 col-5 mb-3 mb-sm-0 filter-padding-reset filter-divider"
+                          >
+                            <div class="filter-inner-box">
+                              <div class="dashboard-box-option mb-1">
+                                Data Limit
+                              </div>
+                              <div class="filter-row mt-2">
+                                {/* {getBandwidth?.map((item, index) => (
                               <div key={index} class="filter-value">{item.Datalimit}</div>
                             ))} */}
-                              <div class="filter-value"> {getCanIdDetails ? getCanIdDetails.datalimit : ""}</div>
+                                <div class="filter-value"> {getCanIdDetails ? getCanIdDetails.datalimit : ""}</div>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  {!flagCheck && <LocOBBDataConsumption networkParms={defaultNetworkUsage} />}
-                  {flagCheck && <LocOBBDataConsumption networkParms={networkParms} />}
+                    {!flagCheck && <LocOBBDataConsumption networkParms={defaultNetworkUsage} />}
+                    {flagCheck && <LocOBBDataConsumption networkParms={networkParms} />}
 
-                  {/* <LocResources /> */}
+                    {/* <LocResources /> */}
+                  </div>
+                  <div class="col-xl-4 col-lg-5 col-sm-12 col-12">
+                    <TopNotification crmRole={crmRole} segment={segment} />
+                    {/* <DataConsumption /> */}
+                    {!flagCheck && <DataConsumption networkParms={defaultNetworkUsage} />}
+                    {flagCheck && <DataConsumption networkParms={networkParms} />}
+                    <GetHelp />
+                  </div>
                 </div>
-                <div class="col-xl-4 col-lg-5 col-sm-12 col-12">
-                  <TopNotification crmRole={crmRole} segment={segment} />
-                  {/* <DataConsumption /> */}
-                  {!flagCheck &&  <DataConsumption networkParms={defaultNetworkUsage}/>}
-                {flagCheck &&  <DataConsumption networkParms={networkParms}/>}
-                  <GetHelp />
-                </div>
-              </div>
 
               }
 
@@ -1918,8 +1922,8 @@ export default function Dashboard() {
                   <div class="col-xl-4 col-lg-5 col-sm-12 col-12">
                     <TopNotification crmRole={crmRole} segment={segment} />
                     {/* <DataConsumption /> */}
-                    {!flagCheck &&  <DataConsumption networkParms={defaultNetworkUsage}/>}
-                  {flagCheck &&  <DataConsumption networkParms={networkParms}/>}
+                    {!flagCheck && <DataConsumption networkParms={defaultNetworkUsage} />}
+                    {flagCheck && <DataConsumption networkParms={networkParms} />}
                     <GetHelp />
                   </div>
                 </div>
@@ -2103,42 +2107,43 @@ export default function Dashboard() {
                   <div class="col-xl-4 col-lg-5 col-sm-12 col-12">
                     <TopNotification crmRole={crmRole} segment={segment} />
                     {/* <DataConsumption /> */}
-                    {!flagCheck &&  <DataConsumption networkParms={defaultNetworkUsage}/>}
-                  {flagCheck &&  <DataConsumption networkParms={networkParms}/>}
+                    {!flagCheck && <DataConsumption networkParms={defaultNetworkUsage} />}
+                    {flagCheck && <DataConsumption networkParms={networkParms} />}
                     <GetHelp />
                   </div>
                 </div>
 
               }
 
-              {(crmRole == 'L2') && <div class="dashboard-content row">
-                {/* <div class="col-xl-8 col-lg-7 col-sm-12 col-12"> */}
+              {(crmRole == 'L2') &&
+                <div class="dashboard-content row">
+                  {/* <div class="col-xl-8 col-lg-7 col-sm-12 col-12"> */}
 
 
                   {/* WISHLIST Features SECTION  */}
                   <Pinnedfeature allcitydrop={allcitydrop} />
-                  
+
                   {/* FILTER BOX  */}
                   {/* <Filter filterData={filterData} /> */}
-                 
+
 
                   {/* NETWORK USAGE SECTION */}
-                 
+
 
                   {/* Availability SECTION  */}
                   {/* <Availability sampleData={sampleData}/> */}
-                 
-                {/* </div> */}
 
-                {/* <div class="col-xl-4 col-lg-5 col-sm-12 col-12">
+                  {/* </div> */}
+
+                  {/* <div class="col-xl-4 col-lg-5 col-sm-12 col-12">
                
                   <TopNotification crmRole={crmRole} segment={segment} />
                
                   <GetHelp />
                 </div> */}
-              </div>}
+                </div>}
               {/* comapny OBB after top section */}
-              
+
               {/* FOOTER START */}
               <Footer />
             </div>

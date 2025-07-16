@@ -105,7 +105,7 @@ export default function ApplyFilter(getPinnedClicked) {
   const groupID = localStorage.getItem('crm_group_id');
 
   const companyID = localStorage.getItem('crm_company_id');
- 
+
 
   const companyName = localStorage.getItem('company_name');
   const segment2 = localStorage.getItem('segment');
@@ -189,8 +189,8 @@ export default function ApplyFilter(getPinnedClicked) {
     LocationName: "",
     SegmentName: ""
   });
-  const [abcFlag, setAbcFlag]= useState(false);
-  const [defaultNetworkUsage2, setDefaultNetworkUsage2]= useState(
+  const [abcFlag, setAbcFlag] = useState(false);
+  const [defaultNetworkUsage2, setDefaultNetworkUsage2] = useState(
     {
       canID: localStorage.getItem("credentialKey"),
       period: "4",
@@ -204,36 +204,36 @@ export default function ApplyFilter(getPinnedClicked) {
   // let pinnedClickedData;
   // pinnedClickedData && setSelectedCity(pinnedClickedData.LocationName);
   // console.log("pinnedClickedData$$$$$", pinnedClickedData);
-  
+
   let pinnedSession = JSON.parse(sessionStorage.getItem('pinnedClicked'));
   // console.log(pinnedSession);
 
 
 
 
-let pinnedSegment;
-let pinnedData
+  let pinnedSegment;
+  let pinnedData
 
-// if(abcFlag){
-//   pinnedData = getPinnedClicked ? getPinnedClicked.getPinnedClicked : "";
-//   pinnedSegment = pinnedData ? pinnedData.SegmentName : "";
-//   // pinnedData && console.log("pinnedData", pinnedData.SegmentName);
-// }
+  // if(abcFlag){
+  //   pinnedData = getPinnedClicked ? getPinnedClicked.getPinnedClicked : "";
+  //   pinnedSegment = pinnedData ? pinnedData.SegmentName : "";
+  //   // pinnedData && console.log("pinnedData", pinnedData.SegmentName);
+  // }
 
-useEffect(() => {
-  if(pinnedSession && pinnedSession.length > 0){
-    //  alert("pinnedSession")
-    pinnedData = getPinnedClicked ? getPinnedClicked.getPinnedClicked : "";
-  pinnedSegment = pinnedData ? pinnedData.SegmentName : "";
-    setAbcFlag(true);
-  }
-}, [pinnedSession]);
+  useEffect(() => {
+    if (pinnedSession && pinnedSession.length > 0) {
+      //  alert("pinnedSession")
+      pinnedData = getPinnedClicked ? getPinnedClicked.getPinnedClicked : "";
+      pinnedSegment = pinnedData ? pinnedData.SegmentName : "";
+      setAbcFlag(true);
+    }
+  }, [pinnedSession]);
 
-    const DCParms = pinnedData && {
-      canID: pinnedData.CanId && pinnedData.CanId,
-      period : selectedPeriod ? selectedPeriod : "4" 
-    };
-    // setDataConsumptionParms(DCParms);
+  const DCParms = pinnedData && {
+    canID: pinnedData.CanId && pinnedData.CanId,
+    period: selectedPeriod ? selectedPeriod : "4"
+  };
+  // setDataConsumptionParms(DCParms);
 
 
   const defaultNetworkUsage = {
@@ -251,13 +251,13 @@ useEffect(() => {
     // console.log("Inside" , pinnedFlag);
 
     if (pinnedFlag && abcFlag && (getPinnedClicked && getPinnedClicked.getPinnedClicked)) {
-        // alert("if useeffect")
+      // alert("if useeffect")
       setPinnedClickedData(getPinnedClicked.getPinnedClicked);
       // pinnedClickedData = getPinnedClicked.getPinnedClicked;
       // console.log("getPinnedClicked", getPinnedClicked);
       // alert("getPinnedClicked", getPinnedClicked.getPinnedClicked);
     } else if (pinnedFlag && !flagCheck2) {
-        // alert("else if useeffect ")
+      // alert("else if useeffect ")
       setPinnedClickedData("");
     }
   }, [pinnedFlag, getPinnedClicked, abcFlag]);
@@ -272,53 +272,53 @@ useEffect(() => {
     //  alert("pinnedApplyClick");
     // setPinnedClickedData("");    
 
-    if(getSelectedSegment === "OBB" || getSelectedSegment === "BBB"){
+    if (getSelectedSegment === "OBB" || getSelectedSegment === "BBB") {
       setFlagCheck(true);
-        // alert(" ifgetSelectedSegment === OBB pinnedapply")
+      // alert(" ifgetSelectedSegment === OBB pinnedapply")
       pinnedSegment = "";
       setDCFlag(true);
 
       const DCParms = {
         canID: getSelectedCan,
-        period : selectedPeriod ? selectedPeriod : "4" 
+        period: selectedPeriod ? selectedPeriod : "4"
       };
       setDataConsumptionParms(DCParms);
-    
-      const searchParams = new URLSearchParams(location.search); 
-      searchParams.set('parms', JSON.stringify(DCParms)); 
-      // searchParams.set('paramName2', getSelectedCan); 
-  
-      // Construct the new search string with the updated parameter 
-      const newSearch = searchParams.toString(); 
-      // Update the URL without navigating away
-       navigate({ search: newSearch });
 
-      }else if(pinnedSegment && (pinnedSegment === "OBB" ||  pinnedSegment === "BBB")){
-        setFlagCheck(true);
-        
-          // alert("else if pinnedData.SegmentName === OBB pinnedapply")
-        setSelectedSegment("");
-        setDCFlag(true);
-        const DCParms = {
-          canID: pinnedData.CanId,
-          period : selectedPeriod ? selectedPeriod : "4" 
-        };
-        setDataConsumptionParms(DCParms);
-        const searchParams = new URLSearchParams(location.search); 
-      searchParams.set('parms', JSON.stringify(DCParms)); 
+      const searchParams = new URLSearchParams(location.search);
+      searchParams.set('parms', JSON.stringify(DCParms));
       // searchParams.set('paramName2', getSelectedCan); 
-  
-      // Construct the new search string with the updated parameter 
-      const newSearch = searchParams.toString(); 
-      // Update the URL without navigating away
-       navigate({ search: newSearch });
 
-      }else{
-        // alert("else pinnedapply")
-        setFlagCheck2(true);
-        setSelectedSegment("");
-        pinnedSegment = "";
-        setDCFlag(false);
+      // Construct the new search string with the updated parameter 
+      const newSearch = searchParams.toString();
+      // Update the URL without navigating away
+      navigate({ search: newSearch });
+
+    } else if (pinnedSegment && (pinnedSegment === "OBB" || pinnedSegment === "BBB")) {
+      setFlagCheck(true);
+
+      // alert("else if pinnedData.SegmentName === OBB pinnedapply")
+      setSelectedSegment("");
+      setDCFlag(true);
+      const DCParms = {
+        canID: pinnedData.CanId,
+        period: selectedPeriod ? selectedPeriod : "4"
+      };
+      setDataConsumptionParms(DCParms);
+      const searchParams = new URLSearchParams(location.search);
+      searchParams.set('parms', JSON.stringify(DCParms));
+      // searchParams.set('paramName2', getSelectedCan); 
+
+      // Construct the new search string with the updated parameter 
+      const newSearch = searchParams.toString();
+      // Update the URL without navigating away
+      navigate({ search: newSearch });
+
+    } else {
+      // alert("else pinnedapply")
+      setFlagCheck2(true);
+      setSelectedSegment("");
+      pinnedSegment = "";
+      setDCFlag(false);
 
       const searchParams = new URLSearchParams(location.search);
       searchParams.delete("parms");
@@ -330,13 +330,13 @@ useEffect(() => {
       //   const searchParams = new URLSearchParams(location.search); 
       // searchParams.set('parms', "");
       // // searchParams.set('paramName2', getSelectedCan); 
-  
+
       // // Construct the new search string with the updated parameter 
       // const newSearch = searchParams.toString(); 
       // // Update the URL without navigating away
       //  navigate({ search: newSearch });
       // //  setFlagCheck((flagCheck) => !flagCheck);
-      }
+    }
 
     const updatedPinnedNetwork = {
       service_id: pinnedClickedData && pinnedClickedData.CanId,
@@ -355,8 +355,8 @@ useEffect(() => {
     setUpdatedPinnedNetworkUsage("");
     setPinnedClickedData("");
     setAbcFlag(false);
-    
-    sessionStorage.removeItem('pinnedClicked'); 
+
+    sessionStorage.removeItem('pinnedClicked');
     // setPinnedFlag(false);
     setDataConsumptionParms("")
     let updatedParam = {
@@ -367,49 +367,49 @@ useEffect(() => {
     setDefaultNetworkUsage2(updatedParam);
     sessionStorage.setItem("dup", JSON.stringify(updatedParam));
 
-    if(getSelectedSegment === "OBB" || getSelectedSegment === "BBB"){
+    if (getSelectedSegment === "OBB" || getSelectedSegment === "BBB") {
       //  alert("getSelectedSegment === OBB")
       pinnedSegment = "";
       setDCFlag(true);
-      
+
       const DCParms = {
         canID: getSelectedCan,
-        period : selectedPeriod ? selectedPeriod : "4" 
+        period: selectedPeriod ? selectedPeriod : "4"
       };
       setDataConsumptionParms(DCParms);
-    
-      const searchParams = new URLSearchParams(location.search); 
-      searchParams.set('parms', JSON.stringify(DCParms)); 
-      // searchParams.set('paramName2', getSelectedCan); 
-  
-      // Construct the new search string with the updated parameter 
-      const newSearch = searchParams.toString(); 
-      // Update the URL without navigating away
-       navigate({ search: newSearch });
 
-      }else if(pinnedSegment && (pinnedSegment === "OBB" || pinnedSegment === "BBB")){
-        //  alert("pinnedData.SegmentName === OBB")
-        setSelectedSegment("");
-        setDCFlag(true);
-        const DCParms = {
-          canID: pinnedData.CanId,
-          period : selectedPeriod ? selectedPeriod : "4" 
-        };
-        setDataConsumptionParms(DCParms);
-        const searchParams = new URLSearchParams(location.search); 
-      searchParams.set('parms', JSON.stringify(DCParms)); 
+      const searchParams = new URLSearchParams(location.search);
+      searchParams.set('parms', JSON.stringify(DCParms));
       // searchParams.set('paramName2', getSelectedCan); 
-  
-      // Construct the new search string with the updated parameter 
-      const newSearch = searchParams.toString(); 
-      // Update the URL without navigating away
-       navigate({ search: newSearch });
 
-      }else{
-        //  alert("else")
-        setSelectedSegment("");
-        pinnedSegment = "";
-        setDCFlag(false);
+      // Construct the new search string with the updated parameter 
+      const newSearch = searchParams.toString();
+      // Update the URL without navigating away
+      navigate({ search: newSearch });
+
+    } else if (pinnedSegment && (pinnedSegment === "OBB" || pinnedSegment === "BBB")) {
+      //  alert("pinnedData.SegmentName === OBB")
+      setSelectedSegment("");
+      setDCFlag(true);
+      const DCParms = {
+        canID: pinnedData.CanId,
+        period: selectedPeriod ? selectedPeriod : "4"
+      };
+      setDataConsumptionParms(DCParms);
+      const searchParams = new URLSearchParams(location.search);
+      searchParams.set('parms', JSON.stringify(DCParms));
+      // searchParams.set('paramName2', getSelectedCan); 
+
+      // Construct the new search string with the updated parameter 
+      const newSearch = searchParams.toString();
+      // Update the URL without navigating away
+      navigate({ search: newSearch });
+
+    } else {
+      //  alert("else")
+      setSelectedSegment("");
+      pinnedSegment = "";
+      setDCFlag(false);
 
       const searchParams = new URLSearchParams(location.search);
       searchParams.delete("parms");
@@ -421,12 +421,12 @@ useEffect(() => {
       //   const searchParams = new URLSearchParams(location.search); 
       // searchParams.set('parms', "");
       // // searchParams.set('paramName2', getSelectedCan); 
-  
+
       // // Construct the new search string with the updated parameter 
       // const newSearch = searchParams.toString(); 
       // // Update the URL without navigating away
       //  navigate({ search: newSearch });
-      }
+    }
 
 
     // console.log("getBandwidth", getBandwidth, "period", selectedPeriod);
@@ -434,19 +434,19 @@ useEffect(() => {
       const { CanId } = getBandwidth[0];
       // console.log("CanId", CanId); // Log the value of CanId
     }
-    if(getBandwidth && getBandwidth[0]?.CanId){
-     updatedNetworkParms = {
-      service_id:  getBandwidth[0].CanId,
-      period: selectedPeriod,
-      segmentName: getBandwidth[0].SegmentName
+    if (getBandwidth && getBandwidth[0]?.CanId) {
+      updatedNetworkParms = {
+        service_id: getBandwidth[0].CanId,
+        period: selectedPeriod,
+        segmentName: getBandwidth[0].SegmentName
+      }
+    } else {
+      updatedNetworkParms = {
+        service_id: getCanIdDetails ? getCanIdDetails.serviceID : getBandwidth[0].CanId,
+        period: selectedPeriod,
+        segmentName: getCanIdDetails ? getCanIdDetails.segmentName : getBandwidth[0].SegmentName
+      }
     }
-  }else{
-    updatedNetworkParms = {
-      service_id: getCanIdDetails ? getCanIdDetails.serviceID : getBandwidth[0].CanId,
-      period: selectedPeriod,
-      segmentName: getCanIdDetails ? getCanIdDetails.segmentName : getBandwidth[0].SegmentName
-    }
-  }
 
     const updatedAvailabilityParms = {
       // service_id: getCanIdDetails ? getCanIdDetails.serviceID : getBandwidth[0].CanId,
@@ -458,11 +458,11 @@ useEffect(() => {
     // console.log("updatedNetworkParms", updatedAvailabilityParms);
     setNetworkParms(updatedNetworkParms);
     setAvailabilityParmsParms(updatedAvailabilityParms)
-    
+
     setFlagCheck(true)
     // setFlagCheck((prevFlag) => !prevFlag);
     //console.log("inside function flagCheck", flagCheck);
-  } 
+  }
 
   let locNetworkParms = {}
   // filter box
@@ -482,8 +482,8 @@ useEffect(() => {
       // const data = {groupID: groupID, companyID: companyID, locationID: locationID};
       const data = {
         "groupID": localStorage.getItem("crm_group_id"),
-        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-      "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual" : "",
+        "locationID": (segmentCheckHBB == "HBB") ? locationID : ""
       };
       const response = await fetch(url, {
         method: 'POST',
@@ -509,8 +509,8 @@ useEffect(() => {
       const url = process.env.REACT_APP_API_URL + '/getLocationLists';
       const data = {
         "groupID": localStorage.getItem("crm_group_id"),
-        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-      "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual" : "",
+        "locationID": (segmentCheckHBB == "HBB") ? locationID : ""
       };
       const response = await fetch(url, {
         method: 'POST',
@@ -535,9 +535,9 @@ useEffect(() => {
   const handleCityChange = (event) => {
     setSelectedValue("Select Segment");
     setPinnedClickedData("");
-     pinnedSegment = "";
-     sessionStorage.removeItem('pinnedClicked');
-     setAbcFlag(false);
+    pinnedSegment = "";
+    sessionStorage.removeItem('pinnedClicked');
+    setAbcFlag(false);
     // setDCFlag(false);
     // console.log(pinnedClickedData);
     // console.log("pinnedClickedData", pinnedClickedData);
@@ -566,8 +566,8 @@ useEffect(() => {
     const url = process.env.REACT_APP_API_URL + '/getSolutionLists';
     const data = {
       "groupID": localStorage.getItem("crm_group_id"),
-      "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-      "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+      "companyID": (segmentCheckHBB == "HBB") ? "CIndividual" : "",
+      "locationID": (segmentCheckHBB == "HBB") ? locationID : ""
     };
 
     const response = await fetch(url, {
@@ -587,8 +587,8 @@ useEffect(() => {
     // const data = {groupID: groupID, companyID: companyID, locationID: locationID};
     const data1 = {
       "groupID": localStorage.getItem("crm_group_id"),
-      "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-      "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+      "companyID": (segmentCheckHBB == "HBB") ? "CIndividual" : "",
+      "locationID": (segmentCheckHBB == "HBB") ? locationID : ""
     };
     const response1 = await fetch(url1, {
       method: 'POST',
@@ -610,59 +610,59 @@ useEffect(() => {
   };
 
   const handleValueChange = async (event) => {
-    try{
-    setCanIdDetails1(true);
-    // setDCFlag(false);
-    const segmentName = event;
-    // console.log("segmentName", segmentName);
-    setSelectedValue(segmentName);
-    // console.log("segmentName", segmentName);
-    const start = segmentName.indexOf("(") + 1;
-    const end = segmentName.indexOf(")");
-    const SegmentName = segmentName.substring(0, start - 2).trim();
-    // console.log("SegmentName", SegmentName);
-    setSelectedSegment(SegmentName);
-    // console.log("start", start, "end", end);
-    // Extract the CanId (193715)
-    const matches = segmentName.match(/\((\d+)\)/);
-    if (matches && matches.length === 2) {
-      const CanId = matches[1]; // Extracted CanId  
-      // Use the extracted CanId as needed
-      // console.log("Selected CanId:", CanId);
-      setSelectedCan(CanId);
-    
-    // const CanId = segmentName.substring(start, end);
-    const url = process.env.REACT_APP_API_URL + '/getSolutionLists';
-    const data = {
-      "groupID": localStorage.getItem("crm_group_id"),
-      "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-      "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
-    };
+    try {
+      setCanIdDetails1(true);
+      // setDCFlag(false);
+      const segmentName = event;
+      // console.log("segmentName", segmentName);
+      setSelectedValue(segmentName);
+      // console.log("segmentName", segmentName);
+      const start = segmentName.indexOf("(") + 1;
+      const end = segmentName.indexOf(")");
+      const SegmentName = segmentName.substring(0, start - 2).trim();
+      // console.log("SegmentName", SegmentName);
+      setSelectedSegment(SegmentName);
+      // console.log("start", start, "end", end);
+      // Extract the CanId (193715)
+      const matches = segmentName.match(/\((\d+)\)/);
+      if (matches && matches.length === 2) {
+        const CanId = matches[1]; // Extracted CanId  
+        // Use the extracted CanId as needed
+        // console.log("Selected CanId:", CanId);
+        setSelectedCan(CanId);
 
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
-    const result = await response.json();
-    // console.log("getSolutionLists", result.data);
-    const filteredData3 = result.data.filter(item => item.SegmentName === SegmentName && item.CanId === CanId);
-    // console.log("setBandwidth", filteredData3);
-    setBandwidth(filteredData3);
-    // setSolutionName(event.target.value)
-  }
-  } catch(e){
-    console.error(e);
-  }
+        // const CanId = segmentName.substring(start, end);
+        const url = process.env.REACT_APP_API_URL + '/getSolutionLists';
+        const data = {
+          "groupID": localStorage.getItem("crm_group_id"),
+          "companyID": (segmentCheckHBB == "HBB") ? "CIndividual" : "",
+          "locationID": (segmentCheckHBB == "HBB") ? locationID : ""
+        };
+
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        // console.log("getSolutionLists", result.data);
+        const filteredData3 = result.data.filter(item => item.SegmentName === SegmentName && item.CanId === CanId);
+        // console.log("setBandwidth", filteredData3);
+        setBandwidth(filteredData3);
+        // setSolutionName(event.target.value)
+      }
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const handlePeriodChange = async (event) => {
     // setDCFlag(false);
     const selectPeriod = event;
     // console.log("selectPeriod", selectPeriod);
-    setSelectedPeriod(selectPeriod);    
+    setSelectedPeriod(selectPeriod);
   }
 
 
@@ -710,8 +710,8 @@ useEffect(() => {
 
         "groupID": groupID,
 
-        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-      "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual" : "",
+        "locationID": (segmentCheckHBB == "HBB") ? locationID : ""
 
       }
 
@@ -762,14 +762,14 @@ useEffect(() => {
       const url = process.env.REACT_APP_API_URL + '/getSolutionCount';
 
       // const data = {groupID: groupID, companyID: companyID, locationID: locationID};
-      
+
       const data = {
 
         "groupID": groupID,
 
-        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
+        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual" : "",
 
-        "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+        "locationID": (segmentCheckHBB == "HBB") ? locationID : ""
 
       }
 
@@ -829,8 +829,8 @@ useEffect(() => {
 
         "groupID": groupID,
 
-        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-        "locationID":  (segmentCheckHBB == "HBB") ? locationID:"",
+        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual" : "",
+        "locationID": (segmentCheckHBB == "HBB") ? locationID : "",
         "fromDate": fromDate.toISOString().slice(0, 10),
         "toDate": toDate.toISOString().slice(0, 10)
 
@@ -879,13 +879,13 @@ useEffect(() => {
 
   }, []);
   useEffect(() => {
-    let  canIdsString
+    let canIdsString
     async function areaList() {
       const url = process.env.REACT_APP_API_URL + '/getAreaLists';
       const data = {
         "groupID": groupID,
-        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-        "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual" : "",
+        "locationID": (segmentCheckHBB == "HBB") ? locationID : ""
       };
       const response = await fetch(url, {
         method: 'POST',
@@ -897,7 +897,7 @@ useEffect(() => {
       const result = await response.json();
       //      console.log("areaList", result.data);
       const canIds = result.data.map(item => item.CanId);
-       canIdsString = canIds.join(',');
+      canIdsString = canIds.join(',');
       setInvoiceCanId(canIdsString);
     }
 
@@ -905,7 +905,7 @@ useEffect(() => {
       //      console.log("invoiceCanId", invoiceCanId); // Debugging purposes
       const url = process.env.REACT_APP_API_URL + '/getInvoicesCount';
       let currentDate = new Date();
-     // console.log("DDDDDDDDDDDDDDDDDDd", currentDate.getDate());
+      // console.log("DDDDDDDDDDDDDDDDDDd", currentDate.getDate());
       var mm = currentDate.getMonth() - 2;
       var c_m = currentDate.getMonth() + 1;
       var i_m = ''; var j_m = '';
@@ -917,7 +917,7 @@ useEffect(() => {
       }
       var dayOfMonth = currentDate.getDate()
       //var dd = currentDate.getDate();
-      var dd =dayOfMonth < 10 ? `0${dayOfMonth}` : dayOfMonth
+      var dd = dayOfMonth < 10 ? `0${dayOfMonth}` : dayOfMonth
       var yy = currentDate.getFullYear();
       var lastMonth = yy + '-' + i_m + mm + '-' + dd;
       var currentMonth = yy + '-' + j_m + c_m + '-' + dd;
@@ -985,8 +985,8 @@ useEffect(() => {
       const url = process.env.REACT_APP_API_URL + '/getSolutionLists';
       const data = {
         "groupID": localStorage.getItem("crm_group_id"),
-        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-        "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual" : "",
+        "locationID": (segmentCheckHBB == "HBB") ? locationID : ""
       };
       const response = await fetch(url, {
         method: 'POST',
@@ -1022,8 +1022,8 @@ useEffect(() => {
 
       const data = {
         "groupID": groupID,
-        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-        "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+        "companyID": (segmentCheckHBB == "HBB") ? "CIndividual" : "",
+        "locationID": (segmentCheckHBB == "HBB") ? locationID : ""
       };
       const response = await fetch(url, {
         method: 'POST',
@@ -1035,7 +1035,7 @@ useEffect(() => {
       const result = await response.json();
       //console.log("areaList", result.data);
       const canIds = result.data.map(item => item.CanId);
-       canIdsString = canIds.join(',');
+      canIdsString = canIds.join(',');
       setInvoiceCanId(canIdsString);
     }
 
@@ -1055,7 +1055,7 @@ useEffect(() => {
 
       var dayOfMonth = currentDate.getDate()
       //var dd = currentDate.getDate();
-      var dd =dayOfMonth < 10 ? `0${dayOfMonth}` : dayOfMonth
+      var dd = dayOfMonth < 10 ? `0${dayOfMonth}` : dayOfMonth
       var yy = currentDate.getFullYear();
       var lastMonth = yy + '-' + i_m + mm + '-' + dd;
       var currentMonth = yy + '-' + j_m + c_m + '-' + dd;
@@ -1131,8 +1131,8 @@ useEffect(() => {
 
           "groupID": localStorage.getItem("crm_group_id"),
 
-          "companyID": (segmentCheckHBB == "HBB") ? "CIndividual":"",
-        "locationID":  (segmentCheckHBB == "HBB") ? locationID:""
+          "companyID": (segmentCheckHBB == "HBB") ? "CIndividual" : "",
+          "locationID": (segmentCheckHBB == "HBB") ? locationID : ""
 
         };
 
@@ -1286,11 +1286,12 @@ useEffect(() => {
       {/* FILTER BOX  */}
       {/* <Filter filterData={filterData} /> */}
 
-      <div class="dashboard-box-top-bar">
-        <div class="dashboard-box-heading">
-         {(getDCFlag || (pinnedSegment && pinnedSegment == "OBB" || segment2 === "OBB")) ? "Data Consumption" : "Network Usage & Availability (Uptime)"}
-        </div>
-      </div>
+      {segment != "Hotel" && segment != "PG" && segment != "Office" &&
+        <div class="dashboard-box-top-bar">
+          <div class="dashboard-box-heading">
+            {(getDCFlag || (pinnedSegment && pinnedSegment == "OBB" || segment2 === "OBB")) ? "Data Consumption" : "Network Usage & Availability (Uptime)"}
+          </div>
+        </div>}
 
 
 
@@ -1302,7 +1303,9 @@ useEffect(() => {
           {(!pinnedClickedData && !flagCheck2) &&
             <>
               <p class="p-0 m-0">Service ID:{flagCheck ? getBandwidth && getBandwidth[0]?.CanId : filterData.serviceID}</p>
-              <button class="filter-apply-btn px-3 py-2" onClick={handleApplyClick}>Apply</button>
+              {segment != "Hotel" && segment != "PG" && segment != "Office" &&
+                <button class="filter-apply-btn px-3 py-2" onClick={handleApplyClick}>Apply</button>
+              }
             </>
           }
 
@@ -1311,7 +1314,9 @@ useEffect(() => {
               <p class="p-0 m-0">Service ID:{pinnedClickedData?.CanId}
                 {/* {flagCheck ? getCanIdDetails ? getCanIdDetails.serviceID : getBandwidth[0]?.CanId : filterData.serviceID} */}
               </p>
-              <button class="filter-apply-btn px-3 py-2" onClick={pinnedApplyClick}>Apply</button>
+              {segment != "Hotel" && segment != "PG" && segment != "Office" &&
+                <button class="filter-apply-btn px-3 py-2" onClick={pinnedApplyClick}>Apply</button>
+              }
             </>
           }
 
@@ -1324,7 +1329,7 @@ useEffect(() => {
               class="col-xl-2 col-md-3 col-sm-4 col-5 mb-3 mb-sm-0 filter-padding-reset"
             >
               <div class="filter-inner-box">
-              {/* <p>Mycity :{pinnedClickedData && pinnedClickedData.LocationName}</p> */}
+                {/* <p>Mycity :{pinnedClickedData && pinnedClickedData.LocationName}</p> */}
                 <div class="dashboard-box-option">City</div>
                 <div className="filter-row mt-2">
                   {/* <option style={{ display: "none" }}>NAvee</option>                                      */}
@@ -1510,6 +1515,7 @@ useEffect(() => {
         (!dataConsumptionParms && <L2OBBDataConsumption parms={defaultNetworkUsage2 && defaultNetworkUsage2} />) :
         <>
           {(pinnedSegment !== "OBB" || pinnedSegment !== "BBB" || segment2 !== "OBB") &&
+            (segment2 != "Hotel" && segment2 != "PG" && segment2 != "Office") &&
             <>
               {!flagCheck && <NetworkUsage networkParms={[pinnedNetworkUsage, defaultNetworkUsage]} />}
               {!flagCheck && <AvailabilityTest networkParms={[pinnedNetworkUsage, defaultNetworkUsage]} />}
