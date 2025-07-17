@@ -1286,7 +1286,7 @@ export default function ApplyFilter(getPinnedClicked) {
       {/* FILTER BOX  */}
       {/* <Filter filterData={filterData} /> */}
 
-      {segment != "Hotel" && segment != "PG" && segment != "Office" &&
+      {segment != "Hotel" && segment != "PG" && segment != "Office" && segment != "MS Wi-Fi" &&
         <div class="dashboard-box-top-bar">
           <div class="dashboard-box-heading">
             {(getDCFlag || (pinnedSegment && pinnedSegment == "OBB" || segment2 === "OBB")) ? "Data Consumption" : "Network Usage & Availability (Uptime)"}
@@ -1303,7 +1303,7 @@ export default function ApplyFilter(getPinnedClicked) {
           {(!pinnedClickedData && !flagCheck2) &&
             <>
               <p class="p-0 m-0">Service ID:{flagCheck ? getBandwidth && getBandwidth[0]?.CanId : filterData.serviceID}</p>
-              {segment != "Hotel" && segment != "PG" && segment != "Office" &&
+              {segment != "Hotel" && segment != "PG" && segment != "Office" && segment != "MS Wi-Fi" &&
                 <button class="filter-apply-btn px-3 py-2" onClick={handleApplyClick}>Apply</button>
               }
             </>
@@ -1314,7 +1314,7 @@ export default function ApplyFilter(getPinnedClicked) {
               <p class="p-0 m-0">Service ID:{pinnedClickedData?.CanId}
                 {/* {flagCheck ? getCanIdDetails ? getCanIdDetails.serviceID : getBandwidth[0]?.CanId : filterData.serviceID} */}
               </p>
-              {segment != "Hotel" && segment != "PG" && segment != "Office" &&
+              {segment != "Hotel" && segment != "PG" && segment != "Office" && segment != "MS Wi-Fi" &&
                 <button class="filter-apply-btn px-3 py-2" onClick={pinnedApplyClick}>Apply</button>
               }
             </>
@@ -1515,7 +1515,7 @@ export default function ApplyFilter(getPinnedClicked) {
         (!dataConsumptionParms && <L2OBBDataConsumption parms={defaultNetworkUsage2 && defaultNetworkUsage2} />) :
         <>
           {(pinnedSegment !== "OBB" || pinnedSegment !== "BBB" || segment2 !== "OBB") &&
-            (segment2 != "Hotel" && segment2 != "PG" && segment2 != "Office") &&
+            (segment2 != "Hotel" && segment2 != "PG" && segment2 != "Office" && segment2 != "MS Wi-Fi") &&
             <>
               {!flagCheck && <NetworkUsage networkParms={[pinnedNetworkUsage, defaultNetworkUsage]} />}
               {!flagCheck && <AvailabilityTest networkParms={[pinnedNetworkUsage, defaultNetworkUsage]} />}

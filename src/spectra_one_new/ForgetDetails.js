@@ -186,6 +186,7 @@ export default function ForgotDetails() {
                                                 id="home"
                                                 role="tabpanel"
                                                 aria-labelledby="home-tab"
+                                                style={{padding: "0px"}}
                                             >
                                                 <form action="" class="pt-4 tab-form">
                                                     <div class="input-box form-floating">
@@ -245,6 +246,7 @@ export default function ForgotDetails() {
                                                 id="profile"
                                                 role="tabpanel"
                                                 aria-labelledby="profile-tab"
+                                                style={{padding: "0px"}}
                                             >
                                                 <form action="" class="pt-4 tab-form">
                                                     <div class="input-box form-floating">

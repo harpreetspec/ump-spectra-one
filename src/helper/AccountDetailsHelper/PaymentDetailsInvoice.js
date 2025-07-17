@@ -128,7 +128,7 @@ export default function PaymentDetailsInvoice({ goBackToTransactions, getInvoice
       });
       const result = await response.json();
       // ishan
-      console.log("pay",result.data);
+      console.log("pay", result.data);
       setEmail(result.data.email ?? result.data.shipToEmail);
       setAccountName(result.data.accountName ?? result.data.orgName);
       setMobileNo(result.data.shipToMobileno ?? result.data.shipToPhone);
@@ -305,12 +305,13 @@ export default function PaymentDetailsInvoice({ goBackToTransactions, getInvoice
         //    icon: 'error',
         //    confirmButtonText: 'OK',
         //  });
+
         Swal.fire({
           //  text: "TDS slab value cannot be more than 2%",
           html: '<div style="font-size: 15px;">TDS slab value cannot be more than 2%</div>', // Adjust text size as needed
           icon: 'error',
           iconHtml: '<div style="font-size: 28px; color: red; box-sizing: border-box ;">&#10006;</div>', // Adjust icon size and style as needed
-          width: '29%',
+          width: '55%',
           confirmButtonText: 'OK',
           imageHeight: '100%',
           imageWidth: '20%',
@@ -320,6 +321,7 @@ export default function PaymentDetailsInvoice({ goBackToTransactions, getInvoice
             icon: 'custom-icon'
           }
         });
+
         event.currentTarget.textContent = `₹${getTdsSlab}`;
         setInputValid(false)
       }

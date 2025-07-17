@@ -146,7 +146,7 @@ export default function AccountDetails() {
           html: '<div style="font-size: 15px;">Date range should not be more than one year</div>', // Adjust text size as needed
           //  icon: 'error',
           //  iconHtml: '<div style="font-size: 28px; color: red; box-sizing: border-box ;">&#10006;</div>', // Adjust icon size and style as needed
-          width: '29%',
+          width: '55%',
           confirmButtonText: 'OK',
           imageHeight: '100%',
           imageWidth: '20%',
@@ -1170,7 +1170,7 @@ Date: ${apiFailureDetails.Date}`;
                   <li className="nav-item" role="presentation" >
                     <button className={actTabAcc} id="pills-srStatus-tab" data-bs-toggle="pill" data-bs-target="#pills-srStatus" type="button" role="tab" aria-controls="pills-srStatus" aria-selected="true">SR Status</button>
                   </li>
-                  {segment != "Hotel" && segment != "PG" && segment != "Office" &&
+                  {segment != "Hotel" && segment != "PG" && segment != "Office" && segment != "MS Wi-Fi" &&
                     <li className="nav-item" role="presentation">
                       <button className={actTabBill} id="pills-raiseNewSR-tab" data-bs-toggle="pill" data-bs-target="#pills-raiseNewSR" type="button" role="tab" aria-controls="pills-raiseNewSR" aria-selected="false">Raise SR</button>
                     </li>
@@ -1734,9 +1734,10 @@ Date: ${apiFailureDetails.Date}`;
                               </div>
                             ))
                             ) : (!srList && getPinnedSRLists && !flagCheck && (getPinnedSRLists.length === 0)) ? (
-                              <tr>
-                                <td colSpan={6}>No Service Requests</td>
-                              </tr>
+                              <div className="table-row-data resp-name text-center">No Service Requests</div>
+                              // <tr>
+                              //   <td colSpan={6}>No Service Requests</td>
+                              // </tr>
                             ) : null}
 
                             {/* for Default */}
@@ -1822,9 +1823,10 @@ Date: ${apiFailureDetails.Date}`;
                               </div>
                             ))
                             ) : (srList && srList.length == 0 && !flagCheck) ? (
-                              <tr>
-                                <td colSpan={6}>No Service Requests</td>
-                              </tr>
+                              <div className="table-row-data resp-name text-center">No Service Requests</div>
+                              // <tr>
+                              //   <td colSpan={6}>No Service Requests</td>
+                              // </tr>
                             ) : null}
 
                             {/* for Dropdown Selection */}
@@ -1886,9 +1888,10 @@ Date: ${apiFailureDetails.Date}`;
                               </div>
                             ))
                             ) : (filterSrData && filterSrData.length == 0 && flagCheck) ? (
-                              <tr>
-                                <td colSpan={6}>No Service Requests</td>
-                              </tr>
+                              <div className="table-row-data resp-name text-center">No Service Requests</div>
+                              // <tr>
+                              //   <td colSpan={6}>No Service Requests</td>
+                              // </tr>
                             ) : null}
 
                           </div>
@@ -2409,7 +2412,7 @@ Date: ${apiFailureDetails.Date}`;
                   <li className="nav-item" role="presentation" >
                     <button className={actTabAcc} id="pills-srStatus-tab" data-bs-toggle="pill" data-bs-target="#pills-srStatus" type="button" role="tab" aria-controls="pills-srStatus" aria-selected="true">SR Status</button>
                   </li>
-                  {segment != "Hotel" && segment != "PG" && segment != "Office" &&
+                  {segment != "Hotel" && segment != "PG" && segment != "Office" && segment != "MS Wi-Fi" &&
                     <li className="nav-item" role="presentation">
                       <button className={actTabBill} id="pills-raiseNewSR-tab" data-bs-toggle="pill" data-bs-target="#pills-raiseNewSR" type="button" role="tab" aria-controls="pills-raiseNewSR" aria-selected="false">Raise SR</button>
                     </li>
@@ -2886,9 +2889,10 @@ Date: ${apiFailureDetails.Date}`;
                               </div>
                             ))
                             ) : (!srList && getPinnedSRLists && !flagCheck && (getPinnedSRLists.length === 0)) ? (
-                              <tr>
-                                <td colSpan={6}>No Service Requests</td>
-                              </tr>
+                              <div className="table-row-data resp-name text-center">No Service Requests</div>
+                              // <tr>
+                              //   <td colSpan={6}>No Service Requests</td>
+                              // </tr>
                             ) : null}
 
                             {/* for Default */}
@@ -2946,9 +2950,10 @@ Date: ${apiFailureDetails.Date}`;
                               </div>
                             ))
                             ) : (srList && srList.length == 0 && !flagCheck) ? (
-                              <tr>
-                                <td colSpan={6}>No Service Requests</td>
-                              </tr>
+                              <div className="table-row-data resp-name text-center">No Service Requests</div>
+                              // <tr>
+                              //   <td colSpan={6} >No Service Requests</td>
+                              // </tr>
                             ) : null}
 
                             {/* for Dropdown Selection */}
@@ -3006,9 +3011,10 @@ Date: ${apiFailureDetails.Date}`;
                               </div>
                             ))
                             ) : (filterSrData && filterSrData.length == 0 && flagCheck) ? (
-                              <tr>
-                                <td colSpan={6}>No Service Requests</td>
-                              </tr>
+                              <div className="table-row-data resp-name text-center">No Service Requests</div>
+                              // <tr>
+                              //   <td colSpan={6}>No Service Requests</td>
+                              // </tr>
                             ) : null}
 
                           </div>

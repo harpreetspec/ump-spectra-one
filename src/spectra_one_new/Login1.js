@@ -898,10 +898,11 @@ Date: ${apiFailureDetails.Date}
                                     <div class="tab-content" id="myTabContent">
                                         {/* <!-- Login ID Tab  --> */}
                                         <div
-                                            class="tab-pane fade show active"
+                                            class="tab-pane fade show active pb-3"
                                             id="home"
                                             role="tabpanel"
                                             aria-labelledby="home-tab"
+                                            style={{padding: "0px"}}
                                         >
                                             <form action="" class="pt-4 tab-form" onSubmit={handleSubmit}>
                                                 <div class="input-box form-floating">
@@ -1005,6 +1006,7 @@ Date: ${apiFailureDetails.Date}
                                             id="profile"
                                             role="tabpanel"
                                             aria-labelledby="profile-tab"
+                                            style={{padding: "0px"}}
                                         >
                                             <form action="" class="pt-4 tab-form">
                                                 <div class="input-box form-floating">

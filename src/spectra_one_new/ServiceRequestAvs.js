@@ -674,7 +674,7 @@ export default function AccountDetails() {
            html: '<div style="font-size: 15px;">Date range should not be more than one year</div>', // Adjust text size as needed
           //  icon: 'error',
           //  iconHtml: '<div style="font-size: 28px; color: red; box-sizing: border-box ;">&#10006;</div>', // Adjust icon size and style as needed
-           width: '29%',
+           width: '55%',
            confirmButtonText: 'OK',
            imageHeight : '100%',
            imageWidth : '20%',

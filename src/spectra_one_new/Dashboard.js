@@ -1529,7 +1529,7 @@ export default function Dashboard() {
                   <div class="col-xl-8 col-lg-7 col-sm-12 col-12">
                     <LocOBBpinnedfeature allcitydropLoc={allcitydropLoc} />
 
-                    {segment != "Hotel" && segment != "PG" && segment != "Office" &&
+                    {segment != "Hotel" && segment != "PG" && segment != "Office" && segment != "MS Wi-Fi" &&
                       <div>
                         <div class="dashboard-box-top-bar">
                           <div class="dashboard-box-heading">
