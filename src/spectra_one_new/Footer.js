@@ -14,7 +14,7 @@ export default function Footer(){
     return(
         <>
          <footer>
-              <div class="dashboard-copyright">Copyrights © 2024 Shyam Spectra Pvt. Ltd.</div>
+              <div class="dashboard-copyright">Copyrights © {new Date().getFullYear()} Shyam Spectra Pvt. Ltd.</div>
               <div class="footer-links">
                 <div class="footer-link" onClick={handleRedirect2}>Terms & Conditions</div>
                 <div class="footer-link footer-link2" onClick={handleRedirect}>Privacy Policy</div>

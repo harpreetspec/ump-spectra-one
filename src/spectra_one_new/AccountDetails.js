@@ -338,7 +338,9 @@ export default function AccountDetails() {
   // };
 
   const formatDate = (dateString) => {
-    const date = new Date(dateString);
+    const newDate = new Date(dateString);
+    const date = new Date(newDate.getTime() + (5 * 60 + 30) * 60 * 1000);
+
     const day = ('0' + date.getUTCDate()).slice(-2);
     const month = date.toLocaleString('en', { month: 'short', timeZone: 'UTC' });
     const year = date.getUTCFullYear().toString().slice(-2);
@@ -4695,7 +4697,7 @@ export default function AccountDetails() {
                                         highlightClassName="custom-highlight"
                                         searchWords={searchTerm}
                                         autoEscape={true}
-                                        textToHighlight={item.invoiceNo && item.invoiceNo.toString()}
+                                        textToHighlight={item.cslno && item.cslno.toString()}
                                       />
 
                                     </td>
@@ -4849,7 +4851,7 @@ export default function AccountDetails() {
                                         highlightClassName="custom-highlight"
                                         searchWords={searchTerm}
                                         autoEscape={true}
-                                        textToHighlight={item.invoiceNo && item.invoiceNo.toString()}
+                                        textToHighlight={item.cslno && item.cslno.toString()}
                                       />
 
                                     </td>
@@ -5004,10 +5006,10 @@ export default function AccountDetails() {
                                           highlightClassName="custom-highlight"
                                           searchWords={searchTerm}
                                           autoEscape={true}
-                                          textToHighlight={item.top3Invoice[0].invoiceNo.toString()}
+                                          textToHighlight={item.top3Invoice[0].cslno.toString()}
 
                                         />
-                                        {/* {item.top3Invoice[0].invoiceNo} */}
+                                        {/* {item.top3Invoice[0].cslno} */}
                                       </td>
 
                                       <td className="table-row-data invoiceDate">
@@ -5168,10 +5170,10 @@ export default function AccountDetails() {
                                           highlightClassName="custom-highlight"
                                           searchWords={searchTerm}
                                           autoEscape={true}
-                                          textToHighlight={item.top3Invoice[1].invoiceNo.toString()}
+                                          textToHighlight={item.top3Invoice[1].cslno.toString()}
 
                                         />
-                                        {/* {item.top3Invoice[1].invoiceNo} */}
+                                        {/* {item.top3Invoice[1].cslno} */}
                                       </td>
 
                                       <td className="table-row-data invoiceDate">
@@ -5331,10 +5333,10 @@ export default function AccountDetails() {
                                           highlightClassName="custom-highlight"
                                           searchWords={searchTerm}
                                           autoEscape={true}
-                                          textToHighlight={item.top3Invoice && item.top3Invoice.length > 2 && item.top3Invoice[2] ? item.top3Invoice[2].invoiceNo.toString() : ""}
+                                          textToHighlight={item.top3Invoice && item.top3Invoice.length > 2 && item.top3Invoice[2] ? item.top3Invoice[2].cslno.toString() : ""}
 
                                         />
-                                        {/* {item.top3Invoice[2].invoiceNo} */}
+                                        {/* {item.top3Invoice[2].cslno} */}
                                       </td>
 
                                       <td className="table-row-data invoiceDate">
@@ -5595,7 +5597,7 @@ export default function AccountDetails() {
                                       highlightClassName="custom-highlight"
                                       searchWords={searchTerm}
                                       autoEscape={true}
-                                      textToHighlight={item.invoiceNo.toString()}
+                                      textToHighlight={item.cslno.toString()}
                                     />
                                   </div>
                                 </div>
@@ -5831,7 +5833,7 @@ export default function AccountDetails() {
                                       highlightClassName="custom-highlight"
                                       searchWords={searchTerm}
                                       autoEscape={true}
-                                      textToHighlight={item.invoiceNo.toString()}
+                                      textToHighlight={item.cslno.toString()}
                                     />
                                   </div>
                                 </div>
@@ -6069,7 +6071,7 @@ export default function AccountDetails() {
                                         highlightClassName="custom-highlight"
                                         searchWords={searchTerm}
                                         autoEscape={true}
-                                        textToHighlight={item.top3Invoice[0].invoiceNo.toString()}
+                                        textToHighlight={item.top3Invoice[0].cslno.toString()}
                                       />
                                     </div>
                                   </div>
@@ -6302,7 +6304,7 @@ export default function AccountDetails() {
                                         highlightClassName="custom-highlight"
                                         searchWords={searchTerm}
                                         autoEscape={true}
-                                        textToHighlight={item.top3Invoice[1].invoiceNo.toString()}
+                                        textToHighlight={item.top3Invoice[1].cslno.toString()}
                                       />
                                     </div>
                                   </div>
@@ -6534,7 +6536,7 @@ export default function AccountDetails() {
                                         highlightClassName="custom-highlight"
                                         searchWords={searchTerm}
                                         autoEscape={true}
-                                        textToHighlight={item.top3Invoice && item.top3Invoice.length > 2 && item.top3Invoice[2] ? item.top3Invoice[2].invoiceNo.toString() : ""}
+                                        textToHighlight={item.top3Invoice && item.top3Invoice.length > 2 && item.top3Invoice[2] ? item.top3Invoice[2].cslno.toString() : ""}
                                       />
                                     </div>
                                   </div>
@@ -9308,7 +9310,7 @@ export default function AccountDetails() {
                                         highlightClassName="custom-highlight"
                                         searchWords={searchTerm}
                                         autoEscape={true}
-                                        textToHighlight={item.invoiceNo && item.invoiceNo.toString()}
+                                        textToHighlight={item.cslno && item.cslno.toString()}
                                       />
 
                                     </td>
@@ -9560,7 +9562,7 @@ export default function AccountDetails() {
                                       highlightClassName="custom-highlight"
                                       searchWords={searchTerm}
                                       autoEscape={true}
-                                      textToHighlight={item.invoiceNo.toString()}
+                                      textToHighlight={item.cslno.toString()}
                                     />
                                   </div>
                                 </div>

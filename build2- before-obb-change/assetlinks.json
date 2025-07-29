@@ -1,8 +1,0 @@
-[{
-      "relation": ["delegate_permission/common.handle_all_urls"],
-      "target": {
-        "namespace": "android_app",
-        "package_name": "co.spectra.one.twa",
-        "sha256_cert_fingerprints": ["FA:80:D7:DF:72:DF:36:81:DB:9F:A8:F6:01:61:65:03:ED:46:E3:E8:6E:2B:14:A7:40:A2:69:DC:97:96:1E:12"]
-      }
-    }]
