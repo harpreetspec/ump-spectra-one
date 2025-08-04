@@ -332,7 +332,7 @@ export default function Register() {
                   </div>
                 </div>
                 <div class="copyright">
-                  Copyright<span style={{ margin: "0 3px" }}>&#169;</span>2024. All
+                  Copyright<span style={{ margin: "0 3px" }}>&#169;</span>{new Date().getFullYear()}. All
                   Rights Reserved <br />
                   <span style={{ display: 'inline-block', marginTop: "10px" }}
                   >spectra.co</span

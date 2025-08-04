@@ -1400,7 +1400,7 @@ Date: ${apiFailureDetails.Date}`;
                                 <th className="table-header-data">SR Number</th>
                                 <th className="table-header-data">Category</th>
                                 <th className="table-header-data">Sub Category</th>
-                                <th className="table-header-data">Source</th>
+                                {/* <th className="table-header-data">Source</th> */}
                                 <th className="table-header-data">Last Update Date</th>
                                 <th className="table-header-data">SLA/ETR</th>
                                 <th className="table-header-data">Status</th>
@@ -1415,7 +1415,7 @@ Date: ${apiFailureDetails.Date}`;
                                     <td className="table-row-data">{row.SRNumber}</td>
                                     <td className="table-row-data">{row.Category}</td>
                                     <td className="table-row-data">{row.SubCategory}</td>
-                                    <td className="table-row-data">{row.Source}</td>
+                                    {/* <td className="table-row-data">{row.Source}</td> */}
                                     <td className="table-row-data">
                                       {(() => {
                                         const lastUpdateDateParts = row.LastUpdateDate.split(/\/|\s|:/);
@@ -1503,7 +1503,7 @@ Date: ${apiFailureDetails.Date}`;
                                     <td className="table-row-data">{row.SRNumber}</td>
                                     <td className="table-row-data">{row.Category}</td>
                                     <td className="table-row-data">{row.SubCategory}</td>
-                                    <td className="table-row-data">{row.Source}</td>
+                                    {/* <td className="table-row-data">{row.Source}</td> */}
                                     <td className="table-row-data">
                                       {(() => {
                                         const lastUpdateDateParts = row.LastUpdateDate.split(/\/|\s|:/);
@@ -1589,7 +1589,7 @@ Date: ${apiFailureDetails.Date}`;
                                     <td className="table-row-data">{row.SRNumber}</td>
                                     <td className="table-row-data">{row.Category}</td>
                                     <td className="table-row-data">{row.SubCategory}</td>
-                                    <td className="table-row-data">{row.Source}</td>
+                                    {/* <td className="table-row-data">{row.Source}</td> */}
                                     <td className="table-row-data">
                                       {(() => {
                                         const lastUpdateDateParts = row.LastUpdateDate.split(/\/|\s|:/);
@@ -1722,14 +1722,14 @@ Date: ${apiFailureDetails.Date}`;
                                     <div className="resp-innerHeading">Sub Category</div>
                                     <div className="resp-contact">{row.SubCategory}</div>
                                   </div>
-                                  <div className="table-row-data">
+                                  {/* <div className="table-row-data">
                                     <div className="resp-innerHeading">Source</div>
                                     <div className="resp-contact">{row.Source}</div>
-                                  </div>
-                                  <div className="table-row-data">
+                                  </div> */}
+                                  {/* <div className="table-row-data">
                                     <div className="resp-innerHeading">Source</div>
                                     <div className="resp-contact">{row.Source}</div>
-                                  </div>
+                                  </div> */}
                                 </div>
                               </div>
                             ))
@@ -1788,10 +1788,10 @@ Date: ${apiFailureDetails.Date}`;
                                     <div className="resp-innerHeading">Sub Category</div>
                                     <div className="resp-contact">{row.SubCategory}</div>
                                   </div>
-                                  <div className="table-row-data">
+                                  {/* <div className="table-row-data">
                                     <div className="resp-innerHeading">Source</div>
                                     <div className="resp-contact">{row.Source}</div>
-                                  </div>
+                                  </div> */}
 
                                   <div className="table-row-data">
                                     <div className="resp-innerHeading">SLA ETR</div>
@@ -1876,14 +1876,14 @@ Date: ${apiFailureDetails.Date}`;
                                     <div className="resp-innerHeading">Sub Category</div>
                                     <div className="resp-contact">{row.SubCategory}</div>
                                   </div>
-                                  <div className="table-row-data">
+                                  {/* <div className="table-row-data">
                                     <div className="resp-innerHeading">Source</div>
                                     <div className="resp-contact">{row.Source}</div>
-                                  </div>
-                                  <div className="table-row-data">
+                                  </div> */}
+                                  {/* <div className="table-row-data">
                                     <div className="resp-innerHeading">Source</div>
                                     <div className="resp-contact">{row.Source}</div>
-                                  </div>
+                                  </div> */}
                                 </div>
                               </div>
                             ))
@@ -2643,7 +2643,7 @@ Date: ${apiFailureDetails.Date}`;
                                     <td className="table-row-data">{row.SRNumber}</td>
                                     <td className="table-row-data">{row.Category}</td>
                                     <td className="table-row-data">{row.SubCategory}</td>
-                                    <td className="table-row-data">{row.Source}</td>
+                                    {/* <td className="table-row-data">{row.Source}</td> */}
                                     <td className="table-row-data">
                                       {(() => {
                                         const lastUpdateDateParts = row.LastUpdateDate.split(/\/|\s|:/);
@@ -2708,7 +2708,7 @@ Date: ${apiFailureDetails.Date}`;
                                     <td className="table-row-data">{row.SRNumber}</td>
                                     <td className="table-row-data">{row.Category}</td>
                                     <td className="table-row-data">{row.SubCategory}</td>
-                                    <td className="table-row-data">{row.Source}</td>
+                                    {/* <td className="table-row-data">{row.Source}</td> */}
                                     <td className="table-row-data">
                                       {(() => {
                                         const lastUpdateDateParts = row.LastUpdateDate.split(/\/|\s|:/);
@@ -2771,7 +2771,7 @@ Date: ${apiFailureDetails.Date}`;
                                     <td className="table-row-data">{row.SRNumber}</td>
                                     <td className="table-row-data">{row.Category}</td>
                                     <td className="table-row-data">{row.SubCategory}</td>
-                                    <td className="table-row-data">{row.Source}</td>
+                                    {/* <td className="table-row-data">{row.Source}</td> */}
                                     <td className="table-row-data">
                                       {(() => {
                                         const lastUpdateDateParts = row.LastUpdateDate.split(/\/|\s|:/);
@@ -2881,10 +2881,10 @@ Date: ${apiFailureDetails.Date}`;
                                     <div className="resp-innerHeading">Sub Category</div>
                                     <div className="resp-contact">{row.SubCategory}</div>
                                   </div>
-                                  <div className="table-row-data">
+                                  {/* <div className="table-row-data">
                                     <div className="resp-innerHeading">Source</div>
                                     <div className="resp-contact">{row.Source}</div>
-                                  </div>
+                                  </div> */}
                                 </div>
                               </div>
                             ))
@@ -2942,10 +2942,10 @@ Date: ${apiFailureDetails.Date}`;
                                     <div className="resp-innerHeading">Sub Category</div>
                                     <div className="resp-contact">{row.SubCategory}</div>
                                   </div>
-                                  <div className="table-row-data">
+                                  {/* <div className="table-row-data">
                                     <div className="resp-innerHeading">Source</div>
                                     <div className="resp-contact">{row.Source}</div>
-                                  </div>
+                                  </div> */}
                                 </div>
                               </div>
                             ))
@@ -3003,10 +3003,10 @@ Date: ${apiFailureDetails.Date}`;
                                     <div className="resp-innerHeading">Sub Category</div>
                                     <div className="resp-contact">{row.SubCategory}</div>
                                   </div>
-                                  <div className="table-row-data">
+                                  {/* <div className="table-row-data">
                                     <div className="resp-innerHeading">Source</div>
                                     <div className="resp-contact">{row.Source}</div>
-                                  </div>
+                                  </div> */}
                                 </div>
                               </div>
                             ))

@@ -4380,9 +4380,9 @@ export default function AccountDetails() {
                                     </div>
 
 
-                                    {!showDropdownData && isPinnedDataAvailable && pinnedData && (<div className="info-content editable-value">{pfAccValues.shipToAddress ? pfAccValues.shipToAddress : 'NA'}</div>)}
-                                    {showDropdownData && (<div className="info-content editable-value">{invoicedt.shipToAddress ? invoicedt.shipToAddress : 'NA'}</div>)}
-                                    {!showDropdownData && !isPinnedDataAvailable && !pinnedData && (<div className="info-content editable-value">{id.shipToAddress ? id.shipToAddress : 'NA'}</div>)}
+                                    {!showDropdownData && isPinnedDataAvailable && pinnedData && (<div className="info-content editable-value">{pfAccValues.address ? pfAccValues.address : 'NA'}</div>)}
+                                    {showDropdownData && (<div className="info-content editable-value">{invoicedt.address ? invoicedt.address : 'NA'}</div>)}
+                                    {!showDropdownData && !isPinnedDataAvailable && !pinnedData && (<div className="info-content editable-value">{id.address ? id.address : 'NA'}</div>)}
 
                                   </div>
                                 </div>
@@ -8972,9 +8972,9 @@ export default function AccountDetails() {
                                     </div>
 
 
-                                    {!showDropdownData && isPinnedDataAvailable && pinnedData && (<div className="info-content editable-value">{pfAccValues.shipToAddress ? pfAccValues.shipToAddress : 'NA'}</div>)}
-                                    {showDropdownData && (<div className="info-content editable-value">{invoicedt.shipToAddress ? invoicedt.shipToAddress : 'NA'}</div>)}
-                                    {!showDropdownData && !isPinnedDataAvailable && !pinnedData && (<div className="info-content editable-value">{id.shipToAddress ? id.shipToAddress : 'NA'}</div>)}
+                                    {!showDropdownData && isPinnedDataAvailable && pinnedData && (<div className="info-content editable-value">{pfAccValues.address ? pfAccValues.address : 'NA'}</div>)}
+                                    {showDropdownData && (<div className="info-content editable-value">{invoicedt.address ? invoicedt.address : 'NA'}</div>)}
+                                    {!showDropdownData && !isPinnedDataAvailable && !pinnedData && (<div className="info-content editable-value">{id.address ? id.address : 'NA'}</div>)}
 
                                   </div>
                                 </div>
@@ -8998,9 +8998,9 @@ export default function AccountDetails() {
 
                                     {pfAccValues.shipToCity && pfAccValues.shipToCountry ? `${pfAccValues.shipToCity}, ${pfAccValues.shipToCountry}` : invoicedt.shipToCity && invoicedt.shipToCountry ? `${invoicedt.shipToCity}, ${invoicedt.shipToCountry}` : `${id.shipToCity}, ${id.shipToCountry}`}
                                   </div> */}
-                                    {!showDropdownData && isPinnedDataAvailable && pinnedData && (<div className="info-content editable-value">{pfAccValues.shipToCity && pfAccValues.shipToCountry ? `${pfAccValues.shipToCity}, ${pfAccValues.shipToCountry}` : 'NA'}</div>)}
-                                    {showDropdownData && (<div className="info-content editable-value">{invoicedt.shipToCity && invoicedt.shipToCountry ? `${invoicedt.shipToCity}, ${invoicedt.shipToCountry}` : 'NA'}</div>)}
-                                    {!showDropdownData && !isPinnedDataAvailable && !pinnedData && (<div className="info-content editable-value">{id.shipToCity && id.shipToCountry ? `${id.shipToCity}, ${id.shipToCountry}` : 'NA'}</div>)}
+                                    {!showDropdownData && isPinnedDataAvailable && pinnedData && (<div className="info-content editable-value">{pfAccValues.city && pfAccValues.country ? `${pfAccValues.city}, ${pfAccValues.country}` : 'NA'}</div>)}
+                                    {showDropdownData && (<div className="info-content editable-value">{invoicedt.city && invoicedt.country ? `${invoicedt.city}, ${invoicedt.country}` : 'NA'}</div>)}
+                                    {!showDropdownData && !isPinnedDataAvailable && !pinnedData && (<div className="info-content editable-value">{id.city && id.country ? `${id.city}, ${id.country}` : 'NA'}</div>)}
 
                                   </div>
                                 </div>

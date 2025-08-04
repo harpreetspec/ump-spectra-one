@@ -2382,7 +2382,7 @@ export default function Support() {
                             }
 
                           </div>
-                          {getLoginProduct !== "HBB" &&
+                          {getLoginProduct && getLoginProduct !== "HBB" && getLoginProduct !== "Office" && getLoginProduct !== "PG" && getLoginProduct !== "Hotel" &&
                             (!getSelectedAccManager && getPinnedContactDetails ?
                               <div>
                                 <div class="admin-panel-data contact-details-row">
