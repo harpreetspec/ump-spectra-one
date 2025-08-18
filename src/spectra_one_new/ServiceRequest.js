@@ -2630,7 +2630,7 @@ Date: ${apiFailureDetails.Date}`;
                                 <th className="table-header-data">SR Number</th>
                                 <th className="table-header-data">Category</th>
                                 <th className="table-header-data">Sub Category</th>
-                                <th className="table-header-data">Source</th>
+                                {/* <th className="table-header-data">Source</th> */}
                                 <th className="table-header-data">Last Update Date</th>
                                 <th className="table-header-data">Status</th>
                               </tr>
