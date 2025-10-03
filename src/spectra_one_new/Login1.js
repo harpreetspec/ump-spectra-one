@@ -170,22 +170,22 @@ export default function Login({ setAivisCheck }) {
 
     useEffect(() => {
         let isMounted = true; // Flag to prevent state updates if the component is unmounted
-    
+
         const loginByUrl = async () => {
             try {
                 const { id } = queryString.parse(window.location.search);
                 // console.log("Url username", username);
-    
+
                 if (id) {
                     const response = await getUserByCanId({
                         userName: id,
                         ip: ip,
                         user_device_os: deviceDetect().osName || deviceDetect().os,
                     });
-    
+
                     if (isMounted) {
                         // console.log("response", response);
-    
+
                         if (response.meta.code === 200) {
                             if (response.data[0].crm_group_id === "GIndividual") {
                                 const solutionListApiCall = await getSolutionLists(
@@ -202,19 +202,19 @@ export default function Login({ setAivisCheck }) {
                             } else {
                                 localStorage.setItem("segmentCheckHBB", "NA");
                             }
-    
+
                             localStorage.setItem("credentialKey", response.data[0].service_id);
                             localStorage.setItem("crm_group_id", response.data[0].crm_group_id);
                             localStorage.setItem("crm_company_id", response.data[0].crm_company_id);
                             localStorage.setItem("crm_location_id", response.data[0].crm_location_id);
                             localStorage.setItem("crm_role", response.data[0].crm_role);
                             localStorage.setItem("company_name", response.data[0].company_name);
-    
+
                             const aivisCheck = response.data[0].prod_segment;
                             setAivisCheck(aivisCheck);
                             sessionStorage.setItem("tp", aivisCheck);
                             navigate("/dashboard");
-    
+
                             localStorage.setItem("width", windowSize[0]);
                             localStorage.setItem("height", windowSize[1]);
                         }
@@ -226,14 +226,14 @@ export default function Login({ setAivisCheck }) {
                 }
             }
         };
-    
+
         loginByUrl();
-    
+
         return () => {
             isMounted = false; // Prevent state updates if unmounted
         };
     }, [navigate, setAivisCheck, ip, windowSize]);
-    
+
 
 
     //remember me
@@ -421,7 +421,7 @@ export default function Login({ setAivisCheck }) {
             if (cdr) {
                 let cd = atob(cdr).split(':');
                 // console.log(cd);
-                
+
                 // const custDeatail = await getCustomerAccountDetail(cd[0]);
                 // console.log("wertyui",custDeatail.data.subsDetails[0].pkgname);
                 // const str = custDeatail.data.subsDetails[0].pkgname;
@@ -466,7 +466,7 @@ export default function Login({ setAivisCheck }) {
                     // console.log("Width: ", windowSize[0]);
                     // console.log("Height: ", windowSize[1]);
                 }
-                
+
             }
         }
         rememberMeCheck()
@@ -485,40 +485,47 @@ export default function Login({ setAivisCheck }) {
         });
         // console.log("response1", response);
         // If User not exist in Spectra DB
-        if(response.meta.code == 404 || response.meta.code == 403) {
+        if (response.meta.code == 404 || response.meta.code == 403) {
             // console.log("qwertyu");
-            try{
-            let getCredentials = await getEntityCredentials(username);
-            let canId = (getCredentials.data.actIds[0]).split("-")[0];
-            // console.log("getCredentials404", canId);
-            if(getCredentials?.data.credentialValue == password){
-            let userEntry = await insertNewUserFromBw({username: canId, password: getCredentials.data.credentialValue});
-            // console.log("userEntry", getCredentials.data.actIds[0]);
-            response = await loginUser({
-                "userName": canId,
-                "password": password,
-                "ip": ip,
-                "user_device_os": deviceDetect().osName ? deviceDetect().osName : deviceDetect().os
-            });
-            
-            if(getCredentials?.data?.credentialValue == password) {
-                // Update Password 
-                await updatePasswordByServiceId({
-                    "service_id": canId,
-                    "password": password
-                });
-                // console.log("UpdatePassword");
-                response = await loginUser({
-                    "userName": canId,
-                    "password": password,
-                    "ip": ip,
-                    "user_device_os": deviceDetect().osName ? deviceDetect().osName : deviceDetect().os
-                });
+            try {
+                let getEntityCredentialsResponse = await getEntityCredentials(username);
+
+                const decodedData = JSON.parse(atob(getEntityCredentialsResponse.data));
+                const getCredentials = { ...getEntityCredentialsResponse, data: decodedData };
+
+
+                console.log(getCredentials);
+
+                let canId = (getCredentials.data.actIds[0]).split("-")[0];
+                // console.log("getCredentials404", canId);
+                if (getCredentials?.data.credentialValue == password) {
+                    let userEntry = await insertNewUserFromBw({ username: canId, password: getCredentials.data.credentialValue });
+                    // console.log("userEntry", getCredentials.data.actIds[0]);
+                    response = await loginUser({
+                        "userName": canId,
+                        "password": password,
+                        "ip": ip,
+                        "user_device_os": deviceDetect().osName ? deviceDetect().osName : deviceDetect().os
+                    });
+
+                    if (getCredentials?.data?.credentialValue == password) {
+                        // Update Password 
+                        await updatePasswordByServiceId({
+                            "service_id": canId,
+                            "password": password
+                        });
+                        // console.log("UpdatePassword");
+                        response = await loginUser({
+                            "userName": canId,
+                            "password": password,
+                            "ip": ip,
+                            "user_device_os": deviceDetect().osName ? deviceDetect().osName : deviceDetect().os
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error(error);
             }
-            } 
-        }catch(error){
-            console.error(error);            
-        }
         }
 
 
@@ -576,11 +583,11 @@ export default function Login({ setAivisCheck }) {
                     setWrongAttempts(wrongAttempts + 1);
                     setLoginErrorMsg(true);
                 }
-            }else {
+            } else {
                 setWrongAttempts(wrongAttempts + 1);
                 setLoginErrorMsg(true);
 
-                
+
                 const apiFailureDetails = {
                     API_Name: "login", // Name of the API where failure occurred
                     Request: {
@@ -658,11 +665,11 @@ Date: ${apiFailureDetails.Date}
 
                 // console.log("Width: ", windowSize[0]);
                 // console.log("Height: ", windowSize[1]);
-            }else {
+            } else {
                 setWrongAttempts(wrongAttempts + 1);
                 setLoginErrorMsg(true);
 
-                
+
                 const apiFailureDetails = {
                     API_Name: "login", // Name of the API where failure occurred
                     Request: {
@@ -716,34 +723,38 @@ Date: ${apiFailureDetails.Date}
         });
 
         // console.log("number checked", validMobNumber);
-        
-        if(validMobNumber.meta.code !== 200){
-            try{
-            let checkAndUpdateMobile = await updateMobileByServiceId(mobileNum); 
-            // console.log(checkAndUpdateMobile);       return
-            let actDetail = await getAccountDetailsByMobileNumber(mobileNum);
-            
-            // console.log("actDetail", actDetail?.data[0].actid);
-            if (actDetail?.data.length > 0) {
-                for (const data of actDetail.data) {
-                    try {
-                        let getCredentials = await getEntityCredentials(data.actid);
-                        let canId = (getCredentials.data.actIds[0]).split("-")[0];
-                        // console.log("getCredentials404", canId);
-                        let userEntry = await insertNewUserFromBw({ username: canId, password: getCredentials.data.credentialValue });
-                        // console.log("userEntry", userEntry.data);
 
-                    } catch (error) {
-                        console.log(error.message);
-                    }
-                };
-                validMobNumber = await checkMobileNumber({
-                    "mobileNo": mobileNum,
-                });
+        if (validMobNumber.meta.code !== 200) {
+            try {
+                let checkAndUpdateMobile = await updateMobileByServiceId(mobileNum);
+                // console.log(checkAndUpdateMobile);       return
+                let actDetail = await getAccountDetailsByMobileNumber(mobileNum);
+
+                // console.log("actDetail", actDetail?.data[0].actid);
+                if (actDetail?.data.length > 0) {
+                    for (const data of actDetail.data) {
+                        try {
+                            let getEntityCredentialsResponse = await getEntityCredentials(data.actid);
+
+                            const decodedData = JSON.parse(atob(getEntityCredentialsResponse.data));
+                            const getCredentials = { ...getEntityCredentialsResponse, data: decodedData };
+
+                            let canId = (getCredentials.data.actIds[0]).split("-")[0];
+                            // console.log("getCredentials404", canId);
+                            let userEntry = await insertNewUserFromBw({ username: canId, password: getCredentials.data.credentialValue });
+                            // console.log("userEntry", userEntry.data);
+
+                        } catch (error) {
+                            console.log(error.message);
+                        }
+                    };
+                    validMobNumber = await checkMobileNumber({
+                        "mobileNo": mobileNum,
+                    });
+                }
+            } catch (error) {
+                console.error(error);
             }
-        }catch(error){
-            console.error(error);            
-        }
         }
 
         // console.log("number checked", validMobNumber); return
@@ -798,9 +809,9 @@ Date: ${apiFailureDetails.Date}
                     navigate("/otp");
                 }
             } else {
-                    // console.log("mob not exist");
-                    setWrongAttemptsMob(wrongAttemptsMob + 1);
-                    setMobErrorMsg(true)
+                // console.log("mob not exist");
+                setWrongAttemptsMob(wrongAttemptsMob + 1);
+                setMobErrorMsg(true)
             }
             //console.log(mobileNum);
 
@@ -903,7 +914,7 @@ Date: ${apiFailureDetails.Date}
                                             id="home"
                                             role="tabpanel"
                                             aria-labelledby="home-tab"
-                                            style={{padding: "0px"}}
+                                            style={{ padding: "0px" }}
                                         >
                                             <form action="" class="pt-4 tab-form" onSubmit={handleSubmit}>
                                                 <div class="input-box form-floating">
@@ -994,7 +1005,7 @@ Date: ${apiFailureDetails.Date}
                                                     id="loginBtn"
                                                     type="submit"
                                                     class="spectra-btn"
-                                                    disabled={!username || !password || username.length < 5 }   // username.startsWith('00')
+                                                    disabled={!username || !password || username.length < 5}   // username.startsWith('00')
                                                 >
                                                     Login
                                                 </button>
@@ -1007,7 +1018,7 @@ Date: ${apiFailureDetails.Date}
                                             id="profile"
                                             role="tabpanel"
                                             aria-labelledby="profile-tab"
-                                            style={{padding: "0px"}}
+                                            style={{ padding: "0px" }}
                                         >
                                             <form action="" class="pt-4 tab-form">
                                                 <div class="input-box form-floating">

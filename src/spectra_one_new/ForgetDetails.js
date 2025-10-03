@@ -40,11 +40,11 @@ export default function ForgotDetails() {
             e.preventDefault();
             // console.log('you clicked send email');
             const userAvailiblityResponse = await getUserAvailiblity(getServideId);
-            console.log(userAvailiblityResponse); // serviceIdExistence
+            // console.log(userAvailiblityResponse); // serviceIdExistence
             if(userAvailiblityResponse.data === true){
                 navigate("/forgetDetailSuccess");
                 const forgetPasswordResponse = await forgetPasswordServiceID(getServideId);
-                console.log("forgetPasswordResponse", forgetPasswordResponse);
+                // console.log("forgetPasswordResponse", forgetPasswordResponse);
             }else{
                 setEmailError("Please enter a valid service ID")
             }
@@ -61,11 +61,11 @@ export default function ForgotDetails() {
             e.preventDefault();
             // console.log('you clicked send email');
             const userAvailiblityResponse = await getUserAvailiblity(getServideId2);
-            console.log(userAvailiblityResponse); // serviceIdExistence
+            // console.log(userAvailiblityResponse); // serviceIdExistence
             if(userAvailiblityResponse.data === true){
                 navigate("/forgetDetailSuccess");
                 const forgetPasswordResponse = await forgetPasswordServiceID(getServideId2);
-                console.log("forgetPasswordResponse", forgetPasswordResponse);
+                // console.log("forgetPasswordResponse", forgetPasswordResponse);
             }else{
                 setUsernameError("Please enter a valid service ID")
             }
@@ -80,7 +80,7 @@ export default function ForgotDetails() {
     const handleEmailChange = (event) => {
         const value = event.target.value;
         setServideId(value)
-        console.log(value);
+        // console.log(value);
         !value && setEmailError(false)
         // alert(value)
         // email validation
@@ -92,7 +92,7 @@ export default function ForgotDetails() {
     const handleUsernameChange = (event) => {
         const value = event.target.value;
         setServideId2(value)
-        console.log(value);
+        // console.log(value);
         !value && setUsernameError(false)
         // alert(value)
         // email validation
