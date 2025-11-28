@@ -50,6 +50,8 @@ import {
 import producticon from "../assets/images/product-icon.svg";
 import moment from 'moment';
 import { DateRangePicker } from 'react-bootstrap-daterangepicker';
+
+
 export default function AccountDetails() {
   const navigate = useNavigate();
   const companyName = localStorage.getItem('company_name');
