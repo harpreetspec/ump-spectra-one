@@ -7,14 +7,14 @@ import html2canvas from 'html2canvas';
 import moment from 'moment';
 
 const YourComponent = ({ networkParms }) => {
-  // console.log("networkParms",networkParms);
+  // console.log("networkParms",networkParms);//
   const [chartData, setChartData] = useState(null);
   const chartContainerRef = useRef(null);
   const chartInstanceRef = useRef(null);
   const [avgF, setAvg] = useState(null);
   const currentYear = new Date().getFullYear();
   const [networkTextFlag, setNetworkTextFlag] = useState(false);
-  const [currentMonthName, setCurrentMonthName] = useState()
+  const [currentMonthName, setCurrentMonthName] = useState('')
 
 
   const currentMonth = new Date().getMonth() + 1;
