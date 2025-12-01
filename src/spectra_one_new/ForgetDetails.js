@@ -15,14 +15,14 @@ import {
 
 async function sendOtp(credentials) {
     return fetch(process.env.REACT_APP_API_URL + '/sendOtp', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(credentials)
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(credentials)
     })
-      .then(data => data.json())
-  }
+        .then(data => data.json())
+}
 
 export default function ForgotDetails() {
     const navigate = useNavigate();
@@ -33,7 +33,7 @@ export default function ForgotDetails() {
     const [usernameError, setUsernameError] = useState('');
     const [mobileNum, setMobileNum] = useState();
 
-    const handleSendEmailbtn = async (e) => {    
+    const handleSendEmailbtn = async (e) => {
         // e.preventDefault();
         // console.log('you clicked send email')    
         try {
@@ -41,20 +41,20 @@ export default function ForgotDetails() {
             // console.log('you clicked send email');
             const userAvailiblityResponse = await getUserAvailiblity(getServideId);
             // console.log(userAvailiblityResponse); // serviceIdExistence
-            if(userAvailiblityResponse.data === true){
+            if (userAvailiblityResponse.data === true) {
                 navigate("/forgetDetailSuccess");
                 const forgetPasswordResponse = await forgetPasswordServiceID(getServideId);
                 // console.log("forgetPasswordResponse", forgetPasswordResponse);
-            }else{
+            } else {
                 setEmailError("Please enter a valid service ID")
             }
-            
-          } catch (error) {
+
+        } catch (error) {
             console.error(error);
-          }
-        
+        }
+
     }
-    const handleSendUsername = async (e) => {    
+    const handleSendUsername = async (e) => {
         // e.preventDefault();
         // console.log('you clicked send email')    
         try {
@@ -62,18 +62,18 @@ export default function ForgotDetails() {
             // console.log('you clicked send email');
             const userAvailiblityResponse = await getUserAvailiblity(getServideId2);
             // console.log(userAvailiblityResponse); // serviceIdExistence
-            if(userAvailiblityResponse.data === true){
+            if (userAvailiblityResponse.data === true) {
                 navigate("/forgetDetailSuccess");
                 const forgetPasswordResponse = await forgetPasswordServiceID(getServideId2);
                 // console.log("forgetPasswordResponse", forgetPasswordResponse);
-            }else{
+            } else {
                 setUsernameError("Please enter a valid service ID")
             }
-            
-          } catch (error) {
+
+        } catch (error) {
             console.error(error);
-          }
-        
+        }
+
     }
 
 
@@ -106,19 +106,19 @@ export default function ForgotDetails() {
         e.preventDefault();
         localStorage.setItem('mobileNum', mobileNum);
         const response = await sendOtp({
-          "mobileNum": mobileNum,
-    
+            "mobileNum": mobileNum,
+
         });
         if (response.meta.code == 200) {
-    
-          localStorage.setItem('data', response.data);
-    
-          navigate("/otpverification");
+
+            localStorage.setItem('data', response.data);
+
+            navigate("/otpverification");
         }
         //console.log(mobileNum);
-      }
+    }
 
-    const handleChatBox = () =>{
+    const handleChatBox = () => {
         const chatBox = document.querySelector(".help-box");
         chatBox.classList.toggle("d-none");
     }
@@ -186,7 +186,7 @@ export default function ForgotDetails() {
                                                 id="home"
                                                 role="tabpanel"
                                                 aria-labelledby="home-tab"
-                                                style={{padding: "0px"}}
+                                                style={{ padding: "0px" }}
                                             >
                                                 <form action="" class="pt-4 tab-form">
                                                     <div class="input-box form-floating">
@@ -207,11 +207,11 @@ export default function ForgotDetails() {
                                                                 // Allow the input if the key pressed is a digit or an allowed key and the input length is less than 10, 
                                                                 // or if the key pressed is the backspace key and the input length is greater than 0
                                                                 if ((isDigit || allowedKeys.includes(e.key)) && (e.target.value.length < 10 || e.key === "Backspace")) {
-                                                                  return true;
+                                                                    return true;
                                                                 } else {
-                                                                  e.preventDefault();
+                                                                    e.preventDefault();
                                                                 }
-                                                              }}
+                                                            }}
                                                             oninput="validateMobileNumber(this)"
                                                             maxlength="10"
                                                             pattern="[0-9]{10}"
@@ -233,7 +233,7 @@ export default function ForgotDetails() {
                                                         type="submit"
                                                         class="spectra-btn"
                                                         disabled={!getServideId}
-                                                        onClick={handleSendEmailbtn}                                                        
+                                                        onClick={handleSendEmailbtn}
                                                     >
                                                         Send
                                                     </button>
@@ -246,7 +246,7 @@ export default function ForgotDetails() {
                                                 id="profile"
                                                 role="tabpanel"
                                                 aria-labelledby="profile-tab"
-                                                style={{padding: "0px"}}
+                                                style={{ padding: "0px" }}
                                             >
                                                 <form action="" class="pt-4 tab-form">
                                                     <div class="input-box form-floating">
@@ -263,11 +263,11 @@ export default function ForgotDetails() {
                                                                 // Allow the input if the key pressed is a digit or an allowed key and the input length is less than 10, 
                                                                 // or if the key pressed is the backspace key and the input length is greater than 0
                                                                 if ((isDigit || allowedKeys.includes(e.key)) && (e.target.value.length < 10 || e.key === "Backspace")) {
-                                                                  return true;
+                                                                    return true;
                                                                 } else {
-                                                                  e.preventDefault();
+                                                                    e.preventDefault();
                                                                 }
-                                                              }}
+                                                            }}
                                                             oninput="validateMobileNumber(this)"
                                                             maxlength="10"
                                                             pattern="[0-9]{10}"
@@ -277,7 +277,7 @@ export default function ForgotDetails() {
                                                         <label for="mobileNo">Username</label>
                                                         {/* <span id="mobileError" class="error d-none">This mobile number is not registered. Try again</span> */}
                                                         {usernameError && <span id="emailIdError" class="error">{usernameError}</span>}
-                                                        
+
                                                     </div>
 
                                                     <button

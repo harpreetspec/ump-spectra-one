@@ -6,15 +6,15 @@ import "../assets/css/dashboard.css"
 import html2canvas from 'html2canvas';
 import moment from 'moment';
 
-const YourComponent = ({networkParms}) => {
+const YourComponent = ({ networkParms }) => {
   // console.log("networkParms",networkParms);
   const [chartData, setChartData] = useState(null);
   const chartContainerRef = useRef(null);
   const chartInstanceRef = useRef(null);
   const [avgF, setAvg] = useState(null);
   const currentYear = new Date().getFullYear();
-  const [networkTextFlag,setNetworkTextFlag] = useState(false);
-  const [currentMonthName,setCurrentMonthName] = useState()
+  const [networkTextFlag, setNetworkTextFlag] = useState(false);
+  const [currentMonthName, setCurrentMonthName] = useState()
 
 
   const currentMonth = new Date().getMonth() + 1;
@@ -26,7 +26,7 @@ const YourComponent = ({networkParms}) => {
     const now = new Date();
     const month = now.toLocaleString('default', { month: 'long' });
     // console.log("month: ", month);
-    
+
     return month;
   };
 
@@ -41,11 +41,11 @@ const YourComponent = ({networkParms}) => {
     // console.log("lastThreeMonths",lastThreeMonths);
     return lastThreeMonths;
   };
- 
-  const months = [...new Set([getCurrentMonth(),...getLastThreeMonths()])];
+
+  const months = [...new Set([getCurrentMonth(), ...getLastThreeMonths()])];
   // const months = getLastThreeMonths();
   // console.log("months", months);
-  
+
 
   const handleCalenderChange = (e) => {
     setChartData("");
@@ -54,11 +54,11 @@ const YourComponent = ({networkParms}) => {
     setSelectedMonth(e.target.innerText)
     const monthName = e.target.innerText
     const dateObject = new Date(`${monthName} 1, 2023`);
-    const monthNumber = dateObject.getMonth() +1;
+    const monthNumber = dateObject.getMonth() + 1;
     // console.log("monthNumber",monthNumber);
     let pinnedsegment = JSON.parse(sessionStorage.getItem("pinnedClicked"))
     // if(localStorage.getItem('segment') != "MS Wi-Fi"){
-    fetchDataforMonth(monthNumber,2023);
+    fetchDataforMonth(monthNumber, 2023);
     // }
   };
 
@@ -69,22 +69,22 @@ const YourComponent = ({networkParms}) => {
 
   useEffect(() => {
     let pinnedsegment = JSON.parse(sessionStorage.getItem("pinnedClicked"))
-    if(localStorage.getItem('segment') != "MS Wi-Fi"){
-    if(pinnedAvailability && networkParm){
-      fetchData(networkParm ? networkParm.service_id : "");
-      
-    }
-    else if(networkParm && pinnedAvailability ==undefined){
-     
-      fetchData(networkParm ? networkParm.service_id : "");
-    }
-    else if (pinnedAvailability === null) {
-    fetchData(networkParm ? networkParm.service_id : "");
-   
-    }else if(pinnedAvailability !== null){
-      
-      fetchData( pinnedAvailability ? pinnedAvailability.service_id : "");
-    }
+    if (localStorage.getItem('segment') != "MS Wi-Fi") {
+      if (pinnedAvailability && networkParm) {
+        fetchData(networkParm ? networkParm.service_id : "");
+
+      }
+      else if (networkParm && pinnedAvailability == undefined) {
+
+        fetchData(networkParm ? networkParm.service_id : "");
+      }
+      else if (pinnedAvailability === null) {
+        fetchData(networkParm ? networkParm.service_id : "");
+
+      } else if (pinnedAvailability !== null) {
+
+        fetchData(pinnedAvailability ? pinnedAvailability.service_id : "");
+      }
     }
   }, [pinnedAvailability, networkParm]);
 
@@ -106,13 +106,13 @@ const YourComponent = ({networkParms}) => {
 
 
       // console.log("data: ", data);
-      
+
       const { meta, data: chartDataArray } = data.data;
       const currentMonthName = moment().format('MMMM');
       // console.log("currentMonthName",currentMonthName);
       setCurrentMonthName(currentMonthName)
       const currentDate = new Date();
-      const currentMonth = currentDate.getMonth() +1;
+      const currentMonth = currentDate.getMonth() + 1;
       const previousMonth = (currentMonth - 1 + 12) % 12;
       const currentDay = currentDate.getDate() - 1;
       const currentMonthDayMinusOne = new Date(2023, currentMonth - 1, currentDay).getDate();
@@ -122,7 +122,7 @@ const YourComponent = ({networkParms}) => {
       const dayOfPreviousMonthEnd = previousMonthEndDate.format('DD');
       // console.log("dayOfPreviousMonthEnd",dayOfPreviousMonthEnd);
 
-      const lastSevenDays = getLastSevenDays(currentMonth,2023);
+      const lastSevenDays = getLastSevenDays(currentMonth, 2023);
 
       const getParameters = {};
 
@@ -177,7 +177,7 @@ const YourComponent = ({networkParms}) => {
       const avg = (sum / currentMonthDayMinusOne).toFixed(2);
       //    console.log('totavg',avg);
       setAvg(avg);
-      
+
       const labels = lastSevenDays;
       // console.log("labels: ", labels);
       // console.log("getParameters2: ", getParameters2);
@@ -204,7 +204,7 @@ const YourComponent = ({networkParms}) => {
         ],
       };
       // console.log("chartData: ", chartData);
-      
+
       setChartData(chartData);
       setNetworkTextFlag(true)
     } catch (error) {
@@ -212,12 +212,12 @@ const YourComponent = ({networkParms}) => {
     }
   };
 
-  const fetchDataforMonth = async (month,year) => {
+  const fetchDataforMonth = async (month, year) => {
     try {
       const url = process.env.REACT_APP_API_URL + '/getupTimeGraph';
 
       const reqBody = {
-        "service_id": pinnedAvailability? pinnedAvailability.service_id : networkParm.service_id
+        "service_id": pinnedAvailability ? pinnedAvailability.service_id : networkParm.service_id
       };
       const response = await fetch(url, {
         method: 'POST',
@@ -231,25 +231,25 @@ const YourComponent = ({networkParms}) => {
 
 
 
-      const { meta, data: chartDataArray } = data.data ;
+      const { meta, data: chartDataArray } = data.data;
       let lastSevenDays;
       // console.log("month",month);
       setCurrentMonthName("")
       let currentMonthNumber = new Date();
-      let currentMonthNumberfinal = currentMonthNumber.getMonth() + 1; 
+      let currentMonthNumberfinal = currentMonthNumber.getMonth() + 1;
       // console.log('Current month number:', currentMonthNumberfinal);
-      if(month == currentMonthNumberfinal){
-      lastSevenDays = getLastSevenDays(month,year);
-      setNetworkTextFlag(true)
+      if (month == currentMonthNumberfinal) {
+        lastSevenDays = getLastSevenDays(month, year);
+        setNetworkTextFlag(true)
       }
-      else{
-        lastSevenDays = getDateforPreviousMonth(month,2023)
+      else {
+        lastSevenDays = getDateforPreviousMonth(month, 2023)
         setNetworkTextFlag(false)
       }
       // console.log("month",month);
 
       const monthNumber = month;
-      
+
       const endDateOfMonth = moment().month(monthNumber - 1).endOf('month').date();
       // console.log("endDateOfMonth",endDateOfMonth);
 
@@ -270,7 +270,7 @@ const YourComponent = ({networkParms}) => {
       // const getParameters2 = {};
 
       // for (const key in getParameters) {
-    
+
       //   const num = getParameters[key].length;
       //   const down = getParameters[key].reduce((sum, value) => sum + value, 0) / num;
       //   const up = 100 - down;
@@ -282,16 +282,16 @@ const YourComponent = ({networkParms}) => {
       // }
       const getParameters2 = {};
 
-for (const key in getParameters) {
-  const num = getParameters[key].length;
-  const down = getParameters[key].reduce((sum, value) => sum + value, 0) / num;
-  const up = 100 - down;
+      for (const key in getParameters) {
+        const num = getParameters[key].length;
+        const down = getParameters[key].reduce((sum, value) => sum + value, 0) / num;
+        const up = 100 - down;
 
-  getParameters2[key] = {
-    down: round(down, 2),
-    up: round(up, 2),
-  };
-}
+        getParameters2[key] = {
+          down: round(down, 2),
+          up: round(up, 2),
+        };
+      }
 
       const networkUpTime = {};
 
@@ -316,33 +316,33 @@ for (const key in getParameters) {
       for (const key in getParameters) {
         // console.log("getParameters", getParameters[key]);
         const num1 = getParameters[key].length;
-      
+
         // Use filter to remove NaN values from the array
         const filteredValues = getParameters[key].filter(value => !isNaN(value));
-      
+
         // Calculate down1 based on the filtered values
         const down1 = filteredValues.length > 0
           ? filteredValues.reduce((sum, value) => sum + value, 0) / num1
           : 0; // Set down1 to 0 if all values are NaN
-      
+
         const up1 = 100 - down1;
-      
+
         networkUpTime[key] = {
           up1: round(up1, 2),
         };
       }
-      
+
       const sum = Object.values(networkUpTime).reduce((acc, obj) => acc + obj.up1, 0);
-      
+
       const roundedSum = Number(sum.toFixed(2));
-      
+
 
       //        console.log("Sum of up1 values rounded 2:", roundedSum);
 
       const avg = (sum / endDateOfMonth).toFixed(2);
       //    console.log('totavg',avg);
-      if(data.meta.Status){
-      //  alert("indie if")
+      if (data.meta.Status) {
+        //  alert("indie if")
         setAvg(avg);
       }
 
@@ -377,7 +377,7 @@ for (const key in getParameters) {
       };
 
       setChartData(chartData);
-      
+
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -474,13 +474,13 @@ for (const key in getParameters) {
     const endDate = new Date(year, month - 1, currentDay).getDate();
     // console.log("endDate",endDate);
     const lastSevenDays = [];
-  
+
     for (let i = endDate; i >= 1; i--) {
       const date = new Date(year, month - 1, i);
       const formattedDate = `${date.getDate()} ${date.toLocaleString('default', { month: 'short' })}`;
       lastSevenDays.push(formattedDate);
     }
-  // console.log("lastSevenDays",lastSevenDays);
+    // console.log("lastSevenDays",lastSevenDays);
     return lastSevenDays.reverse();
   };
 
@@ -498,7 +498,7 @@ for (const key in getParameters) {
       const formattedDate = `${date.getDate()} ${date.toLocaleString('default', { month: 'short' })}`;
       lastSevenDays.push(formattedDate);
     }
-  // console.log("lastSevenDays",lastSevenDays);
+    // console.log("lastSevenDays",lastSevenDays);
     return lastSevenDays.reverse();
   };
 
@@ -519,17 +519,17 @@ for (const key in getParameters) {
   };
   const handleDownload = () => {
     const chartContainer = document.getElementById('availability-img');
-  
+
     // Use html2canvas to capture the chart container as an image
     html2canvas(chartContainer).then(canvas => {
       // Convert the canvas to a data URL
       const dataURL = canvas.toDataURL('image/png');
-  
+
       // Create a temporary link element
       const link = document.createElement('a');
       link.href = dataURL;
       link.download = 'Availability.png';
-  
+
       // Trigger the download
       link.click();
     });
@@ -541,10 +541,10 @@ for (const key in getParameters) {
         <div className="dashboard-box-heading">
           {/* Availability (Uptime) */}
           <p class="p-0 m-0" className='networkHeader'>Availability (Uptime)</p>
-          </div>
+        </div>
         <div className="dashboard-box-options">
           <div className="dashboard-box-option">
-            <img src={download} alt="" onClick={handleDownload}/>
+            <img src={download} alt="" onClick={handleDownload} />
           </div>
           <div className="dropdown spectra-dropdown select-dropdown">
             <div
@@ -555,7 +555,7 @@ for (const key in getParameters) {
             >
               <div className="d-flex align-items-center gap-2">
                 {/* <img src={productIcon} alt="" /> */}
-                <span className="textValue"> { currentMonthName ?  currentMonthName: selectedMonth}</span>
+                <span className="textValue"> {currentMonthName ? currentMonthName : selectedMonth}</span>
               </div>
             </div>
             <ul className="dropdown-menu">
@@ -564,8 +564,8 @@ for (const key in getParameters) {
                   key={index}
                   className="dropdown-item"
                   data-value={month}
-                 onClick={handleCalenderChange}
-                 style={{fontSize:"14px"}}
+                  onClick={handleCalenderChange}
+                  style={{ fontSize: "14px" }}
                 >
                   {month}
                 </li>
@@ -582,7 +582,7 @@ for (const key in getParameters) {
       </div>
       <div className="dashboard-inner-box">
         {/* <div className="chartjs-container" style={{ marginRight: 78, marginTop: 2, marginLeft: 15 }}> */}
-        <div className="chartjs-container" id="availability-img" style={{textAlign:"center"}}>
+        <div className="chartjs-container" id="availability-img" style={{ textAlign: "center" }}>
           {chartData ? <canvas ref={chartContainerRef} id="myChart" /> : <div className='empty-notif-content'>Data Not Available</div>}
         </div>
 
