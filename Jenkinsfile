@@ -27,11 +27,17 @@ pipeline {
             }
         }
 
-        stage('Serve App Locally') {
+        stage('Archive Build') {
             steps {
-                bat 'npm install -g serve'
-                bat 'serve -s build -l 3000'
+                archiveArtifacts artifacts: 'build/**', fingerprint: true
             }
         }
+
+        // stage('Serve App Locally') {
+        //     steps {
+        //         bat 'npm install -g serve'
+        //         bat 'serve -s build -l 3000'
+        //     }
+        // }
     }
 }
