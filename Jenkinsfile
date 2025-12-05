@@ -11,10 +11,10 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                // Reuse job's SCM + credentials
+                // Reuse job's SCM + credentials configured in the job
                 checkout scm
 
-                // OR explicit:
+                // Or explicit:
                 // git branch: 's1-nk',
                 //     url: 'https://github.com/spectradevops/spectra_one_ui.git',
                 //     credentialsId: 'git-naveen'
@@ -31,7 +31,7 @@ pipeline {
 
         stage('Build React App') {
             steps {
-                // CRA warning about bundle size is just a warning, not a failure
+                // That CRA message about bundle size is only a WARNING, not an error
                 sh 'CI=false npm run build'
             }
         }
@@ -44,42 +44,29 @@ pipeline {
 
         stage('Deploy to CentOS') {
             steps {
-                sshPublisher(
-                    publishers: [
-                        [
-                            configName: 'spectra_server',      // must match your Publish over SSH server name
-                            transfers: [[
-                                sourceFiles: 'build/**',
-                                removePrefix: 'build',
-                                remoteDirectory: '/var/www/html/spectra_ui',
-                                execCommand: '''
-                                    set -e
+                sh '''
+                    set -e
 
-                                    cd /var/www/html/spectra_ui
+                    REMOTE_HOST="user@your-centos-host"
+                    TARGET_DIR="/var/www/html/spectra_ui"
 
-                                    # Stop existing PM2 app (if running)
-                                    pm2 delete spectra_ui || true
+                    # Ensure target dir exists and clear old files
+                    ssh "$REMOTE_HOST" "mkdir -p $TARGET_DIR && rm -rf $TARGET_DIR/*"
 
-                                    # Serve React build using PM2 on port 3000
-                                    pm2 serve . 3000 --spa --name "spectra_ui"
+                    # Copy new build
+                    scp -r build/* "$REMOTE_HOST:$TARGET_DIR/"
 
-                                    # Optionally persist PM2 config across reboots
-                                    # pm2 save
-                                '''
-                            ]],
-                            usePromotionTimestamp: false,
-                            verbose: true
-                        ]
-                    ]
-                )
+                    # Restart PM2 app on remote
+                    ssh "$REMOTE_HOST" "cd $TARGET_DIR && pm2 delete spectra_ui || true"
+                    ssh "$REMOTE_HOST" "cd $TARGET_DIR && pm2 serve . 3000 --spa --name spectra_ui"
+
+                    # Optionally persist PM2 across reboot:
+                    # ssh "$REMOTE_HOST" "pm2 save"
+                '''
             }
         }
-
     }
 }
-
-
-
 
 
 // ========== Jenkinsfile Locally ==========
