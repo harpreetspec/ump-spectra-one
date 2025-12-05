@@ -57,7 +57,7 @@ pipeline {
                                         pm2 serve . 3000 --spa --name "spectra_ui"
 
                                         # Save PM2 process list
-                                        pm2 save
+                                        # pm2 save
                                     """
                                 )
                             ],
