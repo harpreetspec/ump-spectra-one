@@ -4,7 +4,7 @@ pipeline {
     agent any
 
     tools {
-        nodejs "node20"
+        nodejs 'node20'   // Make sure this name matches NodeJS tool in Global Tool Configuration
     }
 
     stages {
@@ -17,16 +17,17 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                bat 'npm install -force'
+                // On Windows agent
+                bat 'npm install --force'
+                // or better (if package-lock.json is reliable):
+                // bat 'npm ci --force'
             }
         }
 
         stage('Build React App') {
             steps {
-                bat """
-                    set CI=false
-                    npm run build
-                """
+                // CI=false to avoid treating warnings as errors in React build
+                bat 'set CI=false && npm run build'
             }
         }
 
@@ -41,27 +42,30 @@ pipeline {
                 sshPublisher(
                     publishers: [
                         sshPublisherDesc(
-                            configName: "spectra_server",
+                            configName: 'spectra_server',     // must match your SSH server config name
                             transfers: [
                                 sshTransfer(
-                                    sourceFiles: "build/**",
-                                    removePrefix: "build",
-                                    remoteDirectory: "/var/www/spectra_ui/",
-                                    execCommand: """
-                                        cd /var/www/spectra_ui
+                                    sourceFiles: 'build/**',
+                                    removePrefix: 'build',
+                                    remoteDirectory: '/var/www/html/spectra_ui',
+                                    execCommand: '''
+                                        set -e
+
+                                        cd /var/www/html/spectra_ui
 
                                         # Stop existing PM2 app (if running)
                                         pm2 delete spectra_ui || true
 
-                                        # Serve React build using PM2
+                                        # Serve React build using PM2 on port 3000
                                         pm2 serve . 3000 --spa --name "spectra_ui"
 
-                                        # Save PM2 process list
+                                        # Optionally persist PM2 processes across reboot
                                         # pm2 save
-                                    """
+                                    '''
                                 )
                             ],
-                            usePromotionTimestamp: false
+                            usePromotionTimestamp: false,
+                            verbose: true
                         )
                     ]
                 )
@@ -70,7 +74,6 @@ pipeline {
 
     }
 }
-
 
 
 
