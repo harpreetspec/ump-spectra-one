@@ -4,30 +4,36 @@ pipeline {
     agent any
 
     tools {
-        nodejs 'node20'   // Make sure this name matches NodeJS tool in Global Tool Configuration
+        nodejs 'node20'   // Make sure this name exists in Global Tool Configuration
     }
 
     stages {
 
         stage('Checkout') {
             steps {
-                git branch: 's1-nk', url: 'https://github.com/spectradevops/spectra_one_ui.git'
+                // Reuse job's SCM + credentials (simplest)
+                checkout scm
+
+                // OR if you prefer explicit git:
+                // git branch: 's1-nk',
+                //     url: 'https://github.com/spectradevops/spectra_one_ui.git',
+                //     credentialsId: 'git-naveen'
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                // On Windows agent
-                bat 'npm install --force'
-                // or better (if package-lock.json is reliable):
-                // bat 'npm ci --force'
+                // Linux shell
+                sh 'npm install --force'
+                // or, if lockfile is correct:
+                // sh 'npm ci --force'
             }
         }
 
         stage('Build React App') {
             steps {
-                // CI=false to avoid treating warnings as errors in React build
-                bat 'set CI=false && npm run build'
+                // CI=false to avoid treat warnings as errors for CRA
+                sh 'CI=false npm run build'
             }
         }
 
@@ -42,7 +48,7 @@ pipeline {
                 sshPublisher(
                     publishers: [
                         sshPublisherDesc(
-                            configName: 'spectra_server',     // must match your SSH server config name
+                            configName: 'spectra_server',  // must match your SSH server name in Jenkins
                             transfers: [
                                 sshTransfer(
                                     sourceFiles: 'build/**',
@@ -59,7 +65,7 @@ pipeline {
                                         # Serve React build using PM2 on port 3000
                                         pm2 serve . 3000 --spa --name "spectra_ui"
 
-                                        # Optionally persist PM2 processes across reboot
+                                        # Optionally persist across reboot:
                                         # pm2 save
                                     '''
                                 )
@@ -74,6 +80,7 @@ pipeline {
 
     }
 }
+
 
 
 
