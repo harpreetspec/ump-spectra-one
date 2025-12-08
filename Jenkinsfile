@@ -48,7 +48,7 @@ pipeline {
                     set -e
 
                     REMOTE_HOST="root@localhost"
-                    TARGET_DIR="/var/www/html/spectra_ui"
+                    TARGET_DIR="/var/www/html/spectra_ui/build"
 
                     # Ensure target dir exists and clear old files
                     ssh "$REMOTE_HOST" "mkdir -p $TARGET_DIR && rm -rf $TARGET_DIR/*"
