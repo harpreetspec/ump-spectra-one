@@ -47,7 +47,7 @@ pipeline {
                 sh '''
                     set -e
 
-                    REMOTE_HOST="user@your-centos-host"
+                    REMOTE_HOST="root@localhost"
                     TARGET_DIR="/var/www/html/spectra_ui"
 
                     # Ensure target dir exists and clear old files
@@ -64,7 +64,8 @@ pipeline {
                     # ssh "$REMOTE_HOST" "pm2 save"
                 '''
             }
-        }
+}
+
     }
 }
 
