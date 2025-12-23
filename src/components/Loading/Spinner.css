@@ -1,0 +1,82 @@
+/* src/components/Loading/Spinner.css */
+
+.spinner {
+  display: inline-block;
+  position: relative;
+  /* CRITICAL: Ensure spinner container itself never rotates */
+  transform: none !important;
+  animation: none !important;
+}
+
+.spinner-inner {
+  display: block;
+  border-radius: 50%;
+  border-style: solid;
+  border-color: currentColor transparent transparent transparent;
+  /* ONLY the inner element should rotate */
+  animation: spinner-rotate 0.8s linear infinite;
+}
+
+.spinner-sm .spinner-inner {
+  width: 1rem;
+  height: 1rem;
+  border-width: 0.125rem;
+}
+
+.spinner-md .spinner-inner {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-width: 0.1875rem;
+}
+
+.spinner-lg .spinner-inner {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-width: 0.25rem;
+}
+
+.spinner-primary {
+  color: #004aad;
+}
+
+.spinner-white {
+  color: #ffffff;
+}
+
+.spinner-secondary {
+  color: #666;
+}
+
+@keyframes spinner-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner-inner {
+    animation: none;
+    border-color: currentColor;
+    opacity: 0.6;
+  }
+}
+
+/* CRITICAL FIX: Ensure text elements adjacent to or containing spinners never rotate */
+.spinner ~ p,
+.spinner ~ span,
+.spinner ~ div,
+div:has(> .spinner) > p,
+div:has(> .spinner) > span,
+div:has(> .spinner) > div:not(.spinner) {
+  transform: none !important;
+  animation: none !important;
+}
+
+/* Ensure sr-only text within spinner never rotates */
+.spinner .sr-only {
+  transform: none !important;
+  animation: none !important;
+}

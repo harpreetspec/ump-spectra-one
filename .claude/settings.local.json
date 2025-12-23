@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(while read f)",
+      "Bash(do grep -q \"propTypes\" \"$f\")",
+      "Bash(echo:*)",
+      "Bash(done)",
+      "Bash(grep:*)",
+      "Bash(del \"C:\\Users\\piyanshu.agrawal\\portal-frontend\\KNOWLEDGE_CENTER_SCREENSHOTS.md\")",
+      "Bash(del \"C:\\Users\\piyanshu.agrawal\\portal-frontend\\build\\assets\\videos\\README.md\")",
+      "Bash(del \"C:\\Users\\piyanshu.agrawal\\portal-frontend\\public\\assets\\videos\\README.md\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

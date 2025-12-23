@@ -1,0 +1,36 @@
+/* src/components/Modal.css */
+
+.modal-backdrop {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--color-modal-overlay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.modal-container {
+  background: var(--color-card-bg);
+  border-radius: var(--radius-xl);
+  max-width: 32.5rem;
+  width: 90%;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-xl);
+  position: relative;
+  padding: var(--space-xl) var(--space-2xl);
+  color: var(--color-text-primary);
+  transition: background-color var(--transition-base), color var(--transition-base);
+}
+
+.btn-close {
+  font-size: 2rem;
+  background: none;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
