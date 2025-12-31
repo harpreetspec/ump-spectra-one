@@ -52,6 +52,7 @@ Chart.register(
 /**
  * Default chart options for consistent appearance
  */
+
 export const DEFAULT_CHART_OPTIONS = {
   responsive: true,
   maintainAspectRatio: true,
