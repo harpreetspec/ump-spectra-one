@@ -1,0 +1,144 @@
+/* src/components/Card.css */
+
+.card-container {
+  /* Size using rem */
+  min-height: 5.625rem; /* 90px */
+  padding: var(--space-lg) var(--space-xl);
+  margin: 0;
+
+  /* Border using rem */
+  border-radius: var(--radius-md);
+
+  /* Colors - theme-aware */
+  background: var(--color-card-bg);
+  color: var(--color-text-primary);
+
+  /* Shadow - theme-aware */
+  box-shadow: var(--shadow-sm);
+
+  /* Display */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  transition: box-shadow 0.2s ease, background-color var(--transition-base), color var(--transition-base);
+}
+
+.card-container:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--space-sm);
+}
+
+.card-icon {
+  margin-right: var(--space-sm);
+  font-size: 1.1em;
+  color: var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-title {
+  font-weight: 600;
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: var(--font-base);
+  line-height: var(--line-height-tight);
+}
+
+.card-content {
+  font-size: var(--font-base);
+  line-height: var(--line-height-normal);
+  flex: 1;
+}
+
+.card-trend {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--space-sm);
+  font-weight: 600;
+  font-size: var(--font-sm);
+}
+
+.card-trend.trend-up {
+  color: #4caf50;
+}
+
+.card-trend.trend-down {
+  color: #f44336;
+}
+
+/* UPDATED: Trend Indicator Alignment Fix */
+.trend-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  white-space: nowrap;
+}
+
+.trend-sparkline {
+  width: 3.75rem; /* 60px */
+  height: 1rem;   /* 16px */
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+/* Responsive adjustments using rem */
+@media (max-width: 768px) {
+  .card-container {
+    padding: var(--space-md) var(--space-lg);
+    min-height: 5rem; /* 80px */
+  }
+
+  .card-title {
+    font-size: var(--font-sm);
+  }
+
+  .card-content {
+    font-size: var(--font-sm);
+  }
+}
+
+/* UPDATED: Icon styling for proper alignment */
+.trend-arrow {
+  font-size: 0.75rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.trend-up .trend-arrow {
+  color: #4caf50;
+}
+
+.trend-down .trend-arrow {
+  color: #f44336;
+}
+
+/* UPDATED: Trend text styling */
+.trend-text {
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.trend-up .trend-text {
+  color: #4caf50;
+}
+
+.trend-down .trend-text {
+  color: #f44336;
+}
+
+/* Keep for backward compatibility if needed */
+.trend-value {
+  font-size: 0.875rem;
+  font-weight: 500;
+}

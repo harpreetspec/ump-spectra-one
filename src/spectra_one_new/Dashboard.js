@@ -783,7 +783,7 @@ export default function Dashboard() {
       // console.log("lastMonth: ", lastMonth, currentMonth);
 
       const data = {
-        "canIds": `${canIdsString}`,
+        "canIds": `${crm_role == "L3" ? localStorage.getItem("credentialKey") : canIdsString}`,
         "fromDate": lastMonth + 'T00:00:00',
         "toDate": currentMonth + 'T00:00:00',
         "group_id": localStorage.getItem("credentialKey")
@@ -994,7 +994,7 @@ export default function Dashboard() {
       // console.log('LastMonth=',lastMonth);
       // console.log('InvCurrentDate',currentMonth);
       let data = {
-        "canIds": `${canIdsString}`,
+        "canIds": `${crm_role == "L3" ? localStorage.getItem("credentialKey") : canIdsString}`,
         "fromDate": lastMonth + 'T00:00:00',
         "toDate": currentMonth + 'T00:00:00',
         "group_id": localStorage.getItem("credentialKey")
