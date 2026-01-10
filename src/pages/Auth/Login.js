@@ -34,6 +34,7 @@ const getGreeting = () => {
 const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
+  console.log(login);
 
   // Form state
   const [activeTab, setActiveTab] = useState("loginId");
@@ -451,8 +452,8 @@ const Login = () => {
                         ? "Verifying..."
                         : "Sending OTP..."
                       : otpSent
-                      ? "Verify OTP"
-                      : "Send OTP"}
+                        ? "Verify OTP"
+                        : "Send OTP"}
                   </button>
                 </form>
               )}

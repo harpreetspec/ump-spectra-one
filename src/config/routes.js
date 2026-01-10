@@ -136,7 +136,7 @@ const SiteProvisioningQueue = lazy(() => import(/* webpackChunkName: "site-provi
 
 export const routes = [
   {
-    path: '/dashboard',
+    path: '/ump/dashboard',
     component: Dashboard,
     requiredPermission: 'canViewReports',
     fallbackMessage: 'You need report viewing permissions to access the dashboard.',

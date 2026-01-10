@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useAuth } from "../context/AuthContext";
 import "../assets/css/style.css";
 import { makeStyles } from '@material-ui/core/styles';
 import { useNavigate } from "react-router-dom";
@@ -136,6 +137,9 @@ export default function Login({ setAivisCheck }) {
     // localStorage.clear();
     // sessionStorage.clear();
     const classes = useStyles();
+    const { login } = useAuth();
+    const [isLoading, setIsLoading] = useState(false);
+    const [loginId, setLoginId] = useState("");
     const [username, setUserName] = useState();
     const [password, setPassword] = useState();
     const [mobileNum, setMobileNum] = useState();
@@ -484,61 +488,153 @@ export default function Login({ setAivisCheck }) {
             "user_device_os": deviceDetect().osName ? deviceDetect().osName : deviceDetect().os
         });
         // console.log("response1", response);
-        // If User not exist in Spectra DB
-        if (response.meta.code == 404 || response.meta.code == 403) {
-            // console.log("qwertyu");
-            try {
-                let getEntityCredentialsResponse = await getEntityCredentials(username);
+        if (response?.data[0]?.userType === 'SSP') {
 
-                const decodedData = JSON.parse(atob(getEntityCredentialsResponse.data));
-                const getCredentials = { ...getEntityCredentialsResponse, data: decodedData };
+            // If User not exist in Spectra DB
+            if (response.meta.code == 404 || response.meta.code == 403) {
+                // console.log("qwertyu");
+                try {
+                    let getEntityCredentialsResponse = await getEntityCredentials(username);
+
+                    const decodedData = JSON.parse(atob(getEntityCredentialsResponse.data));
+                    const getCredentials = { ...getEntityCredentialsResponse, data: decodedData };
 
 
-                console.log(getCredentials);
+                    console.log(getCredentials);
 
-                let canId = (getCredentials.data.actIds[0]).split("-")[0];
-                // console.log("getCredentials404", canId);
-                if (getCredentials?.data.credentialValue == password) {
-                    let userEntry = await insertNewUserFromBw({ username: canId, password: getCredentials.data.credentialValue });
-                    // console.log("userEntry", getCredentials.data.actIds[0]);
-                    response = await loginUser({
-                        "userName": canId,
-                        "password": password,
-                        "ip": ip,
-                        "user_device_os": deviceDetect().osName ? deviceDetect().osName : deviceDetect().os
-                    });
-
-                    if (getCredentials?.data?.credentialValue == password) {
-                        // Update Password 
-                        await updatePasswordByServiceId({
-                            "service_id": canId,
-                            "password": password
-                        });
-                        // console.log("UpdatePassword");
+                    let canId = (getCredentials.data.actIds[0]).split("-")[0];
+                    // console.log("getCredentials404", canId);
+                    if (getCredentials?.data.credentialValue == password) {
+                        let userEntry = await insertNewUserFromBw({ username: canId, password: getCredentials.data.credentialValue });
+                        // console.log("userEntry", getCredentials.data.actIds[0]);
                         response = await loginUser({
                             "userName": canId,
                             "password": password,
                             "ip": ip,
                             "user_device_os": deviceDetect().osName ? deviceDetect().osName : deviceDetect().os
                         });
+
+                        if (getCredentials?.data?.credentialValue == password) {
+                            // Update Password 
+                            await updatePasswordByServiceId({
+                                "service_id": canId,
+                                "password": password
+                            });
+                            // console.log("UpdatePassword");
+                            response = await loginUser({
+                                "userName": canId,
+                                "password": password,
+                                "ip": ip,
+                                "user_device_os": deviceDetect().osName ? deviceDetect().osName : deviceDetect().os
+                            });
+                        }
                     }
+                } catch (error) {
+                    console.error(error);
                 }
-            } catch (error) {
-                console.error(error);
             }
-        }
+
+            // console.log("response2", response); return
+
+            if (wrongAttempts >= maxWrongAttempts) {
+                if (response.meta.code === 200) {
+                    // console.log("userInput", userInput);
+                    if (userInput === captchaText) {
+                        // console.log("inside captcha if");
+                        setIsMatched(true);
+                        setWrongAttempts(0);
+                        if (response.data[0].crm_group_id == "GIndividual") {
+                            let solutionListApiCall = await getSolutionLists("GIndividual", "CIndividual", response.data[0].crm_location_id);
+                            if (solutionListApiCall.meta.code == 200) {
+                                localStorage.setItem('segmentCheckHBB', solutionListApiCall.data[0].SegmentName);
+                            }
+                        } else {
+                            localStorage.setItem('segmentCheckHBB', "NA");
+                        }
+                        localStorage.setItem('credentialKey', response.data[0].service_id);
+                        localStorage.setItem('username', username);
+                        localStorage.setItem('password', password);
+                        localStorage.setItem('crm_group_id', response.data[0].crm_group_id);
+                        localStorage.setItem('crm_company_id', response.data[0].crm_company_id);
+                        localStorage.setItem('crm_location_id', response.data[0].crm_location_id);
+                        localStorage.setItem('crm_role', response.data[0].crm_role);
+                        localStorage.setItem('company_name', response.data[0].company_name);
+
+                        const aivisCheck = response.data[0].prod_segment;
+                        setAivisCheck(aivisCheck);
+                        sessionStorage.setItem("tp", aivisCheck);
+
+                        navigate("/dashboard");
+                        localStorage.setItem('width', windowSize[0]);
+                        localStorage.setItem('height', windowSize[1]);
+
+                        // Check if Remember Me checkbox is checked
+                        if (rememberMe) {
+                            localStorage.setItem('username', username);
+                            localStorage.setItem('password', password);
+                            localStorage.setItem('isLoggedIn', true);
+                        } else {
+                            localStorage.removeItem('username');
+                            localStorage.removeItem('password');
+                        }
+
+                        // navigate('/dashboard');
+                        // console.log("Width: ", windowSize[0]);
+                        // console.log("Height: ", windowSize[1]);
+                    } else {
+                        // console.log("inside captcha else");
+                        setIsMatched(false);
+                        setWrongAttempts(wrongAttempts + 1);
+                        setLoginErrorMsg(true);
+                    }
+                } else {
+                    setWrongAttempts(wrongAttempts + 1);
+                    setLoginErrorMsg(true);
 
 
+                    const apiFailureDetails = {
+                        API_Name: "login", // Name of the API where failure occurred
+                        Request: {
+                            "userName": username,
+                            "password": password,
+                            "ip": ip,
+                            "user_device_os": deviceDetect().osName ? deviceDetect().osName : deviceDetect().os
+                        },
+                        Date: new Date().toISOString(),
+                        Message: response.meta?.Message || 'No message provided',
+                        res: response.data || {}
+                    };
+                    const emailBody = `
+API Failure Report
+--------------------
+API Name: ${apiFailureDetails.API_Name} (Login1.js)
+Request:
+${JSON.stringify(apiFailureDetails.Request, null, 2)}
+Response:
+${JSON.stringify(apiFailureDetails.res, null, 2)}
+Message: ${apiFailureDetails.Message}
+Date: ${apiFailureDetails.Date}
+`;
+                    try {
+                        const response = await fetch(process.env.REACT_APP_API_URL + '/sendMailS1', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                text: emailBody, // Send the structured email body
+                                subject: "Login"
+                            })
+                        });
+                        const data = await response.json();
+                        // console.log("Mail sent successfully:", data);
+                    } catch (mailError) {
+                        console.error("Failed to send mail:", mailError);
+                    }
 
-        // console.log("response2", response); return
-
-        if (wrongAttempts >= maxWrongAttempts) {
-            if (response.meta.code === 200) {
-                // console.log("userInput", userInput);
-                if (userInput === captchaText) {
-                    // console.log("inside captcha if");
-                    setIsMatched(true);
-                    setWrongAttempts(0);
+                }
+            } else {
+                if (response.meta.code === 200) {
                     if (response.data[0].crm_group_id == "GIndividual") {
                         let solutionListApiCall = await getSolutionLists("GIndividual", "CIndividual", response.data[0].crm_location_id);
                         if (solutionListApiCall.meta.code == 200) {
@@ -548,8 +644,6 @@ export default function Login({ setAivisCheck }) {
                         localStorage.setItem('segmentCheckHBB', "NA");
                     }
                     localStorage.setItem('credentialKey', response.data[0].service_id);
-                    localStorage.setItem('username', username);
-                    localStorage.setItem('password', password);
                     localStorage.setItem('crm_group_id', response.data[0].crm_group_id);
                     localStorage.setItem('crm_company_id', response.data[0].crm_company_id);
                     localStorage.setItem('crm_location_id', response.data[0].crm_location_id);
@@ -561,46 +655,38 @@ export default function Login({ setAivisCheck }) {
                     sessionStorage.setItem("tp", aivisCheck);
 
                     navigate("/dashboard");
+
                     localStorage.setItem('width', windowSize[0]);
                     localStorage.setItem('height', windowSize[1]);
 
                     // Check if Remember Me checkbox is checked
                     if (rememberMe) {
-                        localStorage.setItem('username', username);
-                        localStorage.setItem('password', password);
-                        localStorage.setItem('isLoggedIn', true);
+                        let cd = username + ':' + password;
+                        localStorage.setItem("cd", btoa(cd));
                     } else {
-                        localStorage.removeItem('username');
-                        localStorage.removeItem('password');
+                        localStorage.removeItem("cd");
                     }
 
-                    // navigate('/dashboard');
                     // console.log("Width: ", windowSize[0]);
                     // console.log("Height: ", windowSize[1]);
                 } else {
-                    // console.log("inside captcha else");
-                    setIsMatched(false);
                     setWrongAttempts(wrongAttempts + 1);
                     setLoginErrorMsg(true);
-                }
-            } else {
-                setWrongAttempts(wrongAttempts + 1);
-                setLoginErrorMsg(true);
 
 
-                const apiFailureDetails = {
-                    API_Name: "login", // Name of the API where failure occurred
-                    Request: {
-                        "userName": username,
-                        "password": password,
-                        "ip": ip,
-                        "user_device_os": deviceDetect().osName ? deviceDetect().osName : deviceDetect().os
-                    },
-                    Date: new Date().toISOString(),
-                    Message: response.meta?.Message || 'No message provided',
-                    res: response.data || {}
-                };
-                const emailBody = `
+                    const apiFailureDetails = {
+                        API_Name: "login", // Name of the API where failure occurred
+                        Request: {
+                            "userName": username,
+                            "password": password,
+                            "ip": ip,
+                            "user_device_os": deviceDetect().osName ? deviceDetect().osName : deviceDetect().os
+                        },
+                        Date: new Date().toISOString(),
+                        Message: response.meta?.Message || 'No message provided',
+                        res: response.data || {}
+                    };
+                    const emailBody = `
 API Failure Report
 --------------------
 API Name: ${apiFailureDetails.API_Name} (Login1.js)
@@ -611,108 +697,42 @@ ${JSON.stringify(apiFailureDetails.res, null, 2)}
 Message: ${apiFailureDetails.Message}
 Date: ${apiFailureDetails.Date}
 `;
-                try {
-                    const response = await fetch(process.env.REACT_APP_API_URL + '/sendMailS1', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            text: emailBody, // Send the structured email body
-                            subject: "Login"
-                        })
-                    });
-                    const data = await response.json();
-                    // console.log("Mail sent successfully:", data);
-                } catch (mailError) {
-                    console.error("Failed to send mail:", mailError);
-                }
-
-            }
-        } else {
-            if (response.meta.code === 200) {
-                if (response.data[0].crm_group_id == "GIndividual") {
-                    let solutionListApiCall = await getSolutionLists("GIndividual", "CIndividual", response.data[0].crm_location_id);
-                    if (solutionListApiCall.meta.code == 200) {
-                        localStorage.setItem('segmentCheckHBB', solutionListApiCall.data[0].SegmentName);
+                    try {
+                        const response = await fetch(process.env.REACT_APP_API_URL + '/sendMailS1', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                text: emailBody, // Send the structured email body
+                                subject: "Login"
+                            })
+                        });
+                        const data = await response.json();
+                        // console.log("Mail sent successfully:", data);
+                    } catch (mailError) {
+                        console.error("Failed to send mail:", mailError);
                     }
-                } else {
-                    localStorage.setItem('segmentCheckHBB', "NA");
+
                 }
-                localStorage.setItem('credentialKey', response.data[0].service_id);
-                localStorage.setItem('crm_group_id', response.data[0].crm_group_id);
-                localStorage.setItem('crm_company_id', response.data[0].crm_company_id);
-                localStorage.setItem('crm_location_id', response.data[0].crm_location_id);
-                localStorage.setItem('crm_role', response.data[0].crm_role);
-                localStorage.setItem('company_name', response.data[0].company_name);
-
-                const aivisCheck = response.data[0].prod_segment;
-                setAivisCheck(aivisCheck);
-                sessionStorage.setItem("tp", aivisCheck);
-
-                navigate("/dashboard");
-
-                localStorage.setItem('width', windowSize[0]);
-                localStorage.setItem('height', windowSize[1]);
-
-                // Check if Remember Me checkbox is checked
-                if (rememberMe) {
-                    let cd = username + ':' + password;
-                    localStorage.setItem("cd", btoa(cd));
-                } else {
-                    localStorage.removeItem("cd");
-                }
-
-                // console.log("Width: ", windowSize[0]);
-                // console.log("Height: ", windowSize[1]);
-            } else {
-                setWrongAttempts(wrongAttempts + 1);
-                setLoginErrorMsg(true);
-
-
-                const apiFailureDetails = {
-                    API_Name: "login", // Name of the API where failure occurred
-                    Request: {
-                        "userName": username,
-                        "password": password,
-                        "ip": ip,
-                        "user_device_os": deviceDetect().osName ? deviceDetect().osName : deviceDetect().os
-                    },
-                    Date: new Date().toISOString(),
-                    Message: response.meta?.Message || 'No message provided',
-                    res: response.data || {}
-                };
-                const emailBody = `
-API Failure Report
---------------------
-API Name: ${apiFailureDetails.API_Name} (Login1.js)
-Request:
-${JSON.stringify(apiFailureDetails.Request, null, 2)}
-Response:
-${JSON.stringify(apiFailureDetails.res, null, 2)}
-Message: ${apiFailureDetails.Message}
-Date: ${apiFailureDetails.Date}
-`;
-                try {
-                    const response = await fetch(process.env.REACT_APP_API_URL + '/sendMailS1', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            text: emailBody, // Send the structured email body
-                            subject: "Login"
-                        })
-                    });
-                    const data = await response.json();
-                    // console.log("Mail sent successfully:", data);
-                } catch (mailError) {
-                    console.error("Failed to send mail:", mailError);
-                }
-
             }
-        }
+        } else if (response?.data[0]?.userType === 'UMP' || true) {
+            setLoginErrorMsg("");
+            setIsLoading(true);
 
+            await new Promise((resolve) => setTimeout(resolve, 500));
+
+            const result = login(username, password, rememberMe);
+            console.log(result);
+            
+            if (result.success) {
+                navigate("/ump/dashboard");
+            } else {
+                setLoginErrorMsg("Invalid login credentials. Please try again.");
+            }
+
+            setIsLoading(false);
+        }
     }
     //function to send otp
     const handleSubmitOtp = async e => {
@@ -925,7 +945,7 @@ Date: ${apiFailureDetails.Date}
                                                         placeholder="Enter login ID"
                                                         class="form-control"
                                                         onChange={e => setUserName(((e.target.value).trim()).split("-")[0])}
-                                                        maxlength="15"
+                                                        maxlength="50" // 15
                                                         autofocus
                                                     />
                                                     <label for="loginId">Enter Login ID</label>
@@ -955,34 +975,34 @@ Date: ${apiFailureDetails.Date}
                                                     />
                                                     <label for="password">Enter Password</label>
                                                     {loginErrorMsg && <span id="loginError" class="error"
-                                                    >Incorrect Username or Password. Try again</span
-                                                    >}
+                                                    >Incorrect Username or Password. Try again</span>
+                                                    }
                                                 </div>
 
-                                                {wrongAttempts >= maxWrongAttempts && <div class="captcha d-flex flex-column">
-                                                    <span className="captcha d-flex flex-column"> <canvas ref={canvasRef} width={264} height={83} /></span>
+                                                {wrongAttempts >= maxWrongAttempts &&
+                                                    <div class="captcha d-flex flex-column">
+                                                        <span className="captcha d-flex flex-column"> <canvas ref={canvasRef} width={264} height={83} /></span>
 
+                                                        <div class="input-box form-floating">
+                                                            <input
+                                                                name="captcha"
+                                                                id="captcha"
+                                                                type="text"
+                                                                placeholder="Enter captcha"
+                                                                class="form-control"
+                                                                value={userInput}
 
+                                                                onChange={handleUserInput}
+                                                                maxlength="15"
 
-                                                    <div class="input-box form-floating">
-                                                        <input
-                                                            name="captcha"
-                                                            id="captcha"
-                                                            type="text"
-                                                            placeholder="Enter captcha"
-                                                            class="form-control"
-                                                            value={userInput}
-
-                                                            onChange={handleUserInput}
-                                                            maxlength="15"
-
-                                                        />
-                                                        <label for="captcha">Enter captcha</label>
-                                                        {wrongAttempts > maxWrongAttempts && !isMatched && (<span id="captchaError" class="error"
-                                                        >Incorrect Captcha</span
-                                                        >)}
+                                                            />
+                                                            <label for="captcha">Enter captcha</label>
+                                                            {wrongAttempts > maxWrongAttempts && !isMatched && (<span id="captchaError" class="error"
+                                                            >Incorrect Captcha</span
+                                                            >)}
+                                                        </div>
                                                     </div>
-                                                </div>}
+                                                }
 
                                                 <div
                                                     class="d-flex justify-content-end gap-3 align-items-center"
@@ -1005,9 +1025,9 @@ Date: ${apiFailureDetails.Date}
                                                     id="loginBtn"
                                                     type="submit"
                                                     class="spectra-btn"
-                                                    disabled={!username || !password || username.length < 5}   // username.startsWith('00')
+                                                    disabled={!username || !password || username.length < 5 || isLoading}   // username.startsWith('00')
                                                 >
-                                                    Login
+                                                    {isLoading ? "Logging in..." : "Login"}
                                                 </button>
                                             </form>
                                         </div>
